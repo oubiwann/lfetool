@@ -35,6 +35,14 @@ project by running the following:
 
     $ lfe-skel service-project my-new-service
 
+*Note*: upon running this script, not only with your project be set up with a
+skeleton, but also:
+
+* the dependencies for your project will be downloaded to your new project's
+``deps`` dirs, and
+
+* the stubbed unit test will be run -- it's stubbed to fail, because of TDD ;-)
+
 .. Links
 .. -----
 .. _rebar: https://github.com/rebar/rebar
