@@ -39,9 +39,10 @@ project by running the following:
 skeleton, but also:
 
 * the dependencies for your project will be downloaded to your new project's
-  ``deps`` dirs, and
+  ``deps`` dir, and
 
-* the stubbed unit test will be run -- it's stubbed to fail, because of TDD ;-)
+* the stubbed unit test will be run and will fail (it's stubbed to fail because
+  of TDD ;-)).
 
 .. Links
 .. -----
