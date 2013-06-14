@@ -8,10 +8,10 @@ though, a simple shell script creates what is needed.
 
 There are two modes, only one of which is currently implemented:
 
-1. create a library project, one that intended to be used by other projects
+#. create a library project, one that intended to be used by other projects
    and does not start any services;
 
-1. create a service project, one that should have at lease one services
+#. create a service project, one that should have at lease one services
    started.
 
 Installation
