@@ -1,0 +1,296 @@
+#!/bin/bash
+
+version=0.1
+script=$0
+command=$1
+parameter=$2
+usage=$( cat <<'ENDUSAGE'
+Usage: $script <command> <command parameter> | <options>
+
+Where <command> is one of the following:
+ * library-project
+ * service-project (not yet implemented)
+
+Each command takes one single-word option (no spaces): the name of the project
+to create.
+
+Instead of passing a command, you may choose to run the script with one of the
+following options:
+ -h     display this usage message and exit
+ -v     display the version number and exit
+ENDUSAGE)
+
+rebarconfig=$( cat <<'ENDCONFIG'
+{erl_opts, [debug_info, {src_dirs, ["test"]}]}.
+{lfe_first_files, []}.
+{deps_dir, ["deps"]}.
+{eunit_compile_opts, [
+    {src_dirs, ["test", "src"]}
+  ]}.
+{deps, [
+    {lfe, ".*", {git, "git://github.com/rvirding/lfe.git", "develop"}},
+    {lfeunit, ".*", {git, "git://github.com/lfe/lfeunit.git",  "master"}}
+  ]}.
+ENDCONFIG)
+
+makefile=$( cat <<'ENDMAKE'
+DEPS = ./deps
+LFE_DIR = $(DEPS)/lfe
+LFE_EBIN = $(LFE_DIR)/ebin
+LFE = $(LFE_DIR)/bin/lfe
+LFEC = $(LFE_DIR)/bin/lfec
+LFEUNIT_DIR = $(DEPS)/lfeunit
+ERL_LIBS = $(LFE_DIR):$(EREDIS_DIR):$(LFEUNIT_DIR):./
+SOURCE_DIR = ./src
+OUT_DIR = ./ebin
+TEST_DIR = ./test
+TEST_OUT_DIR = ./.eunit
+
+get-deps:
+\trebar get-deps
+\tfor DIR in $(wildcard $(DEPS)/*); do \
+\tcd $$DIR; git pull; cd - ; done
+
+clean-ebin:
+\trm -f $(OUT_DIR)/*.beam
+
+clean-eunit:
+\trm -rf $(TEST_OUT_DIR)
+
+compile: get-deps clean-ebin
+\trebar compile
+
+compile-tests: clean-eunit
+\tmkdir -p $(TEST_OUT_DIR)
+\tERL_LIBS=$(ERL_LIBS) $(LFEC) -o $(TEST_OUT_DIR) $(TEST_DIR)/*_tests.lfe
+
+shell:
+\tERL_LIBS=$(ERL_LIBS) $(LFE) -pa $(TEST_OUT_DIR)
+
+clean: clean-ebin clean-eunit
+\trebar clean
+
+check: compile compile-tests
+\t@clear;
+\t@rebar eunit verbose=1 skip_deps=true
+ENDMAKE)
+
+gitignore=$( cat <<'ENDIGNORE'
+deps
+*.sublime-project
+*.sublime-workspace
+*.beam
+.eunit
+ENDIGNORE)
+
+error () {
+    message=$1
+    echo
+    echo $message
+    echo
+    echo "$usage"
+    exit 1
+}
+
+unkonw-command-error () {
+    command=$1
+    error "Unknown command or option: '$command'";
+}
+
+missing-parameter-error () {
+    error "Error: command requires parameter"
+}
+
+not-implemented-error () {
+    error "Error: not yet implemented"
+}
+
+create-dirs () {
+    project=$1
+    mkdir -p $project/src $project/test $project/ebin
+}
+
+create-library-app-file () {
+    project=$1
+appfile=$( cat <<ENDAPPFILE
+%% -*- erlang -*-
+{application, '$project',
+ [
+  %% A quick description of the application.
+  {description, "My project description..."},
+
+  %% The version of the application
+  {vsn, "0.1"},
+
+  %% All modules used by the application.
+  {modules,
+   [
+    '$project'
+   ]},
+
+  %% All of the registered names the application uses. This can be ignored.
+  {registered, []},
+
+  %% Applications that are to be started prior to this one. This can be ignored
+  %% leave it alone unless you understand it well and let the .rel files in
+  %% your release handle this.
+  {applications,
+   [
+    kernel,
+    stdlib
+   ]},
+
+  %% OTP application loader will load, but not start, included apps. Again
+  %% this can be ignored as well.  To load but not start an application it
+  %% is easier to include it in the .rel file followed by the atom 'none'
+  {included_applications, []},
+
+  %% configuration parameters similar to those in the config file specified
+  %% on the command line. can be fetched with gas:get_env
+  {env, []}
+ ]
+}.
+ENDAPPFILE)
+    echo "$appfile" > $project/ebin/$project.app
+}
+
+create-test-module () {
+    project=$1
+testmodule=$( cat <<ENDAPPFILE
+(defmodule ${project}_tests
+  (export all)
+  (import
+    (from lfeunit-util
+      (check-failed-assert 2)
+      (check-wrong-assert-exception 2))
+    (from lfeunit
+      (assert 1)
+      (assert-not 1)
+      (assert-equal 2)
+      (assert-not-equal 2)
+      (assert-exception 3)
+      (assert-error 2)
+      (assert-throw 2)
+      (assert-exit 2))))
+
+(defun noop_test ()
+  (assert-equal 1 2))
+ENDAPPFILE)
+    echo "$testmodule" > $project/test/${project}_tests.lfe
+}
+
+create-module () {
+    project=$1
+module=$( cat <<ENDAPPFILE
+(defmodule $project
+  (export all))
+
+(defun run ()
+    (quote noop))
+ENDAPPFILE)
+    echo "$module" > $project/src/$project.lfe
+}
+
+create-readme () {
+    project=$1
+    readme=$( cat <<ENDREADME
+########
+$project
+########
+
+Introduction
+============
+
+Add content to me here!
+
+Dependencies
+------------
+
+This project assumes that you have \`rebar\`_ installed somwhere in your
+\`\`\$PATH\`\`.
+
+This project depends upon the following, which installed to the \`\`deps\`\`
+directory of this project when you run \`\`make deps\`\`:
+
+* \`LFE\`_ (Lisp Flavored Erlang; needed only to compile)
+* \`lfeunit\`_ (needed only to run the unit tests)
+
+Installation
+============
+
+Add content to me here!
+
+Usage
+=====
+
+Add content to me here!
+
+.. Links
+.. -----
+.. _rebar: https://github.com/rebar/rebar
+.. _LFE: https://github.com/rvirding/lfe
+.. _lfeunit: https://github.com/lfe/lfeunit
+ENDREADME)
+    echo -e "$readme" > $project/README.rst
+}
+
+create-common-files () {
+    project=$1
+    echo "$rebarconfig" > $project/rebar.config
+    echo -e "$makefile" > $project/Makefile
+    echo "$gitignore" > $project/.gitignore
+    create-test-module $project
+    create-module $project
+    create-readme $project
+}
+
+create-library-files () {
+    project=$1
+    create-library-app-file $project
+    create-common-files $project
+}
+
+create-service-files () {
+    project=$1
+    not-implemented-error
+}
+
+setup-library-project () {
+    echo "Setting up library project skeleton ..."
+    project=$1
+    create-dirs $project
+    create-library-files $project
+    cd $project && make check && cd -
+}
+
+setup-service-project () {
+    #echo "Setting up library project skeleton ..."
+    project=$parameter
+    not-implemented-error
+}
+
+check-parameter () {
+    parameter=$1
+    if [ "$parameter" = "" ]; then
+        missing-parameter-error
+    fi
+}
+
+case $command in
+    -h)
+        echo "$usage";
+        exit 0;;
+    -v)
+        echo "$version";
+        exit 0;;
+    library-project)
+        check-parameter $parameter
+        setup-library-project $parameter
+        exit 0;;
+    service-project)
+        check-parameter $parameter
+        setup-service-project $parameter
+        exit 0;;
+    *)
+        unkonw-command-error $command
+esac
