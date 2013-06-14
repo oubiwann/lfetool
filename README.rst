@@ -26,7 +26,7 @@ To create a library project, simply run the following:
 
 .. code:: shell
 
-    $ rebar-lfe library-project
+    $ lfe-skel library-project
 
 To create a service project, TBD... coming soon!
 
