@@ -33,5 +33,5 @@ To create a service project, TBD... coming soon!
 .. Links
 .. -----
 .. _rebar: https://github.com/rebar/rebar
-.. _shell script: 
+.. _shell script: https://raw.github.com/lfe/skeleton-project/master/lfe-skel
 
