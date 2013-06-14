@@ -26,7 +26,7 @@ To create a library project, simply run the following:
 
 .. code:: shell
 
-    $ lfe-skel library-project
+    $ lfe-skel library-project my-new-lib
 
 To create a service project, TBD... coming soon!
 
