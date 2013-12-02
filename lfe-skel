@@ -110,7 +110,7 @@ not-implemented-error () {
 
 create-dirs () {
     project=$1
-    mkdir -p $project/src $project/test $project/ebin
+    mkdir -p $project/src $project/test
 }
 
 create-library-app-file () {
@@ -123,7 +123,7 @@ appfile=$( cat <<ENDAPPFILE
   {description, "My project description..."},
 
   %% The version of the application
-  {vsn, "0.1"},
+  {vsn, "0.0.1"},
 
   %% All modules used by the application.
   {modules,
@@ -154,7 +154,7 @@ appfile=$( cat <<ENDAPPFILE
  ]
 }.
 ENDAPPFILE)
-    echo "$appfile" > $project/ebin/$project.app
+    echo "$appfile" > $project/src/$project.app.src
 }
 
 create-test-module () {
