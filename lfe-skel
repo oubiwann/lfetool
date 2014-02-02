@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version=0.1
+version=0.0.3
 script=$0
 command=$1
 parameter=$2
@@ -16,8 +16,8 @@ to create.
 
 Instead of passing a command, you may choose to run the script with one of the
 following options:
- -h     display this usage message and exit
- -v     display the version number and exit
+ -h    display this usage message and exit
+ -v    display the version number and exit
 ENDUSAGE)
 
 rebarconfig=$( cat <<'ENDCONFIG'
@@ -26,64 +26,20 @@ rebarconfig=$( cat <<'ENDCONFIG'
 {deps_dir, ["deps"]}.
 {plugins, ['lfe-sample-rebar-plugin']}.
 {eunit_compile_opts, [
-    {src_dirs, ["test", "src"]}
+   {src_dirs, ["test", "src"]}
   ]}.
 {deps, [
-    {lfe, ".*", {git, "git://github.com/rvirding/lfe.git", "develop"}},
-    {'lfe-utils',
-      ".*",
-      {git, "https://github.com/lfe/lfe-utils.git", "master"}},
-    {lfeunit, ".*", {git, "git://github.com/lfe/lfeunit.git",  "master"}},
-    {'lfe-sample-rebar-plugin',
-      ".*",
-      {git, "git://github.com/oubiwann/lfe-sample-rebar-plugin.git",
-        "master"}},
+   {lfe, ".*", {git, "git://github.com/rvirding/lfe.git", "develop"}},
+   {'lfe-utils',
+     ".*",
+     {git, "https://github.com/lfe/lfe-utils.git", "master"}},
+   {lfeunit, ".*", {git, "git://github.com/lfe/lfeunit.git",  "master"}},
+   {'lfe-sample-rebar-plugin',
+     ".*",
+     {git, "git://github.com/oubiwann/lfe-sample-rebar-plugin.git",
+   	"master"}}
   ]}.
 ENDCONFIG)
-
-makefile=$( cat <<'ENDMAKE'
-DEPS = ./deps
-LFE_DIR = $(DEPS)/lfe
-LFE_EBIN = $(LFE_DIR)/ebin
-LFE = $(LFE_DIR)/bin/lfe
-LFEC = $(LFE_DIR)/bin/lfec
-LFE_UTILS_DIR = $(DEPS)/lfe-utils
-LFEUNIT_DIR = $(DEPS)/lfeunit
-ERL_LIBS = $(LFE_DIR):$(LFE_UTILS_DIR):$(LFEUNIT_DIR):./
-SOURCE_DIR = ./src
-OUT_DIR = ./ebin
-TEST_DIR = ./test
-TEST_OUT_DIR = ./.eunit
-
-get-deps:
-\trebar get-deps
-\tfor DIR in $(wildcard $(DEPS)/*); do \
-\tcd $$DIR; git pull; cd - ; done
-
-clean-ebin:
-\trm -f $(OUT_DIR)/*.beam
-
-clean-eunit:
-\trm -rf $(TEST_OUT_DIR)
-
-compile: get-deps clean-ebin
-\trebar compile
-
-compile-tests: clean-eunit
-\tmkdir -p $(TEST_OUT_DIR)
-\tERL_LIBS=$(ERL_LIBS) $(LFEC) -o $(TEST_OUT_DIR) $(TEST_DIR)/*_tests.lfe
-
-shell: compile
-\tclear
-\tERL_LIBS=$(ERL_LIBS) $(LFE) -pa $(TEST_OUT_DIR)
-
-clean: clean-ebin clean-eunit
-\trebar clean
-
-check: compile compile-tests
-\t@clear;
-\t@rebar eunit verbose=1 skip_deps=true
-ENDMAKE)
 
 gitignore=$( cat <<'ENDIGNORE'
 deps
@@ -91,38 +47,155 @@ deps
 *.sublime-workspace
 *.beam
 .eunit
+debug-*
+ebin/*
 ENDIGNORE)
 
 error () {
-    message=$1
-    echo
-    echo $message
-    echo
-    echo "$usage"
-    exit 1
+   message=$1
+   echo
+   echo $message
+   echo
+   echo "$usage"
+   exit 1
 }
 
 unkonw-command-error () {
-    command=$1
-    error "Unknown command or option: '$command'";
+   command=$1
+   error "Unknown command or option: '$command'";
 }
 
 missing-parameter-error () {
-    error "Error: command requires parameter"
+   error "Error: command requires parameter"
 }
 
 not-implemented-error () {
-    error "Error: not yet implemented"
+   error "Error: not yet implemented"
+}
+
+create-makefile () {
+   project=$1
+   makefile=$( cat <<'ENDMAKE'
+PROJECT = $project
+LIB = $project
+DEPS = ./deps
+BIN_DIR = ./bin
+EXPM = $(BIN_DIR)/expm
+LFE_DIR = $(DEPS)/lfe
+LFE_EBIN = $(LFE_DIR)/ebin
+LFE = $(LFE_DIR)/bin/lfe
+LFEC = $(LFE_DIR)/bin/lfec
+LFE_UTILS_DIR = $(DEPS)/lfe-utils
+LFEUNIT_DIR = $(DEPS)/lfeunit
+# Note that ERL_LIBS is for running this project in development and that
+# ERL_LIB is for installation.
+ERL_LIBS = $(LFE_DIR):$(LFE_UTILS_DIR):$(LFEUNIT_DIR):./
+SOURCE_DIR = ./src
+OUT_DIR = ./ebin
+TEST_DIR = ./test
+TEST_OUT_DIR = ./.eunit
+FINISH = -run init stop -noshell
+
+get-version:
+	@echo
+	@echo -n app.src: ''
+	@erl -eval 'io:format("~p~n", [ \
+		proplists:get_value(vsn,element(3,element(2,hd(element(3, \
+		erl_eval:exprs(element(2, erl_parse:parse_exprs(element(2, \
+		erl_scan:string("Data = " ++ binary_to_list(element(2, \
+		file:read_file("src/$(LIB).app.src"))))))), []))))))])' \
+		$(FINISH)
+	@echo -n package.exs: ''
+	@grep version package.exs |awk '{print $$2}'|sed -e 's/,//g'
+
+# Note that this make target expects to be used like so:
+#>--$ ERL_LIB=some/path make get-install-dir
+#
+# Which would give the following result:
+#>--some/path/$project-1.0.0
+#
+get-install-dir:
+	@echo $(ERL_LIB)/$(PROJECT)-$(shell make get-version)
+
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
+
+$(EXPM): $(BIN_DIR)
+	curl -o $(EXPM) http://expm.co/__download__/expm
+	chmod +x $(EXPM)
+
+get-deps: $(EXPM)
+	rebar get-deps
+	for DIR in $(wildcard $(DEPS)/*); \
+	do cd $$DIR; echo "Updating $$DIR ..."; \
+	git pull; cd - > /dev/null; done
+
+clean-ebin:
+	rm -f $(OUT_DIR)/*.beam
+
+clean-eunit:
+	rm -rf $(TEST_OUT_DIR)
+
+compile: get-deps clean-ebin
+	rebar compile
+
+compile-only: clean-ebin
+	rebar compile skip_deps=true
+
+compile-tests: clean-eunit
+	mkdir -p $(TEST_OUT_DIR)
+	ERL_LIBS=$(ERL_LIBS) $(LFEC) -o $(TEST_OUT_DIR) $(TEST_DIR)/*_tests.lfe
+
+shell: compile
+	clear
+	ERL_LIBS=$(ERL_LIBS) $(LFE) -pa $(TEST_OUT_DIR)
+
+clean: clean-ebin clean-eunit
+	rebar clean
+
+check: compile compile-tests
+	@clear;
+	@rebar eunit verbose=1 skip_deps=true
+
+check-only: compile-only compile-tests
+	@clear;
+	@rebar eunit verbose=1 skip_deps=true
+
+push-all:
+	git push --all
+	git push upstream --all
+	git push --tags
+	git push upstream --tags
+
+# Note that this make target expects to be used like so:
+#>--$ ERL_LIB=some/path make install
+#
+install: INSTALLDIR=$(shell make get-install-dir)
+install: compile
+	if [ "$$ERL_LIB" != "" ]; \
+	then mkdir -p $(INSTALLDIR)/$(EBIN); \
+		mkdir -p $(INSTALLDIR)/$(SRC); \
+		cp -pPR $(EBIN) $(INSTALLDIR); \
+		cp -pPR $(SRC) $(INSTALLDIR); \
+	else \
+		echo "ERROR: No 'ERL_LIB' value is set in the env." \
+		&& exit 1; \
+	fi
+
+upload:
+	$(EXPM) publish
+ENDMAKE)
+	echo "$makefile" > $project/Makefile
 }
 
 create-dirs () {
-    project=$1
-    mkdir -p $project/src $project/test
+	project=$1
+	mkdir -p $project/src $project/test
 }
 
 create-library-app-file () {
     project=$1
-appfile=$( cat <<ENDAPPFILE
+    appfile=$( cat <<ENDAPPFILE
 %% -*- erlang -*-
 {application, '$project',
  [
@@ -191,12 +264,12 @@ ENDAPPFILE)
 
 create-module () {
     project=$1
-module=$( cat <<ENDAPPFILE
+    module=$( cat <<ENDAPPFILE
 (defmodule $project
   (export all))
 
 (defun run ()
-    (quote noop))
+  (quote noop))
 ENDAPPFILE)
     echo "$module" > $project/src/$project.lfe
 }
@@ -245,62 +318,62 @@ ENDREADME)
 }
 
 create-common-files () {
-    project=$1
-    echo "$rebarconfig" > $project/rebar.config
-    echo -e "$makefile" > $project/Makefile
-    echo "$gitignore" > $project/.gitignore
-    create-test-module $project
-    create-module $project
-    create-readme $project
+   project=$1
+   echo "$rebarconfig" > $project/rebar.config
+   echo "$gitignore" > $project/.gitignore
+   create-makefile $project
+   create-test-module $project
+   create-module $project
+   create-readme $project
 }
 
 create-library-files () {
-    project=$1
-    create-library-app-file $project
-    create-common-files $project
+   project=$1
+   create-library-app-file $project
+   create-common-files $project
 }
 
 create-service-files () {
-    project=$1
-    not-implemented-error
+   project=$1
+   not-implemented-error
 }
 
 setup-library-project () {
-    echo "Setting up library project skeleton ..."
-    project=$1
-    create-dirs $project
-    create-library-files $project
-    cd $project && make check && cd -
+   echo "Setting up library project skeleton ..."
+   project=$1
+   create-dirs $project
+   create-library-files $project
+   cd $project && make check
 }
 
 setup-service-project () {
-    #echo "Setting up library project skeleton ..."
-    project=$parameter
-    not-implemented-error
+   #echo "Setting up library project skeleton ..."
+   project=$parameter
+   not-implemented-error
 }
 
 check-parameter () {
-    parameter=$1
-    if [ "$parameter" = "" ]; then
-        missing-parameter-error
-    fi
+   parameter=$1
+   if [ "$parameter" = "" ]; then
+      missing-parameter-error
+   fi
 }
 
 case $command in
-    -h)
-        echo "$usage";
-        exit 0;;
-    -v)
-        echo "$version";
-        exit 0;;
-    library-project)
-        check-parameter $parameter
-        setup-library-project $parameter
-        exit 0;;
-    service-project)
-        check-parameter $parameter
-        setup-service-project $parameter
-        exit 0;;
-    *)
-        unkonw-command-error $command
+   -h)
+      echo "$usage";
+      exit 0;;
+   -v)
+      echo "$version";
+      exit 0;;
+   library-project)
+      check-parameter $parameter
+      setup-library-project $parameter
+      exit 0;;
+   service-project)
+      check-parameter $parameter
+      setup-service-project $parameter
+      exit 0;;
+   *)
+      unkonw-command-error $command
 esac
