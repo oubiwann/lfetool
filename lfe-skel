@@ -49,6 +49,7 @@ deps
 .eunit
 debug-*
 ebin/*
+bin/expm
 ENDIGNORE)
 
 error () {
