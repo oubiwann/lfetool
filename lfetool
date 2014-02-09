@@ -435,6 +435,7 @@ install-lfetool () {
     curl -o $path https://raw.github.com/lfe/lfetool/master/lfetool
     chmod 755 $path
     if [ "$mode" = "" ]; then
+        echo
         echo "Installed lfetool to $path."
     fi
 }
@@ -446,6 +447,7 @@ update-lfetool () {
     fi
     directory=`dirname $path`
     install-lfetool $directory "update"
+    echo
     echo "Updated lfetool at $path."
 }
 
