@@ -300,9 +300,8 @@ testmodule=$( cat <<ENDTESTMODULE
 (include-lib "deps/lfeunit/include/lfeunit-macros.lfe")
 
 
-(deftest greeting
-  (is-equal (: $project greeting)
-            '"Hello, Beeblebrox"))
+(deftest my-adder
+  (is-equal (: $project my-adder 2 2) 5))
 ENDTESTMODULE)
     echo "$testmodule" > $project/test/${project}_tests.lfe
 }
@@ -313,8 +312,8 @@ create-module () {
 (defmodule $project
   (export all))
 
-(defun greeting ()
-  '"Hello, Zaphod"))
+(defun my-adder (x y)
+  (+ x y))
 ENDMODULE)
     echo "$module" > $project/src/$project.lfe
 }
