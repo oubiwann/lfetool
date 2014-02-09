@@ -1,24 +1,30 @@
 #!/bin/bash
 
 version=0.0.4
-script=$0
-command=$1
-parameter=$2
-usage=$( cat <<'ENDUSAGE'
-Usage: $script <command> <command parameter> | <options>
 
-Where <command> is one of the following:
- * library-project
- * service-project (not yet implemented)
+print-usage () {
+    usage=$( cat <<ENDUSAGE
+Usage: $1 <command> <context> <arg> | <options>
 
-Each command takes one single-word option (no spaces): the name of the project
-to create.
+Right now, the only supported <command> is the following:
+ * new
+
+The <context> parameter may be one of the following:
+ * library
+ * service (not yet implemented)
+
+And in these contexts, the arg passed is the name of the new project you want
+create. For example:
+
+  $ $script new library my-project
 
 Instead of passing a command, you may choose to run the script with one of the
 following options:
  -h    display this usage message and exit
  -v    display the version number and exit
 ENDUSAGE)
+    echo "$usage"
+}
 
 rebarconfig=$( cat <<ENDCONFIG
 {erl_opts, [debug_info, {src_dirs, ["test"]}]}.
@@ -57,17 +63,26 @@ error () {
     echo
     echo $message
     echo
-    echo "$usage"
+    print-usage $script
     exit 1
 }
 
 unknown-command-error () {
     command=$1
-    error "Unknown command or option: '$command'";
+    error "Unknown command: '$command'";
 }
 
-missing-parameter-error () {
-    error "Error: command requires parameter"
+unknown-context-error () {
+    context=$1
+    error "Unknown context: '$context'";
+}
+
+missing-context-error () {
+    error "Error: command requires context"
+}
+
+missing-arg-error () {
+    error "Error: context requires arg"
 }
 
 not-implemented-error () {
@@ -376,32 +391,57 @@ setup-service-project () {
     not-implemented-error
 }
 
-check-parameter () {
-    parameter=$1
-    if [ "$parameter" = "" ]; then
-        missing-parameter-error
+check-context () {
+    context=$1
+    if [ "$context" = "" ]; then
+        missing-context-error
     fi
 }
 
+check-arg () {
+    arg=$1
+    if [ "$arg" = "" ]; then
+        missing-arg-error
+    fi
+}
+create-new () {
+    context=$1
+    arg=$2
+    case $context in
+        project)
+            check-arg $arg
+            setup-library-project $arg
+            ;;
+        service)
+            check-arg $arg
+            setup-service-project $arg
+            ;;
+        *)
+            unknown-context-error $context
+    esac
+}
+
+script=$0
+command=$1
+context=$2
+arg=$3
+
 case $command in
     -h)
-        echo "$usage"
+        echo
+        print-usage $script
         exit 0
         ;;
     -v)
         echo "$version"
         exit 0
         ;;
-    library-project)
-        check-parameter $parameter
-        setup-library-project $parameter
-        exit 0
-        ;;
-    service-project)
-        check-parameter $parameter
-        setup-service-project $parameter
+    new)
+        check-context $context
+        create-new $context $arg
         exit 0
         ;;
     *)
         unknown-command-error $command
+        ;;
 esac
