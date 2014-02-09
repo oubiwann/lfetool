@@ -415,7 +415,7 @@ create-new () {
     context=$1
     arg=$2
     case $context in
-        project)
+        library)
             check-arg $arg
             setup-library-project $arg
             ;;
