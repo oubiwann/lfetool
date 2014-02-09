@@ -387,7 +387,7 @@ create-service-files () {
 }
 
 setup-library-project () {
-    echo "Setting up library project skeleton ..."
+    echo "Setting up starter library project ..."
     project=$1
     create-dirs $project
     create-project-files $project
