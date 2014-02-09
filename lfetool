@@ -169,7 +169,7 @@ clean-eunit:
 compile: get-deps clean-ebin
 	rebar compile
 
-compile-only: clean-ebin
+compile-no-deps: clean-ebin
 	rebar compile skip_deps=true
 
 compile-tests: clean-eunit
@@ -177,6 +177,10 @@ compile-tests: clean-eunit
 	ERL_LIBS=$(ERL_LIBS) $(LFEC) -o $(TEST_OUT_DIR) $(TEST_DIR)/*_tests.lfe
 
 shell: compile
+  clear
+  ERL_LIBS=$(ERL_LIBS) $(LFE) -pa $(TEST_OUT_DIR)
+
+shell-no-deps: compile-no-deps
 	clear
 	ERL_LIBS=$(ERL_LIBS) $(LFE) -pa $(TEST_OUT_DIR)
 
@@ -187,7 +191,7 @@ check: compile compile-tests
 	@clear;
 	@rebar eunit verbose=1 skip_deps=true
 
-check-only: compile-only compile-tests
+check-no-deps: compile-no-deps compile-tests
 	@clear;
 	@rebar eunit verbose=1 skip_deps=true
 
@@ -289,7 +293,7 @@ ENDEXPMFILE)
 
 create-test-module () {
     project=$1
-testmodule=$( cat <<ENDTESTMODULE
+    testmodule=$( cat <<ENDTESTMODULE
 (defmodule ${project}_tests
   (export all)
   (import
@@ -301,7 +305,7 @@ testmodule=$( cat <<ENDTESTMODULE
 
 
 (deftest my-adder
-  (is-equal 5 (: $project my-adder 2 2))
+  (is-equal 4 (: $project my-adder 2 2)))
 ENDTESTMODULE)
     echo "$testmodule" > $project/test/${project}_tests.lfe
 }
@@ -313,7 +317,7 @@ create-module () {
   (export all))
 
 (defun my-adder (x y)
-  (+ x y))
+  (+ x (+ y 1)))
 ENDMODULE)
     echo "$module" > $project/src/$project.lfe
 }
@@ -416,11 +420,9 @@ create-new () {
     arg=$2
     case $context in
         library)
-            check-arg $arg
             setup-library-project $arg
             ;;
         service)
-            check-arg $arg
             setup-service-project $arg
             ;;
         *)
@@ -478,6 +480,7 @@ case $command in
         ;;
     new)
         check-context $context
+        check-arg $arg
         create-new $context $arg
         exit 0
         ;;
