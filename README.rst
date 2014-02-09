@@ -8,19 +8,15 @@ lfetool
 Introduction
 ============
 
-Currently, the script supports one command:
+Currently, the script supports these commands:
 
+* ``install``
+* ``update``
 * ``new``
 
-The ``new`` command has two contexts, though only one is implemented for now:
+Usage information for each of these is presented below.
 
-#. ``library``: create a library project, one that intended to be used by other
-   LFE, Erlang, or Elixir projects and does not start any services;
-
-#. ``service``: create a service project, one that should have at lease one
-   Erlang service started.
-
-*Note*: This project superscedes the `lfe-skel`_ project.
+*Note*: This project superscedes its precursor, the `lfe-skel`_ project.
 
 
 ``rebar`` and the Future
@@ -43,17 +39,18 @@ example:
 
 .. code:: bash
 
-    $ curl -o /usr/local/bin/lfetool \
-        https://raw.github.com/lfe/lfetool/master/lfetool
+    $ curl -o ./lfetool https://raw.github.com/lfe/lfetool/master/lfetool
+    $ bash lfetool install /usr/local/bin
 
 Depending upon how the permissions for your chossen path are setup, you may
-need to ``sudo``.
+need to use ``sudo``.
 
-Then make it executable. E.g.:
+If you installed with ``sudo`` but would like to be able to self-update the
+script in the future, you should also change the ownership:
 
 .. code:: bash
 
-    $ chmod 755 /usr/local/bin/lfetool
+    $ chown $USER /usr/local/bin/lfetool
 
 
 Bleeding Edge
@@ -75,6 +72,65 @@ anything further.
 
 Usage
 =====
+
+
+``help`` Command
+-------------------
+
+To display a help message:
+
+.. code:: bash
+
+    $ lfetool help
+
+Optionally, you may also use a flag:
+
+.. code:: bash
+
+    $ lfetool -h
+
+
+``version`` Command
+-------------------
+
+To get the current installed version of ``lfetool``:
+
+.. code:: bash
+
+    $ lfetool version
+
+Optionally, you may also use a flag:
+
+.. code:: bash
+
+    $ lfetool -v
+
+
+``install`` Command
+-------------------
+
+To install ``lfetool``, simply provide the installation directory:
+
+.. code:: bash
+
+    $ ./lfetool install /usr/local/bin
+
+You need to have write permissions to the given directory in order for this
+command to succeed.
+
+
+``update`` Command
+------------------
+
+If you have a regular install (not a link to the script in a ``git clone`` dir),
+you may want to use this command to get the latest script from github.
+
+.. code:: bash
+
+    $ lfetool update
+
+Though the command takes no parameters, it will fail if ``lfetool`` is not on
+your ``$PATH``.
 
 
 ``new`` Command
