@@ -280,7 +280,7 @@ testmodule=$( cat <<ENDTESTMODULE
 
 
 (deftest noop
-  (assert-equal 1 2))
+  (is-equal 1 2))
 ENDTESTMODULE)
     echo "$testmodule" > $project/test/${project}_tests.lfe
 }
