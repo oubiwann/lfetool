@@ -437,10 +437,12 @@ install-lfetool () {
 
 update-lfetool () {
     path=`which lfetool`
-    directory=`dirname $path`
+    echo $path
     if [ "$path" = "" ]; then
       lfetool-not-found-error
     fi
+    directory=`dirname $path`
+    echo $directory
     install-lfetool $directory
 }
 
