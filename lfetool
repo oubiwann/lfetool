@@ -3,25 +3,22 @@
 version=0.0.5
 
 print-usage () {
+    script=basename $1
     usage=$( cat <<ENDUSAGE
-Usage: $1 <command> <context> <arg> | <options>
+Usage: $script <command> <context> <arg> | <options>
 
-Right now, the only supported <command> is the following:
+Currently, $script supports these commands:
+ * install
+ * update
  * new
 
-The <context> parameter may be one of the following:
- * library
- * service (not yet implemented)
-
-And in these contexts, the arg passed is the name of the new project you want
-create. For example:
-
-  $ $script new library my-project
-
-Instead of passing a command, you may choose to run the script with one of the
-following options:
+Additionally, instead of passing a command, you may choose to run the script
+with one of the following options:
  -h    display this usage message and exit
  -v    display the version number and exit
+
+These commands are documented on the project page here:
+  https://github.com/lfe/lfetool
 ENDUSAGE)
     echo "$usage"
 }
@@ -87,6 +84,10 @@ missing-arg-error () {
 
 not-implemented-error () {
     error "Error: not yet implemented"
+}
+
+lfetool-not-found-error () {
+  error 'Error: could not find `lfetool` on the $PATH'
 }
 
 create-makefile () {
@@ -404,6 +405,7 @@ check-arg () {
         missing-arg-error
     fi
 }
+
 create-new () {
     context=$1
     arg=$2
@@ -421,6 +423,21 @@ create-new () {
     esac
 }
 
+install-lfetool () {
+    directory=$1
+    path=$directory/lfetool
+    curl -o $path https://raw.github.com/lfe/lfetool/master/lfetool
+    chmod 755 $path
+}
+
+update-lfetool () {
+    path=`which lfetool`
+    if [ "$path" = "" ]; then
+      lfetool-not-found-error
+    fi
+    install-lfetool $path
+}
+
 script=$0
 command=$1
 context=$2
@@ -436,9 +453,17 @@ case $command in
         echo "$version"
         exit 0
         ;;
+    install)
+        check-context $context
+        install-lfetool $context
+        ;;
     new)
         check-context $context
         create-new $context $arg
+        exit 0
+        ;;
+    update)
+        update-lfetool
         exit 0
         ;;
     *)
