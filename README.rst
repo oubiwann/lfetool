@@ -62,6 +62,8 @@ Bleeding Edge
 If you'd like to be able to update with the latest changes in the master branch,
 you can do this instead:
 
+.. code:: bash
+
     $ cd ~/lab/
     $ git clone https://github.com/lfe/lfetool.git
     $ cd lfetool
