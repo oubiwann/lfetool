@@ -109,21 +109,24 @@ Optionally, you may also use a flag:
 ``install`` Command
 -------------------
 
-To install ``lfetool``, simply provide the installation directory:
+Assuming you have downloaded ``lfetool`` to your local directory, you can use it
+to install the script to a path of your choosing. Simply provide the
+installation directory:
 
 .. code:: bash
 
     $ ./lfetool install /usr/local/bin
 
 You need to have write permissions to the given directory in order for this
-command to succeed.
+command to succeed. Note that the installation procedure sets the executable
+bit for the script.
 
 
 ``update`` Command
 ------------------
 
 If you have a regular install (not a link to the script in a ``git clone`` dir),
-you may want to use this command to get the latest script from github.
+you may want to use this command to get the latest script from github:
 
 .. code:: bash
 
