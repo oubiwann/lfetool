@@ -430,10 +430,13 @@ create-new () {
 
 install-lfetool () {
     directory=$1
+    mode=$2
     path=$directory/lfetool
     curl -o $path https://raw.github.com/lfe/lfetool/master/lfetool
     chmod 755 $path
-    echo "Installed lfetool to $path."
+    if [ "$mode" = "" ]; then
+        echo "Installed lfetool to $path."
+    fi
 }
 
 update-lfetool () {
@@ -442,8 +445,8 @@ update-lfetool () {
       lfetool-not-found-error
     fi
     directory=`dirname $path`
-    install-lfetool $directory
-    echo "Update lfetool at $path."
+    install-lfetool $directory "update"
+    echo "Updated lfetool at $path."
 }
 
 script=$0
