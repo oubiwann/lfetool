@@ -133,7 +133,7 @@ $(EXPM): $(BIN_DIR)
 	curl -o $(EXPM) http://expm.co/__download__/expm
 	chmod +x $(EXPM)
 
-get-deps: $(EXPM)
+get-deps:
 	rebar get-deps
 	for DIR in $(wildcard $(DEPS)/*); \\
 	do cd $$DIR; echo "Updating $$DIR ..."; \\
@@ -191,7 +191,7 @@ install: compile
 		&& exit 1; \\
 	fi
 
-upload: get-version
+upload: $(EXPM) get-version
 	@echo "Package file:"
 	@echo
 	@cat package.exs
@@ -274,18 +274,12 @@ testmodule=$( cat <<ENDTESTMODULE
   (import
     (from lfeunit-util
       (check-failed-assert 2)
-      (check-wrong-assert-exception 2))
-    (from lfeunit
-      (assert 1)
-      (assert-not 1)
-      (assert-equal 2)
-      (assert-not-equal 2)
-      (assert-exception 3)
-      (assert-error 2)
-      (assert-throw 2)
-      (assert-exit 2))))
+      (check-wrong-assert-exception 2))))
 
-(defun noop_test ()
+(include-lib "deps/lfeunit/include/lfeunit-macros.lfe")
+
+
+(deftest noop
   (assert-equal 1 2))
 ENDTESTMODULE)
     echo "$testmodule" > $project/test/${project}_tests.lfe
