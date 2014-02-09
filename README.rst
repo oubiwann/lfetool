@@ -34,7 +34,41 @@ handles the necessary tasks suitably well.
 Installation
 ============
 
-Download the `shell script`_ and save it to a directory in your ``$PATH``.
+
+Stable
+------
+
+Download the `shell script`_ and save it to a directory in your ``$PATH``. For
+example:
+
+.. code:: bash
+
+    $ curl -o /usr/local/bin/lfetool \
+        https://raw.github.com/lfe/lfetool/master/lfetool
+
+Depending upon how the permissions for your chossen path are setup, you may
+need to ``sudo``.
+
+Then make it executable. E.g.:
+
+.. code:: bash
+
+    $ chmod 755 /usr/local/bin/lfetool
+
+
+Bleeding Edge
+-------------
+
+If you'd like to be able to update with the latest changes in the master branch,
+you can do this instead:
+
+    $ cd ~/lab/
+    $ git clone https://github.com/lfe/lfetool.git
+    $ cd lfetool
+    $ ln -s ./lfetool /usr/local/bin/
+
+Permissions are already set on the script in the repo, so there's no need to do
+anything further.
 
 
 Usage
