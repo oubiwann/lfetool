@@ -1,19 +1,23 @@
-####################
-LFE Skeleton Project
-####################
+#######
+lfetool
+#######
 
 
-This should really be converted into a `rebar`_ script sooner than later.
-Perhaps someone else will have the time and rebar chops to do it? For now,
-though, a simple shell script creates what is needed.
+Eventually, lfetool will be converted to a `rebar`_ script. Perhaps someone
+else will have the time and rebar chops to do it? Until then, this shell script
+handles the necessary tasks suitably well.
 
-There are two modes, only one of which is currently implemented:
+Currently, the script supports one command:
 
-#. create a library project, one that intended to be used by other projects
-   and does not start any services;
+* ``new``
 
-#. create a service project, one that should have at lease one services
-   started.
+The ``new`` command has two contexts, though only one is implemented for now:
+
+#. ``library``: create a library project, one that intended to be used by other
+   LFE, Erlang, or Elixir projects and does not start any services;
+
+#. ``service``: create a service project, one that should have at lease one
+  Erlang service started.
 
 
 Installation
@@ -29,14 +33,14 @@ To create a library project, simply run the following:
 
 .. code:: shell
 
-    $ lfe-skel library-project my-new-lib
+    $ lfetool new library my-new-lib
 
 Though not currently implemented, in the future one will create a service
 project by running the following:
 
 .. code:: shell
 
-    $ lfe-skel service-project my-new-service
+    $ lfetool new service my-new-service
 
 *Note*: upon running this script, not only with your project be set up with a
 skeleton, but also:
@@ -46,7 +50,7 @@ skeleton, but also:
 
 * the stubbed unit test will be run and will fail (it's stubbed to fail because
   of TDD ;-));
-  
+
 * the project will be set up with a newly initialized github repo; and
 
 * the new project files will be added to the repo.
@@ -55,5 +59,5 @@ skeleton, but also:
 .. Links
 .. -----
 .. _rebar: https://github.com/rebar/rebar
-.. _shell script: https://raw.github.com/lfe/skeleton-project/master/lfe-skel
+.. _shell script: https://raw.github.com/lfe/lfetool/master/lfetool
 
