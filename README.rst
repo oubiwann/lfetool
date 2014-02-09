@@ -4,9 +4,9 @@ lfetool
 
 *An Erlang Lisper's Tool for Admin Tasks and Infrastructure*
 
-Eventually, lfetool will be converted to an `LFE rebar`_ script. Perhaps someone
-else will have the time and rebar chops to do it? Until then, this shell script
-handles the necessary tasks suitably well.
+
+Introduction
+============
 
 Currently, the script supports one command:
 
@@ -21,6 +21,14 @@ The ``new`` command has two contexts, though only one is implemented for now:
    Erlang service started.
 
 *Note*: This project superscedes the `lfe-skel`_ project.
+
+
+``rebar`` and the Future
+------------------------
+
+Eventually, lfetool will be converted to an `LFE rebar`_ script. Perhaps someone
+else will have the time and rebar chops to do it? Until then, this shell script
+handles the necessary tasks suitably well.
 
 
 Installation
@@ -66,6 +74,6 @@ skeleton, but also:
 .. Links
 .. -----
 .. _LFE rebar: hhttps://github.com/oubiwann/lfe-sample-rebar-plugin
-.. _lfe-skel: hhttps://github.com/lfe/lfe-skel
+.. _lfe-skel: https://github.com/lfe/skeleton-project
 .. _shell script: https://raw.github.com/lfe/lfetool/master/lfetool
 
