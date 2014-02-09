@@ -145,6 +145,11 @@ To create a "library" project, simply run the following:
 
     $ lfetool new library my-new-lib
 
+Lisp functions and modules do not use underscores by convention, but rather
+dashes. When naming your project, it's recommended that you do this as well.
+Also note that it's probably best to use just alphanumerica characters, dashes,
+and nothing else in your project names :-)
+
 Though not currently implemented, in the future one will create a "service"
 project by running the following:
 
