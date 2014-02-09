@@ -301,7 +301,7 @@ testmodule=$( cat <<ENDTESTMODULE
 
 
 (deftest my-adder
-  (is-equal (: $project my-adder 2 2) 5))
+  (is-equal 5 (: $project my-adder 2 2))
 ENDTESTMODULE)
     echo "$testmodule" > $project/test/${project}_tests.lfe
 }
