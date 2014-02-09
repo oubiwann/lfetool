@@ -433,17 +433,17 @@ install-lfetool () {
     path=$directory/lfetool
     curl -o $path https://raw.github.com/lfe/lfetool/master/lfetool
     chmod 755 $path
+    echo "Installed lfetool to $path."
 }
 
 update-lfetool () {
     path=`which lfetool`
-    echo $path
     if [ "$path" = "" ]; then
       lfetool-not-found-error
     fi
     directory=`dirname $path`
-    echo $directory
     install-lfetool $directory
+    echo "Update lfetool at $path."
 }
 
 script=$0
