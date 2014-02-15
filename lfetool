@@ -38,14 +38,10 @@ rebarconfig=$( cat <<ENDCONFIG
   ]}.
 {deps, [
    {lfe, ".*", {git, "git://github.com/rvirding/lfe.git", "develop"}},
-   {'lfe-utils',
-     ".*",
-     {git, "https://github.com/lfe/lfe-utils.git", "master"}},
-   {lfeunit, ".*", {git, "git://github.com/lfe/lfeunit.git",  "master"}},
+   {'lfe-utils', ".*", {git, "https://github.com/lfe/lfe-utils.git"}},
+   {lfeunit, ".*", {git, "git://github.com/lfe/lfeunit.git"}},
    {'lfe-sample-rebar-plugin',
-     ".*",
-     {git, "git://github.com/oubiwann/lfe-sample-rebar-plugin.git",
-       "master"}}
+     ".*", {git, "git://github.com/oubiwann/lfe-sample-rebar-plugin.git"}}
   ]}.
 ENDCONFIG)
 
@@ -173,8 +169,9 @@ compile-no-deps: clean-ebin
 	rebar compile skip_deps=true
 
 compile-tests: clean-eunit
-	mkdir -p $(TEST_OUT_DIR)
-	ERL_LIBS=$(ERL_LIBS) $(LFEC) -o $(TEST_OUT_DIR) $(TEST_DIR)/*_tests.lfe
+\tmkdir -p $(TEST_OUT_DIR)
+\tERL_LIBS=$(ERL_LIBS) $(LFEC) -o $(TEST_OUT_DIR) $(TEST_DIR)/*_tests.lfe
+\t-ERL_LIBS=$(ERL_LIBS) $(LFEC) -o $(OUT_DIR) $(TEST_DIR)/testing-*.lfe
 
 shell: compile
 \tclear
