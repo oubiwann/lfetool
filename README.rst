@@ -13,6 +13,8 @@ Currently, the script supports these commands:
 * ``install``
 * ``update``
 * ``new``
+* ``help``
+* ``version``
 
 Usage information for each of these is presented below.
 
@@ -139,7 +141,17 @@ your ``$PATH``.
 ``new`` Command
 ---------------
 
-To create a "library" project, simply run the following:
+The ``new`` command supports the following sub-commands:
+* ``script``
+* ``library``
+
+To create an lfescript, simply run the following:
+
+.. code:: shell
+
+    $ lfetool new script my-script
+
+To create a "library" project, run the following:
 
 .. code:: shell
 
@@ -149,13 +161,6 @@ Lisp functions and modules do not use underscores by convention, but rather
 dashes. When naming your project, it's recommended that you do this as well.
 Also note that it's probably best to use just alphanumerica characters, dashes,
 and nothing else in your project names :-)
-
-Though not currently implemented, in the future one will create a "service"
-project by running the following:
-
-.. code:: shell
-
-    $ lfetool new service my-new-service
 
 *Note*: upon running this script, not only with your project be set up with a
 skeleton, but also:
@@ -169,6 +174,21 @@ skeleton, but also:
 * the project will be set up with a newly initialized github repo; and
 
 * the new project files will be added to the repo.
+
+
+Though not currently implemented, in the future one will create a "service"
+project by running the following:
+
+.. code:: shell
+
+    $ lfetool new service my-new-service
+
+Similarly, not currently implemented, the plan is to support the e2 project as
+well:
+
+.. code:: shell
+
+    $ lfetool new e2-service my-new-service
 
 
 .. Links
