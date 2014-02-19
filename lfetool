@@ -91,6 +91,14 @@ lfetool-not-found-error () {
   error 'Error: could not find `lfetool` on the $PATH'
 }
 
+create-script-file () {
+    script=$1
+    scriptfiledata=$( cat <<"ENDSCRIPT"
+IyEgL3Vzci9iaW4vZW52IGxmZXNjcmlwdAo7OyAtKi0gbW9kZTogbGZlIC0qLQo7OyEgLXNtcCBlbmFibGUgLXNuYW1lIGZhY3RvcmlhbCAtbW5lc2lhIGRlYnVnIHZlcmJvc2UKKGRlZnVuIG1haW4KICAoKChsaXN0IHN0cmluZykpCiAgICAodHJ5CiAgICAgIChsZXQqICgobiAobGlzdF90b19pbnRlZ2VyIHN0cmluZykpCiAgICAgICAgICAgICAgKGYgKGZhYyBuKSkpCiAgICAgICAgICg6IGxmZV9pbyBmb3JtYXQgJyJmYWN0b3JpYWwgfncgPSB+d1xuIiAobGlzdCBuIGYpKSkKICAgICAgKGNhdGNoCiAgICAgICAgKCh0dXBsZSBfIF8gXykgKHVzYWdlKSkpKSkKICAgICgoXykgKHVzYWdlKSkpCgooZGVmdW4gZmFjCiAgKCgwKSAxKQogICgobikgKCogbiAoZmFjICgtIG4gMSkpKSkpCgooZGVmdW4gdXNhZ2UgKCkKICAobGV0ICgoc2NyaXB0LW5hbWUgKDogZXNjcmlwdCBzY3JpcHRfbmFtZSkpKQogICAgKDogbGZlX2lvIGZvcm1hdCAnInVzYWdlOiB+cyA8aW50ZWdlcj5cbiIgKGxpc3Qgc2NyaXB0LW5hbWUpKSkpCg==
+ENDSCRIPT)
+    echo "$scriptfiledata" | base64 -D > $script
+}
+
 create-makefile () {
     project=$1
     makefile=$project/Makefile
@@ -383,6 +391,12 @@ create-service-files () {
     not-implemented-error
 }
 
+setup-script-project () {
+    script=$1
+    create-script-file $script
+    chmod 755 $script
+}
+
 setup-library-project () {
     echo "Setting up starter library project ..."
     project=$1
@@ -394,7 +408,13 @@ setup-library-project () {
 
 setup-service-project () {
     #echo "Setting up library project skeleton ..."
-    project=$parameter
+    project=$!
+    not-implemented-error
+}
+
+setup-e2-service-project () {
+    #echo "Setting up library project skeleton ..."
+    project=$!
     not-implemented-error
 }
 
@@ -416,14 +436,21 @@ create-new () {
     context=$1
     arg=$2
     case $context in
+        script)
+            setup-script-project $arg
+            ;;
         library)
             setup-library-project $arg
             ;;
         service)
             setup-service-project $arg
             ;;
+        e2service)
+            setup-e2-service-project $arg
+            ;;
         *)
             unknown-context-error $context
+            ;;
     esac
 }
 
