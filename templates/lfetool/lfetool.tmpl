@@ -1,0 +1,527 @@
+#!/bin/bash
+
+version=0.0.6
+
+print-usage () {
+    fullpath=$1
+    version=$2
+    script=`basename $1`
+    usage=$( cat <<ENDUSAGE
+Script: $script, v$version
+Usage: $fullpath <command> <context> <arg> | <options>
+
+Currently, $script supports these commands:
+ * help
+ * version
+ * install
+ * update
+ * new
+
+Additionally, instead of passing a command, you may choose to run the script
+with one of the following options:
+ -h    display this usage message and exit
+ -v    display the version number and exit
+
+These commands are documented on the project page here:
+  https://github.com/lfe/lfetool
+ENDUSAGE)
+    echo "$usage"
+}
+
+rebarconfig=$( cat <<ENDCONFIG
+{erl_opts, [debug_info, {src_dirs, ["test"]}]}.
+{lfe_first_files, []}.
+{deps_dir, ["deps"]}.
+{plugins, ['lfe-sample-rebar-plugin']}.
+{eunit_compile_opts, [
+   {src_dirs, ["test", "src"]}
+  ]}.
+{deps, [
+   {lfe, ".*", {git, "git://github.com/rvirding/lfe.git", "develop"}},
+   {'lfe-utils', ".*", {git, "https://github.com/lfe/lfe-utils.git"}},
+   {lfeunit, ".*", {git, "git://github.com/lfe/lfeunit.git"}},
+   {'lfe-sample-rebar-plugin',
+     ".*", {git, "git://github.com/oubiwann/lfe-sample-rebar-plugin.git"}}
+  ]}.
+ENDCONFIG)
+
+gitignore=$( cat <<ENDIGNORE
+deps
+*.sublime-project
+*.sublime-workspace
+*.beam
+.eunit
+debug-*
+ebin/*
+bin/expm
+ENDIGNORE)
+
+error () {
+    message=$1
+    echo
+    echo $message
+    echo
+    print-usage $script
+    exit 1
+}
+
+unknown-command-error () {
+    command=$1
+    error "Unknown command: '$command'";
+}
+
+unknown-context-error () {
+    context=$1
+    error "Unknown context: '$context'";
+}
+
+missing-context-error () {
+    error "Error: command requires context"
+}
+
+missing-arg-error () {
+    error "Error: context requires arg"
+}
+
+not-implemented-error () {
+    error "Error: not yet implemented"
+}
+
+lfetool-not-found-error () {
+  error 'Error: could not find `lfetool` on the $PATH'
+}
+
+create-script-file () {
+    script=$1
+    scriptfiledata=$( cat <<"ENDSCRIPT"
+IyEgL3Vzci9iaW4vZW52IGxmZXNjcmlwdAo7OyAtKi0gbW9kZTogbGZlIC0qLQo7OyEgLXNtcCBlbmFibGUgLXNuYW1lIGZhY3RvcmlhbCAtbW5lc2lhIGRlYnVnIHZlcmJvc2UKKGRlZnVuIG1haW4KICAoKChsaXN0IHN0cmluZykpCiAgICAodHJ5CiAgICAgIChsZXQqICgobiAobGlzdF90b19pbnRlZ2VyIHN0cmluZykpCiAgICAgICAgICAgICAgKGYgKGZhYyBuKSkpCiAgICAgICAgICg6IGxmZV9pbyBmb3JtYXQgJyJmYWN0b3JpYWwgfncgPSB+d1xuIiAobGlzdCBuIGYpKSkKICAgICAgKGNhdGNoCiAgICAgICAgKCh0dXBsZSBfIF8gXykgKHVzYWdlKSkpKSkKICAgICgoXykgKHVzYWdlKSkpCgooZGVmdW4gZmFjCiAgKCgwKSAxKQogICgobikgKCogbiAoZmFjICgtIG4gMSkpKSkpCgooZGVmdW4gdXNhZ2UgKCkKICAobGV0ICgoc2NyaXB0LW5hbWUgKDogZXNjcmlwdCBzY3JpcHRfbmFtZSkpKQogICAgKDogbGZlX2lvIGZvcm1hdCAnInVzYWdlOiB+cyA8aW50ZWdlcj5cbiIgKGxpc3Qgc2NyaXB0LW5hbWUpKSkpCg==
+ENDSCRIPT)
+    echo "$scriptfiledata" | base64 -D > $script
+}
+
+create-makefile () {
+    project=$1
+    makefile=$project/Makefile
+    echo "PROJECT = $project" > $makefile
+    echo "LIB = $project" >> $makefile
+    makefiledata=$( cat <<'ENDMAKE'
+DEPS = ./deps
+BIN_DIR = ./bin
+EXPM = $(BIN_DIR)/expm
+LFE_DIR = $(DEPS)/lfe
+LFE_EBIN = $(LFE_DIR)/ebin
+LFE = $(LFE_DIR)/bin/lfe
+LFEC = $(LFE_DIR)/bin/lfec
+LFE_UTILS_DIR = $(DEPS)/lfe-utils
+LFEUNIT_DIR = $(DEPS)/lfeunit
+# Note that ERL_LIBS is for running this project in development and that
+# ERL_LIB is for installation.
+ERL_LIBS = $(LFE_DIR):$(LFE_UTILS_DIR):$(LFEUNIT_DIR):./
+SOURCE_DIR = ./src
+OUT_DIR = ./ebin
+TEST_DIR = ./test
+TEST_OUT_DIR = ./.eunit
+FINISH = -run init stop -noshell
+
+get-version:
+	@echo
+	@echo "Getting version info ..."
+	@echo
+	@echo -n app.src: ''
+	@erl -eval 'io:format("~p~n", [ \\
+		proplists:get_value(vsn,element(3,element(2,hd(element(3, \\
+		erl_eval:exprs(element(2, erl_parse:parse_exprs(element(2, \\
+		erl_scan:string("Data = " ++ binary_to_list(element(2, \\
+		file:read_file("src/$(LIB).app.src"))))))), []))))))])' \\
+		$(FINISH)
+	@echo -n package.exs: ''
+	@grep version package.exs |awk '{print $$2}'|sed -e 's/,//g'
+
+# Note that this make target expects to be used like so:
+#>--$ ERL_LIB=some/path make get-install-dir
+#
+# Which would give the following result:
+#>--some/path/
+ENDMAKE)
+    echo -en "$makefiledata" >> $makefile
+    echo -en $project >> $makefile
+    makefiledata=$( cat <<'ENDMAKE'
+-1.0.0
+#
+get-install-dir:
+	@echo $(ERL_LIB)/$(PROJECT)-$(shell make get-version)
+
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
+
+$(EXPM): $(BIN_DIR)
+	curl -o $(EXPM) http://expm.co/__download__/expm
+	chmod +x $(EXPM)
+
+get-deps:
+	rebar get-deps
+	for DIR in $(wildcard $(DEPS)/*); \\
+	do cd $$DIR; echo "Updating $$DIR ..."; \\
+	git pull; cd - > /dev/null; done
+
+clean-ebin:
+	rm -f $(OUT_DIR)/*.beam
+
+clean-eunit:
+	rm -rf $(TEST_OUT_DIR)
+
+compile: get-deps clean-ebin
+	rebar compile
+
+compile-no-deps: clean-ebin
+	rebar compile skip_deps=true
+
+compile-tests: clean-eunit
+\tmkdir -p $(TEST_OUT_DIR)
+\tERL_LIBS=$(ERL_LIBS) $(LFEC) -o $(TEST_OUT_DIR) $(TEST_DIR)/*_tests.lfe
+\t-ERL_LIBS=$(ERL_LIBS) $(LFEC) -o $(OUT_DIR) $(TEST_DIR)/testing-*.lfe
+
+shell: compile
+\tclear
+\t@ERL_LIBS=$(ERL_LIBS) $(LFE) -pa $(TEST_OUT_DIR)
+
+shell-no-deps: compile-no-deps
+\tclear
+\t@ERL_LIBS=$(ERL_LIBS) $(LFE) -pa $(TEST_OUT_DIR)
+
+clean: clean-ebin clean-eunit
+	rebar clean
+
+check: compile compile-tests
+	@clear;
+	@rebar eunit verbose=1 skip_deps=true
+
+check-no-deps: compile-no-deps compile-tests
+	@clear;
+	@rebar eunit verbose=1 skip_deps=true
+
+push-all:
+	git push --all
+	git push upstream --all
+	git push --tags
+	git push upstream --tags
+
+# Note that this make target expects to be used like so:
+#>--$ ERL_LIB=some/path make install
+#
+install: INSTALLDIR=$(shell make get-install-dir)
+install: compile
+	if [ "$$ERL_LIB" != "" ]; \\
+	then mkdir -p $(INSTALLDIR)/$(EBIN); \\
+		mkdir -p $(INSTALLDIR)/$(SRC); \\
+		cp -pPR $(EBIN) $(INSTALLDIR); \\
+		cp -pPR $(SRC) $(INSTALLDIR); \\
+	else \\
+		echo "ERROR: No 'ERL_LIB' value is set in the env." \\
+		&& exit 1; \\
+	fi
+
+upload: $(EXPM) get-version
+	@echo "Package file:"
+	@echo
+	@cat package.exs
+	@echo
+	@echo "Continue with upload? "
+	@read
+	$(EXPM) publish
+ENDMAKE)
+    echo -en "$makefiledata" >> $makefile
+}
+
+create-dirs () {
+    project=$1
+    mkdir -p $project/src $project/test
+}
+
+create-library-app-file () {
+    project=$1
+    appfile=$( cat <<ENDAPPFILE
+%% -*- erlang -*-
+{application, '$project',
+ [
+  %% A quick description of the application.
+  {description, "My project description..."},
+
+  %% The version of the application
+  {vsn, "0.0.1"},
+
+  %% All modules used by the application.
+  {modules,
+   [
+    '$project'
+   ]},
+
+  %% All of the registered names the application uses. This can be ignored.
+  {registered, []},
+
+  %% Applications that are to be started prior to this one. This can be ignored
+  %% leave it alone unless you understand it well and let the .rel files in
+  %% your release handle this.
+  {applications,
+   [
+    kernel,
+    stdlib
+   ]},
+
+  %% OTP application loader will load, but not start, included apps. Again
+  %% this can be ignored as well.  To load but not start an application it
+  %% is easier to include it in the .rel file followed by the atom 'none'
+  {included_applications, []},
+
+  %% configuration parameters similar to those in the config file specified
+  %% on the command line. can be fetched with gas:get_env
+  {env, []}
+ ]
+}.
+ENDAPPFILE)
+    echo "$appfile" > $project/src/$project.app.src
+}
+
+create-expmfile () {
+    project=$1
+    expmfile=$( cat <<ENDEXPMFILE
+Expm.Package.new(name: "$project",
+                 description: "PROJECT DESCRIPTION",
+                 version: "0.0.1",
+                 keywords: ["LFE", "Lisp", "Library", "API"],
+                 maintainers: [[name: "YOUR NAME",
+                                email: "YOUR@EMAIL.com"]],
+                 repositories: [[github: "YOUR_GITHUB_NAME/$project"]])
+ENDEXPMFILE)
+    echo "$expmfile" > $project/package.exs
+}
+
+create-test-module () {
+    project=$1
+    testmodule=$( cat <<ENDTESTMODULE
+(defmodule ${project}_tests
+  (export all)
+  (import
+    (from lfeunit-util
+      (check-failed-assert 2)
+      (check-wrong-assert-exception 2))))
+
+(include-lib "deps/lfeunit/include/lfeunit-macros.lfe")
+
+
+(deftest my-adder
+  (is-equal 4 (: $project my-adder 2 2)))
+ENDTESTMODULE)
+    echo "$testmodule" > $project/test/${project}_tests.lfe
+}
+
+create-module () {
+    project=$1
+    module=$( cat <<ENDMODULE
+(defmodule $project
+  (export all))
+
+(defun my-adder (x y)
+  (+ x (+ y 1)))
+ENDMODULE)
+    echo "$module" > $project/src/$project.lfe
+}
+
+create-readme () {
+    project=$1
+    readme=$( cat <<ENDREADME
+########
+$project
+########
+
+Introduction
+============
+
+Add content to me here!
+
+Dependencies
+------------
+
+This project assumes that you have \`rebar\`_ installed somwhere in your
+\`\`\$PATH\`\`.
+
+This project depends upon the following, which installed to the \`\`deps\`\`
+directory of this project when you run \`\`make deps\`\`:
+
+* \`LFE\`_ (Lisp Flavored Erlang; needed only to compile)
+* \`lfeunit\`_ (needed only to run the unit tests)
+
+Installation
+============
+
+Add content to me here!
+
+Usage
+=====
+
+Add content to me here!
+
+.. Links
+.. -----
+.. _rebar: https://github.com/rebar/rebar
+.. _LFE: https://github.com/rvirding/lfe
+.. _lfeunit: https://github.com/lfe/lfeunit
+ENDREADME)
+    echo -e "$readme" > $project/README.rst
+}
+
+create-gitignore () {
+    project=$1
+    template="templates/common/.gitignore.tmpl"
+    filename=`basename $template|sed 's/.tmpl//'`
+    output=$filename
+    cat $template > $project/$output
+}
+
+create-project-files () {
+    project=$1
+    #echo "$gitignore" > $project/.gitignore
+    create-gitignore $project
+    echo "$rebarconfig" > $project/rebar.config
+    create-makefile $project
+    create-expmfile $project
+    create-readme $project
+}
+
+create-library-files () {
+    project=$1
+    create-library-app-file $project
+    create-module $project
+    create-test-module $project
+}
+
+create-service-files () {
+    project=$1
+    not-implemented-error
+}
+
+setup-script-project () {
+    script=$1
+    create-script-file $script
+    chmod 755 $script
+}
+
+setup-library-project () {
+    echo "Setting up starter library project ..."
+    project=$1
+    create-dirs $project
+    create-project-files $project
+    create-library-files $project
+    cd $project && git init && git add * .gitignore && make check
+}
+
+setup-service-project () {
+    #echo "Setting up library project skeleton ..."
+    project=$!
+    not-implemented-error
+}
+
+setup-e2-service-project () {
+    #echo "Setting up library project skeleton ..."
+    project=$!
+    not-implemented-error
+}
+
+check-context () {
+    context=$1
+    if [ "$context" = "" ]; then
+        missing-context-error
+    fi
+}
+
+check-arg () {
+    arg=$1
+    if [ "$arg" = "" ]; then
+        missing-arg-error
+    fi
+}
+
+create-new () {
+    context=$1
+    arg=$2
+    case $context in
+        script)
+            setup-script-project $arg
+            ;;
+        library)
+            setup-library-project $arg
+            ;;
+        service)
+            setup-service-project $arg
+            ;;
+        e2service)
+            setup-e2-service-project $arg
+            ;;
+        *)
+            unknown-context-error $context
+            ;;
+    esac
+}
+
+install-lfetool () {
+    directory=$1
+    mode=$2
+    path=$directory/lfetool
+    curl -o $path https://raw.github.com/lfe/lfetool/master/lfetool
+    chmod 755 $path
+    if [ "$mode" = "" ]; then
+        echo
+        echo "Installed lfetool to $path."
+    fi
+}
+
+update-lfetool () {
+    path=`which lfetool`
+    if [ "$path" = "" ]; then
+      lfetool-not-found-error
+    fi
+    directory=`dirname $path`
+    install-lfetool $directory "update"
+    echo
+    echo "Updated lfetool at $path."
+}
+
+script=$0
+command=$1
+context=$2
+arg=$3
+
+case $command in
+    -h)
+        echo
+        print-usage $script $version
+        exit 0
+        ;;
+    -v)
+        echo "$version"
+        exit 0
+        ;;
+    help)
+        $script -h
+        ;;
+    version)
+        $script -v
+        ;;
+    install)
+        check-context $context
+        install-lfetool $context
+        ;;
+    new)
+        check-context $context
+        check-arg $arg
+        create-new $context $arg
+        exit 0
+        ;;
+    update)
+        update-lfetool
+        exit 0
+        ;;
+    *)
+        unknown-command-error $command
+        ;;
+esac
