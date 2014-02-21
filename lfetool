@@ -370,9 +370,18 @@ ENDREADME)
     echo -e "$readme" > $project/README.rst
 }
 
+create-gitignore () {
+    project=$1
+    template="templates/common/.gitignore.tmpl"
+    filename=`basename $template|sed 's/.tmpl//'`
+    output=$filename
+    cat $template > $project/$output
+}
+
 create-project-files () {
     project=$1
-    echo "$gitignore" > $project/.gitignore
+    #echo "$gitignore" > $project/.gitignore
+    create-gitignore $project
     echo "$rebarconfig" > $project/rebar.config
     create-makefile $project
     create-expmfile $project
