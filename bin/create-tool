@@ -1,0 +1,11 @@
+#/bin/bash
+
+template="teampltes/lfetool/lfetool.tmpl"
+
+create-gitignore () {
+    project=$1
+    template="templates/common/.gitignore.tmpl"
+    filename=`basename $template|sed 's/.tmpl//'`
+    output=$filename
+    cat $template > $project/$output
+}
