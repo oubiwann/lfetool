@@ -23,20 +23,20 @@ get-version:
 	@echo "Getting version info ..."
 	@echo
 	@echo -n app.src: ''
-	@erl -eval 'io:format("~p~n", [ \\
-		proplists:get_value(vsn,element(3,element(2,hd(element(3, \\
-		erl_eval:exprs(element(2, erl_parse:parse_exprs(element(2, \\
-		erl_scan:string("Data = " ++ binary_to_list(element(2, \\
-		file:read_file("src/$(LIB).app.src"))))))), []))))))])' \\
+	@erl -eval 'io:format("~p~n", [ \
+		proplists:get_value(vsn,element(3,element(2,hd(element(3, \
+		erl_eval:exprs(element(2, erl_parse:parse_exprs(element(2, \
+		erl_scan:string("Data = " ++ binary_to_list(element(2, \
+		file:read_file("src/$(LIB).app.src"))))))), []))))))])' \
 		$(FINISH)
 	@echo -n package.exs: ''
 	@grep version package.exs |awk '{print $$2}'|sed -e 's/,//g'
 
 # Note that this make target expects to be used like so:
-#>--$ ERL_LIB=some/path make get-install-dir
+#   $ ERL_LIB=some/path make get-install-dir
 #
 # Which would give the following result:
-#>--some/path/$project-1.0.0
+#   some/path/$project-1.0.0
 #
 get-install-dir:
 	@echo $(ERL_LIB)/$(PROJECT)-$(shell make get-version)
@@ -50,8 +50,8 @@ $(EXPM): $(BIN_DIR)
 
 get-deps:
 	rebar get-deps
-	for DIR in $(wildcard $(DEPS)/*); \\
-	do cd $$DIR; echo "Updating $$DIR ..."; \\
+	for DIR in $(wildcard $(DEPS)/*); \
+	do cd $$DIR; echo "Updating $$DIR ..."; \
 	git pull; cd - > /dev/null; done
 
 clean-ebin:
@@ -67,17 +67,17 @@ compile-no-deps: clean-ebin
 	rebar compile skip_deps=true
 
 compile-tests: clean-eunit
-\tmkdir -p $(TEST_OUT_DIR)
-\tERL_LIBS=$(ERL_LIBS) $(LFEC) -o $(TEST_OUT_DIR) $(TEST_DIR)/*_tests.lfe
-\t-ERL_LIBS=$(ERL_LIBS) $(LFEC) -o $(OUT_DIR) $(TEST_DIR)/testing-*.lfe
+	mkdir -p $(TEST_OUT_DIR)
+	ERL_LIBS=$(ERL_LIBS) $(LFEC) -o $(TEST_OUT_DIR) $(TEST_DIR)/*_tests.lfe
+	-ERL_LIBS=$(ERL_LIBS) $(LFEC) -o $(OUT_DIR) $(TEST_DIR)/testing-*.lfe
 
 shell: compile
-\tclear
-\t@ERL_LIBS=$(ERL_LIBS) $(LFE) -pa $(TEST_OUT_DIR)
+	clear
+	@ERL_LIBS=$(ERL_LIBS) $(LFE) -pa $(TEST_OUT_DIR)
 
 shell-no-deps: compile-no-deps
-\tclear
-\t@ERL_LIBS=$(ERL_LIBS) $(LFE) -pa $(TEST_OUT_DIR)
+	clear
+	@ERL_LIBS=$(ERL_LIBS) $(LFE) -pa $(TEST_OUT_DIR)
 
 clean: clean-ebin clean-eunit
 	rebar clean
@@ -97,18 +97,18 @@ push-all:
 	git push upstream --tags
 
 # Note that this make target expects to be used like so:
-#>--$ ERL_LIB=some/path make install
+#    $ ERL_LIB=some/path make install
 #
 install: INSTALLDIR=$(shell make get-install-dir)
 install: compile
-	if [ "$$ERL_LIB" != "" ]; \\
-	then mkdir -p $(INSTALLDIR)/$(EBIN); \\
-		mkdir -p $(INSTALLDIR)/$(SRC); \\
-		cp -pPR $(EBIN) $(INSTALLDIR); \\
-		cp -pPR $(SRC) $(INSTALLDIR); \\
-	else \\
-		echo "ERROR: No 'ERL_LIB' value is set in the env." \\
-		&& exit 1; \\
+	if [ "$$ERL_LIB" != "" ]; \
+	then mkdir -p $(INSTALLDIR)/$(EBIN); \
+		mkdir -p $(INSTALLDIR)/$(SRC); \
+		cp -pPR $(EBIN) $(INSTALLDIR); \
+		cp -pPR $(SRC) $(INSTALLDIR); \
+	else \
+		echo "ERROR: No 'ERL_LIB' value is set in the env." \
+		&& exit 1; \
 	fi
 
 upload: $(EXPM) get-version
