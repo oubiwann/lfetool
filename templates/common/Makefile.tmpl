@@ -90,6 +90,23 @@ check-no-deps: compile-no-deps compile-tests
 	@clear;
 	@rebar eunit verbose=1 skip_deps=true
 
+run:
+	@ERL_LIBS=$(ERL_LIBS) $(LFE) -eval "application:start('{{PROJECT}}')"
+
+daemon:
+	@ERL_LIBS=$(ERL_LIBS) $(LFE) \
+	-eval "application:start('{{PROJECT}}')" -detached
+
+show-apps:
+	@ERL_LIBS=$(ERL_LIBS) $(LFE) \
+	eval "erlang:display(application:which_applications())" \
+	-noshell -s init stop
+
+stop:
+	@ERL_LIBS=$(ERL_LIBS) $(LFE) \
+	-eval "application:stop('{{PROJECT}}')" \
+	-s init stop
+
 push-all:
 	git push --all
 	git push upstream --all
