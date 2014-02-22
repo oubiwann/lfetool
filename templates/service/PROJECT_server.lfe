@@ -68,10 +68,8 @@
 ;; @end
 ;;--------------------------------------------------------------------
 (defun init (args)
-  (tuple 'ok (make-state))
-  )
-init([]) ->
-    {ok, #state{}}.
+  (tuple 'ok (make-state)))
+
 
 ;;--------------------------------------------------------------------
 ;; @private
@@ -87,13 +85,12 @@ init([]) ->
 ;;                                   {stop, Reason, State}
 ;; @end
 ;;--------------------------------------------------------------------
-handle_call({test, Message}, _From, State) ->
-    io:format("Call: ~p~n", [Message]),
-    Reply = ok,
-    {reply, Reply, State};
-handle_call(_Request, _From, State) ->
-    Reply = ok,
-    {reply, Reply, State}.
+(defun handle_call
+  (((tuple 'test message) from state)
+    (: lfe_io format '"Call: ~p~n" (list message))
+    (tuple 'reply 'ok state))
+  ((request from state)
+    (tuple 'reply 'ok state)))
 
 ;;--------------------------------------------------------------------
 ;; @private
@@ -105,11 +102,12 @@ handle_call(_Request, _From, State) ->
 ;;                                  {stop, Reason, State}
 ;; @end
 ;;--------------------------------------------------------------------
-handle_cast({test, Message}, State) ->
-    io:format("Cast: ~p~n", [Message]),
-    {noreply, State};
-handle_cast(_Msg, State) ->
-    {noreply, State}.
+(defun handle_cast
+  (((tuple 'test message) state)
+    (: lfe_io format '"Cast: ~p~n" (list message))
+    (tuple 'noreply state))
+  ((message state)
+    (tuple 'noreply state)))
 
 ;;--------------------------------------------------------------------
 ;; @private
@@ -121,8 +119,8 @@ handle_cast(_Msg, State) ->
 ;;                                   {stop, Reason, State}
 ;; @end
 ;;--------------------------------------------------------------------
-handle_info(_Info, State) ->
-    {noreply, State}.
+(defun handle_info (info state)
+  (tuple 'noreply state))
 
 ;;--------------------------------------------------------------------
 ;; @private
@@ -135,8 +133,8 @@ handle_info(_Info, State) ->
 ;; @spec terminate(Reason, State) -> void()
 ;; @end
 ;;--------------------------------------------------------------------
-terminate(_Reason, _State) ->
-    ok.
+(defun terminate (reason state)
+  'ok)
 
 ;;--------------------------------------------------------------------
 ;; @private
@@ -146,8 +144,8 @@ terminate(_Reason, _State) ->
 ;; @spec code_change(OldVsn, State, Extra) -> {ok, NewState}
 ;; @end
 ;;--------------------------------------------------------------------
-code_change(_OldVsn, State, _Extra) ->
-    {ok, State}.
+(defun code_change (old-version state extra)
+  (tuple 'ok state))
 
 ;;;===================================================================
 ;;; Internal functions
