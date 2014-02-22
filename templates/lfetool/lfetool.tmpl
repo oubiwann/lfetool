@@ -51,7 +51,7 @@ not-implemented-error () {
 }
 
 lfetool-not-found-error () {
-  error 'Error: could not find `lfetool` on the $PATH'
+    error 'Error: could not find `lfetool` on the $PATH'
 }
 
 create-dirs () {
@@ -60,15 +60,15 @@ create-dirs () {
 }
 
 create-file () {
-  local data=$1
-  local filename=$2
-  local pattern=$3
-  local project=$4
-  if [ "$pattern" = "" ]; then
-    pattern="{{NOOP}}"
-    project="{{NOOP}}"
-  fi
-  echo $data | base64 -D | sed -e "s/$pattern/$project/" > $filename
+    local data=$1
+    local filename=$2
+    local pattern=$3
+    local project=$4
+    if [ "$pattern" = "" ]; then
+        pattern="{{NOOP}}"
+        project="{{NOOP}}"
+    fi
+    echo $data | base64 -D | sed -e "s/$pattern/$project/" > $filename
 }
 
 create-project-files () {
@@ -180,45 +180,45 @@ update-lfetool () {
 }
 
 run () {
-  local script=$0
-  local command=$1
-  local context=$2
-  local arg=$3
+    local script=$0
+    local command=$1
+    local context=$2
+    local arg=$3
 
-  case $command in
-      -h)
-          echo
-          print-usage $script $version
-          exit 0
-          ;;
-      -v)
-          echo "$version"
-          exit 0
-          ;;
-      help)
-          $script -h
-          ;;
-      version)
-          $script -v
-          ;;
-      install)
-          check-context $context
-          install-lfetool $context
-          ;;
-      new)
-          check-context $context
-          check-arg $arg
-          create-new $context $arg
-          exit 0
-          ;;
-      update)
-          update-lfetool
-          exit 0
-          ;;
-      *)
-          unknown-command-error $command
-          ;;
-  esac
+    case $command in
+        -h)
+            echo
+            print-usage $script $version
+            exit 0
+            ;;
+        -v)
+            echo "$version"
+            exit 0
+            ;;
+        help)
+            $script -h
+            ;;
+        version)
+            $script -v
+            ;;
+        install)
+            check-context $context
+            install-lfetool $context
+            ;;
+        new)
+            check-context $context
+            check-arg $arg
+            create-new $context $arg
+            exit 0
+            ;;
+        update)
+            update-lfetool
+            exit 0
+            ;;
+        *)
+            unknown-command-error $command
+            ;;
+    esac
 }
 
 run $@
