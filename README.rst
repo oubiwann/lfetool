@@ -199,8 +199,14 @@ And then:
 .. code:: cl
 
     > (: application start 'my-new-service)
-    > (: my-new-service_server test_call '"a call message")
-    > (: my-new-service_server test_cast '"a call message")
+    ok
+    > (: my-new-service_server test-call '"a call message")
+    Call: "a call message"
+    ok
+    > (: my-new-service_server test-cast '"a cast message")
+    ok
+    Cast: "a cast message"
+    >
 
 
 At a future date we will also support the e2 project in a similar fashion:
