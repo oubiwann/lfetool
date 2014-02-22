@@ -1,3 +1,6 @@
+build:
+	./bin/create-tool
+
 push-all:
 	git push --all
 	git push upstream --all
