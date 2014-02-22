@@ -95,7 +95,7 @@ create-service-files () {
 
 setup-script-project () {
     local script=$1
-    echo "$scriptfile" | base64 -D > $script
+    create-file "$scriptfile" $script
     chmod 755 $script
 }
 
@@ -179,42 +179,46 @@ update-lfetool () {
     echo "Updated lfetool at $path."
 }
 
-script=$0
-command=$1
-context=$2
-arg=$3
+run () {
+  local script=$0
+  local command=$1
+  local context=$2
+  local arg=$3
 
-case $command in
-    -h)
-        echo
-        print-usage $script $version
-        exit 0
-        ;;
-    -v)
-        echo "$version"
-        exit 0
-        ;;
-    help)
-        $script -h
-        ;;
-    version)
-        $script -v
-        ;;
-    install)
-        check-context $context
-        install-lfetool $context
-        ;;
-    new)
-        check-context $context
-        check-arg $arg
-        create-new $context $arg
-        exit 0
-        ;;
-    update)
-        update-lfetool
-        exit 0
-        ;;
-    *)
-        unknown-command-error $command
-        ;;
-esac
+  case $command in
+      -h)
+          echo
+          print-usage $script $version
+          exit 0
+          ;;
+      -v)
+          echo "$version"
+          exit 0
+          ;;
+      help)
+          $script -h
+          ;;
+      version)
+          $script -v
+          ;;
+      install)
+          check-context $context
+          install-lfetool $context
+          ;;
+      new)
+          check-context $context
+          check-arg $arg
+          create-new $context $arg
+          exit 0
+          ;;
+      update)
+          update-lfetool
+          exit 0
+          ;;
+      *)
+          unknown-command-error $command
+          ;;
+  esac
+}
+
+run $@
