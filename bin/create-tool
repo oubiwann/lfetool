@@ -48,7 +48,7 @@ fill-readme () {
 
 fill-script () {
 	template="templates/script/SCRIPT.tmpl"
-	pattern="{{SCRIPT}}"
+	pattern="{{SCRIPTFILE}}"
 	fill-tool-var $template $pattern
 }
 

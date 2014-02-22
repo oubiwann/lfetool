@@ -8,7 +8,7 @@ rebarconfig="{{REBAR}}"
 makefile="{{MAKEFILE}}"
 readme="{{README}}"
 scriptfile="{{SCRIPTFILE}}"
-appsrc="{{APPARC}}"
+appsrc="{{APPSRC}}"
 testmodule="{{TESTMODULE}}"
 module="{{MODULE}}"
 
@@ -70,8 +70,7 @@ create-project-files () {
 
 create-library-files () {
     project=$1
-    create-library-app-file $project
-    echo "$appfile" | base64 -D > $project/src/$project.app.src
+    echo "$appsrc" | base64 -D > $project/src/$project.app.src
     echo "$testmodule" | base64 -D > $project/test/${project}_tests.lfe
     echo "$module" | base64 -D > $project/src/$project.lfe
 }
@@ -83,7 +82,7 @@ create-service-files () {
 
 setup-script-project () {
     script=$1
-    echo "$scriptfiled" | base64 -D > $script
+    echo "$scriptfile" | base64 -D > $script
     chmod 755 $script
 }
 
