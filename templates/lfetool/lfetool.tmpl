@@ -13,14 +13,14 @@ testmodule="{{TESTMODULE}}"
 module="{{MODULE}}"
 
 print-usage () {
-    fullpath=$1
-    version=$2
-    script=`basename $1`
+    local fullpath=$1
+    local version=$2
+    local script=`basename $1`
     echo "$usage" | base64 -D
 }
 
 error () {
-    message=$1
+    local message=$1
     echo
     echo $message
     echo
@@ -29,12 +29,12 @@ error () {
 }
 
 unknown-command-error () {
-    command=$1
+    local command=$1
     error "Unknown command: '$command'";
 }
 
 unknown-context-error () {
-    context=$1
+    local context=$1
     error "Unknown context: '$context'";
 }
 
@@ -55,40 +55,53 @@ lfetool-not-found-error () {
 }
 
 create-dirs () {
-    project=$1
+    local project=$1
     mkdir -p $project/src $project/test
 }
 
+create-file () {
+  local data=$1
+  local filename=$2
+  local pattern=$3
+  local project=$4
+  if [ "$pattern" = "" ]; then
+    pattern="{{NOOP}}"
+    project="{{NOOP}}"
+  fi
+  echo $data | base64 -D | sed -e "s/$pattern/$project/" > $filename
+}
+
 create-project-files () {
-    project=$1
-    echo "$gitignore" | base64 -D > $project/.gitignore
-    echo "$rebarconfig" | base64 -D > $project/rebar.config
-    echo "$makefile" | base64 -D > $project/Makefile
-    echo "$readme" | base64 -D > $project/README.rst
-    echo "$expm" | base64 -D > $project/package.exs
+    local project=$1
+    create-file "$gitignore" $project/.gitignore
+    create-file "$rebarconfig" $project/rebar.config
+    create-file "$makefile" $project/Makefile {{PROJECT}} $project
+    create-file "$readme" $project/README.rst {{PROJECT}} $project
+    create-file "$expm" $project/package.exs {{PROJECT}} $project
 }
 
 create-library-files () {
-    project=$1
-    echo "$appsrc" | base64 -D > $project/src/$project.app.src
-    echo "$testmodule" | base64 -D > $project/test/${project}_tests.lfe
-    echo "$module" | base64 -D > $project/src/$project.lfe
+    local project=$1
+    create-file "$appsrc" $project/src/$project.app.src {{PROJECT}} $project
+    create-file "$testmodule" \
+        $project/test/${project}_tests.lfe {{PROJECT}} $project
+    create-file "$module" $project/src/$project.lfe {{PROJECT}} $project
 }
 
 create-service-files () {
-    project=$1
+    local project=$1
     not-implemented-error
 }
 
 setup-script-project () {
-    script=$1
+    local script=$1
     echo "$scriptfile" | base64 -D > $script
     chmod 755 $script
 }
 
 setup-library-project () {
     echo "Setting up starter library project ..."
-    project=$1
+    local project=$1
     create-dirs $project
     create-project-files $project
     create-library-files $project
@@ -97,33 +110,33 @@ setup-library-project () {
 
 setup-service-project () {
     #echo "Setting up library project skeleton ..."
-    project=$!
+    local project=$1
     not-implemented-error
 }
 
 setup-e2-service-project () {
     #echo "Setting up library project skeleton ..."
-    project=$!
+    local project=$1
     not-implemented-error
 }
 
 check-context () {
-    context=$1
+    local context=$1
     if [ "$context" = "" ]; then
         missing-context-error
     fi
 }
 
 check-arg () {
-    arg=$1
+    local arg=$1
     if [ "$arg" = "" ]; then
         missing-arg-error
     fi
 }
 
 create-new () {
-    context=$1
-    arg=$2
+    local context=$1
+    local arg=$2
     case $context in
         script)
             setup-script-project $arg
@@ -144,9 +157,9 @@ create-new () {
 }
 
 install-lfetool () {
-    directory=$1
-    mode=$2
-    path=$directory/lfetool
+    local directory=$1
+    local mode=$2
+    local path=$directory/lfetool
     curl -o $path https://raw.github.com/lfe/lfetool/master/lfetool
     chmod 755 $path
     if [ "$mode" = "" ]; then
@@ -156,11 +169,11 @@ install-lfetool () {
 }
 
 update-lfetool () {
-    path=`which lfetool`
+    local path=`which lfetool`
     if [ "$path" = "" ]; then
       lfetool-not-found-error
     fi
-    directory=`dirname $path`
+    local directory=`dirname $path`
     install-lfetool $directory "update"
     echo
     echo "Updated lfetool at $path."
