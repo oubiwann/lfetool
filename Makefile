@@ -11,5 +11,11 @@ push-all:
 
 test-proj:
 	rm -rf $(TEST_PROJ)
+	make build
 	./lfetool new service $(TEST_PROJ)
+
+test-proj-shell: test-proj
 	cd $(TEST_PROJ) && make shell
+
+test-proj-run: test-proj
+	cd $(TEST_PROJ) && make run
