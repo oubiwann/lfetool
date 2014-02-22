@@ -141,9 +141,16 @@ your ``$PATH``.
 ``new`` Command
 ---------------
 
+For the collowing commands, keep in mind that Lisp functions and modules do not
+use underscores by convention, but rather dashes. When naming your project,
+it is recommended that you do this as well. Also note that it's probably best
+to use just alphanumerica characters, dashes, and nothing else in your project
+names.
+
 The ``new`` command supports the following sub-commands:
 * ``script``
 * ``library``
+* ``service``
 
 To create an lfescript, simply run the following:
 
@@ -156,11 +163,6 @@ To create a "library" project, run the following:
 .. code:: shell
 
     $ lfetool new library my-new-lib
-
-Lisp functions and modules do not use underscores by convention, but rather
-dashes. When naming your project, it's recommended that you do this as well.
-Also note that it's probably best to use just alphanumerica characters, dashes,
-and nothing else in your project names :-)
 
 *Note*: upon running this script, not only with your project be set up with a
 skeleton, but also:
@@ -176,15 +178,16 @@ skeleton, but also:
 * the new project files will be added to the repo.
 
 
-Though not currently implemented, in the future one will create a "service"
-project by running the following:
+One may create a "service" project by running the following:
 
 .. code:: shell
 
     $ lfetool new service my-new-service
 
-Similarly, not currently implemented, the plan is to support the e2 project as
-well:
+This will create an LFE OTP application skeleton for your project, complete with
+unit tests and an initialized git repo.
+
+At a future date we will also support the e2 project in a similar fashion:
 
 .. code:: shell
 

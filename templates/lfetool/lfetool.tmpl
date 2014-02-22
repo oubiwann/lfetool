@@ -8,9 +8,14 @@ rebarconfig="{{REBAR}}"
 makefile="{{MAKEFILE}}"
 readme="{{README}}"
 scriptfile="{{SCRIPTFILE}}"
-appsrc="{{APPSRC}}"
-testmodule="{{TESTMODULE}}"
-module="{{MODULE}}"
+libappsrc="{{LIBAPPSRC}}"
+libtestmodule="{{LIBTESTMODULE}}"
+libmodule="{{LIBMODULE}}"
+svcappsrc="{{SVCAPPSRC}}"
+svctestmodule="{{SVCTESTMODULE}}"
+svcapp="{{SVCAPP}}"
+svcserver="{{SVCSERVER}}"
+svcsup="{{SVCSUP}}"
 
 print-usage () {
     local fullpath=$1
@@ -82,15 +87,18 @@ create-project-files () {
 
 create-library-files () {
     local project=$1
-    create-file "$appsrc" $project/src/$project.app.src {{PROJECT}} $project
-    create-file "$testmodule" \
+    create-file "$libappsrc" $project/src/$project.app.src {{PROJECT}} $project
+    create-file "$libtestmodule" \
         $project/test/${project}_tests.lfe {{PROJECT}} $project
-    create-file "$module" $project/src/$project.lfe {{PROJECT}} $project
+    create-file "$libmodule" $project/src/$project.lfe {{PROJECT}} $project
 }
 
 create-service-files () {
     local project=$1
-    not-implemented-error
+    create-file "$svcappsrc" $project/src/$project.app.src {{PROJECT}} $project
+    create-file "$libtestmodule" \
+        $project/test/${project}_tests.lfe {{PROJECT}} $project
+    create-file "$libmodule" $project/src/$project.lfe {{PROJECT}} $project
 }
 
 setup-script-project () {
@@ -109,9 +117,12 @@ setup-library-project () {
 }
 
 setup-service-project () {
-    #echo "Setting up library project skeleton ..."
+    echo "Setting up service project skeleton ..."
     local project=$1
-    not-implemented-error
+    create-dirs $project
+    create-project-files $project
+    create-library-files $project
+    cd $project && git init && git add * .gitignore && make check
 }
 
 setup-e2-service-project () {

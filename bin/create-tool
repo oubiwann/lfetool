@@ -52,24 +52,53 @@ fill-script () {
 	fill-tool-var $template $pattern
 }
 
-fill-appsrc () {
+fill-libappsrc () {
 	template="templates/library/PROJECT.app.src.tmpl"
-	pattern="{{APPSRC}}"
+	pattern="{{LIBAPPSRC}}"
 	fill-tool-var $template $pattern
 }
 
-fill-testmodule () {
+fill-libtestmodule () {
 	template="templates/common/PROJECT_tests.lfe.tmpl"
-	pattern="{{TESTMODULE}}"
+	pattern="{{LIBTESTMODULE}}"
 	fill-tool-var $template $pattern
 }
 
-fill-module () {
+fill-libmodule () {
 	template="templates/common/PROJECT.lfe.tmpl"
-	pattern="{{MODULE}}"
+	pattern="{{LIBMODULE}}"
 	fill-tool-var $template $pattern
 }
 
+fill-svcappsrc () {
+    template="templates/service/PROJECT.app.src.tmpl"
+    pattern="{{SVCAPPSRC}}"
+    fill-tool-var $template $pattern
+}
+
+fill-svctestmodule () {
+    template="templates/service/PROJECT_tests.lfe.tmpl"
+    pattern="{{SVCTESTMODULE}}"
+    fill-tool-var $template $pattern
+}
+
+fill-svcapp () {
+    template="templates/service/PROJECT_app.lfe.tmpl"
+    pattern="{{SVCAPP}}"
+    fill-tool-var $template $pattern
+}
+
+fill-svcserver () {
+    template="templates/service/PROJECT_server.lfe.tmpl"
+    pattern="{{SVCSERVER}}"
+    fill-tool-var $template $pattern
+}
+
+fill-svcsup () {
+    template="templates/service/PROJECT_sup.lfe.tmpl"
+    pattern="{{SVCSUP}}"
+    fill-tool-var $template $pattern
+}
 run () {
 	cp $template $dest
 	fill-usage
@@ -78,9 +107,14 @@ run () {
 	fill-makefile
 	fill-readme
 	fill-script
-	fill-appsrc
-	fill-testmodule
-	fill-module
+	fill-libappsrc
+	fill-libtestmodule
+	fill-libmodule
+    fill-svcappsrc
+    fill-svctestmodule
+    fill-svcapp
+    fill-svcserver
+    fill-svcsup
 	chmod 755 $dest
 }
 
