@@ -2,7 +2,7 @@
 
 template="templates/lfetool/lfetool.tmpl"
 temp="lfetool-temp"
-dest="lfetool2"
+dest="lfetool"
 
 
 fill-tool-var () {
