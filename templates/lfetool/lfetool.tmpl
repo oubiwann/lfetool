@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version=0.0.7
+version=0.0.8
 
 gitignore="{{GITIGNORE}}"
 usage="{{USAGE}}"
@@ -119,16 +119,16 @@ setup-library-project () {
 }
 
 setup-service-project () {
-    echo "Setting up service project skeleton ..."
+    echo "Setting up starter OTP service project ..."
     local project=$1
     create-dirs $project
     create-project-files $project
-    create-library-files $project
+    create-service-files $project
     cd $project && git init && git add * .gitignore && make check
 }
 
 setup-e2-service-project () {
-    #echo "Setting up library project skeleton ..."
+    #echo "Setting up starter e2 service project ..."
     local project=$1
     not-implemented-error
 }

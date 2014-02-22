@@ -187,6 +187,22 @@ One may create a "service" project by running the following:
 This will create an LFE OTP application skeleton for your project, complete with
 unit tests and an initialized git repo.
 
+To run your new server:
+
+.. code:: shell
+
+    $ cd my-new-service
+    $ make shell
+
+And then:
+
+.. code:: cl
+
+    > (: application start 'my-new-service)
+    > (: my-new-service_server test_call '"a call message")
+    > (: my-new-service_server test_cast '"a call message")
+
+
 At a future date we will also support the e2 project in a similar fashion:
 
 .. code:: shell
