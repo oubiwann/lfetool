@@ -208,6 +208,28 @@ And then:
     Cast: "a cast message"
     >
 
+You may also start the application ahead of time, as is done in the ``run``
+target:
+
+.. code:: cl
+
+    $ make run
+    Erlang R16B (erts-5.10.1) [source] [smp:8:8] [async-threads:10] [hipe] ...
+
+    LFE Shell V5.10.1 (abort with ^G)
+    > (: my-new-service_server test-call '"a call message")
+    Call: "a call message"
+    ok
+    > (: my-new-service_server test-cast '"a cast message")
+    ok
+    Cast: "a cast message"
+    >
+
+Note that the call to start the application wasn't needed, since it was started
+via a command line option in the ``Makefile``.
+
+If you would simply like to run in daemon mode, you may do that as well with the
+supplied ``daemon`` target.
 
 At a future date we will also support the e2 project in a similar fashion:
 
