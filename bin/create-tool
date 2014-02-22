@@ -1,11 +1,87 @@
-#/bin/bash
+#!/bin/bash
 
-template="teampltes/lfetool/lfetool.tmpl"
+template="templates/lfetool/lfetool.tmpl"
+temp="lfetool-temp"
+dest="lfetool2"
 
-create-gitignore () {
-    project=$1
-    template="templates/common/.gitignore.tmpl"
-    filename=`basename $template|sed 's/.tmpl//'`
-    output=$filename
-    cat $template > $project/$output
+
+fill-tool-var () {
+	template=$1
+	pattern=$2
+	if [ "$pattern" = "" ]; then
+		pattern="{{NOOP}}"
+	fi
+    data=`cat "$template" | base64`
+    sed -e "s/$pattern/$data/" $dest > $temp
+    mv $temp $dest
 }
+
+fill-usage () {
+	template="templates/common/usage.txt.tmpl"
+	pattern="{{USAGE}}"
+	fill-tool-var $template $pattern
+}
+
+fill-gitignore () {
+	template="templates/common/.gitignore.tmpl"
+	pattern="{{GITIGNORE}}"
+	fill-tool-var $template $pattern
+}
+
+fill-rebar () {
+	template="templates/common/rebar.config.tmpl"
+	pattern="{{REBAR}}"
+	fill-tool-var $template $pattern
+}
+
+fill-makefile () {
+	template="templates/common/Makefile.tmpl"
+	pattern="{{MAKEFILE}}"
+	fill-tool-var $template $pattern
+}
+
+fill-readme () {
+	template="templates/common/Makefile.tmpl"
+	pattern="{{README}}"
+	fill-tool-var $template $pattern
+}
+
+fill-script () {
+	template="templates/script/SCRIPT.tmpl"
+	pattern="{{SCRIPT}}"
+	fill-tool-var $template $pattern
+}
+
+fill-appsrc () {
+	template="templates/library/PROJECT.app.src.tmpl"
+	pattern="{{APPSRC}}"
+	fill-tool-var $template $pattern
+}
+
+fill-testmodule () {
+	template="templates/common/PROJECT_tests.lfe.tmpl"
+	pattern="{{TESTMODULE}}"
+	fill-tool-var $template $pattern
+}
+
+fill-module () {
+	template="templates/common/PROJECT.lfe.tmpl"
+	pattern="{{MODULE}}"
+	fill-tool-var $template $pattern
+}
+
+run () {
+	cp $template $dest
+	fill-usage
+	fill-gitignore
+	fill-rebar
+	fill-makefile
+	fill-readme
+	fill-script
+	fill-appsrc
+	fill-testmodule
+	fill-module
+	chmod 755 $dest
+}
+
+run
