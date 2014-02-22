@@ -96,9 +96,11 @@ create-library-files () {
 create-service-files () {
     local project=$1
     create-file "$svcappsrc" $project/src/$project.app.src {{PROJECT}} $project
-    create-file "$libtestmodule" \
+    create-file "$svctestmodule" \
         $project/test/${project}_tests.lfe {{PROJECT}} $project
-    create-file "$libmodule" $project/src/$project.lfe {{PROJECT}} $project
+    create-file "$svcapp" $project/src/${project}_app.lfe {{PROJECT}} $project
+    create-file "$svcserver" $project/src/${project}_server.lfe {{PROJECT}} $project
+    create-file "$svcsup" $project/src/${project}_sup.lfe {{PROJECT}} $project
 }
 
 setup-script-project () {
