@@ -15,7 +15,7 @@ test-proj:
 	./lfetool new service $(TEST_PROJ)
 
 test-proj-shell: test-proj
-	cd $(TEST_PROJ) && make shell
+	cd $(TEST_PROJ) && make shell-no-deps
 
 test-proj-run: test-proj
 	cd $(TEST_PROJ) && make run
