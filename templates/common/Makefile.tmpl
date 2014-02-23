@@ -95,17 +95,7 @@ run:
 
 daemon:
 	@ERL_LIBS=$(ERL_LIBS) $(LFE) \
-	-eval "application:start('{{PROJECT}}')" -detached
-
-show-apps:
-	@ERL_LIBS=$(ERL_LIBS) $(LFE) \
-	eval "erlang:display(application:which_applications())" \
-	-noshell -s init stop
-
-stop:
-	@ERL_LIBS=$(ERL_LIBS) $(LFE) \
-	-eval "application:stop('{{PROJECT}}')" \
-	-s init stop
+	-eval "application:start('{{PROJECT}}')" -detached -noshell
 
 push-all:
 	git push --all
