@@ -1,10 +1,10 @@
-(defmodule {{PROJECT}}_app
+(defmodule {{PROJECT}}{{JOINCHAR}}app
   (behaviour application)
   (export (start 2)
           (stop 1)))
 
 (defun start (type args)
-  (let ((result (: {{PROJECT}}_sup start_link)))
+  (let ((result (: {{PROJECT}}{{JOINCHAR}}sup start_link)))
     (case result
       ((tuple 'ok pid)
         result)
