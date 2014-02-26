@@ -10,13 +10,13 @@
   %% All modules used by the application.
   {modules,
    [
-    '{{PROJECT}}_app',
-    '{{PROJECT}}_server',
-    '{{PROJECT}}_sup'
+    '{{PROJECT}}{{JOINCHAR}}app',
+    '{{PROJECT}}{{JOINCHAR}}server',
+    '{{PROJECT}}{{JOINCHAR}}sup'
    ]},
 
   %% All of the registered names the application uses. This can be ignored.
-  {registered, ['{{PROJECT}}_sup']},
+  {registered, ['{{PROJECT}}{{JOINCHAR}}sup']},
 
   %% Applications that are to be started prior to this one. This can be ignored
   %% leave it alone unless you understand it well and let the .rel files in
@@ -33,7 +33,7 @@
   {included_applications, []},
 
   %%
-  {mod, {'{{PROJECT}}_app', []}},
+  {mod, {'{{PROJECT}}{{JOINCHAR}}app', []}},
 
   %% configuration parameters similar to those in the config file specified
   %% on the command line. can be fetched with gas:get_env
