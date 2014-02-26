@@ -1,4 +1,4 @@
-(defmodule {{PROJECT}}_sup
+(defmodule {{PROJECT}}{{JOINCHAR}}sup
   (behaviour supervisor)
   ;; API
   (export (start_link 0))
@@ -6,10 +6,10 @@
   (export (init 1)))
 
 (defun server-name ()
-  '{{PROJECT}}_sup)
+  '{{PROJECT}}{{JOINCHAR}}sup)
 
 (defun module-name ()
-  '{{PROJECT}}_sup)
+  '{{PROJECT}}{{JOINCHAR}}sup)
 
 (defun start_link ()
   (: supervisor start_link
@@ -17,14 +17,13 @@
 
 (defun init (args)
   (let* ((server (tuple
-                   '{{PROJECT}}_server
-                   (tuple '{{PROJECT}}_server 'start_link '())
+                   '{{PROJECT}}{{JOINCHAR}}server
+                   (tuple '{{PROJECT}}{{JOINCHAR}}server 'start_link '())
                    'permanent
                    2000
                    'worker
-                   (list '{{PROJECT}}_server)
+                   (list '{{PROJECT}}{{JOINCHAR}}server)
                    ))
          (children (list server))
          (restart-strategy (tuple 'one_for_one 3 1)))
     (tuple 'ok (tuple restart-strategy children))))
-

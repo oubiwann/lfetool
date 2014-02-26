@@ -6,68 +6,68 @@ dest="lfetool"
 
 
 fill-tool-var () {
-	template=$1
-	pattern=$2
-	if [ "$pattern" = "" ]; then
-		pattern="{{NOOP}}"
-	fi
+        template=$1
+        pattern=$2
+        if [ "$pattern" = "" ]; then
+                pattern="{{NOOP}}"
+        fi
     data=`cat "$template" | base64`
     sed -e "s/$pattern/$data/" $dest > $temp
     mv $temp $dest
 }
 
 fill-usage () {
-	template="templates/common/usage.txt.tmpl"
-	pattern="{{USAGE}}"
-	fill-tool-var $template $pattern
+        template="templates/common/usage.txt.tmpl"
+        pattern="{{USAGE}}"
+        fill-tool-var $template $pattern
 }
 
 fill-gitignore () {
-	template="templates/common/.gitignore.tmpl"
-	pattern="{{GITIGNORE}}"
-	fill-tool-var $template $pattern
+        template="templates/common/.gitignore.tmpl"
+        pattern="{{GITIGNORE}}"
+        fill-tool-var $template $pattern
 }
 
 fill-rebar () {
-	template="templates/common/rebar.config.tmpl"
-	pattern="{{REBAR}}"
-	fill-tool-var $template $pattern
+        template="templates/common/rebar.config.tmpl"
+        pattern="{{REBAR}}"
+        fill-tool-var $template $pattern
 }
 
 fill-makefile () {
-	template="templates/common/Makefile.tmpl"
-	pattern="{{MAKEFILE}}"
-	fill-tool-var $template $pattern
+        template="templates/common/Makefile.tmpl"
+        pattern="{{MAKEFILE}}"
+        fill-tool-var $template $pattern
 }
 
 fill-readme () {
-	template="templates/common/Makefile.tmpl"
-	pattern="{{README}}"
-	fill-tool-var $template $pattern
+        template="templates/common/Makefile.tmpl"
+        pattern="{{README}}"
+        fill-tool-var $template $pattern
 }
 
 fill-script () {
-	template="templates/script/SCRIPT.tmpl"
-	pattern="{{SCRIPTFILE}}"
-	fill-tool-var $template $pattern
+        template="templates/script/SCRIPT.tmpl"
+        pattern="{{SCRIPTFILE}}"
+        fill-tool-var $template $pattern
 }
 
 fill-libappsrc () {
-	template="templates/library/PROJECT.app.src.tmpl"
-	pattern="{{LIBAPPSRC}}"
-	fill-tool-var $template $pattern
+        template="templates/library/PROJECT.app.src.tmpl"
+        pattern="{{LIBAPPSRC}}"
+        fill-tool-var $template $pattern
 }
 
 fill-libtestmodule () {
-	template="templates/common/PROJECT_tests.lfe.tmpl"
-	pattern="{{LIBTESTMODULE}}"
-	fill-tool-var $template $pattern
+        template="templates/common/PROJECT-tests.lfe.tmpl"
+        pattern="{{LIBTESTMODULE}}"
+        fill-tool-var $template $pattern
 }
 
 fill-libmodule () {
-	template="templates/common/PROJECT.lfe.tmpl"
-	pattern="{{LIBMODULE}}"
-	fill-tool-var $template $pattern
+        template="templates/common/PROJECT.lfe.tmpl"
+        pattern="{{LIBMODULE}}"
+        fill-tool-var $template $pattern
 }
 
 fill-svcappsrc () {
@@ -77,45 +77,45 @@ fill-svcappsrc () {
 }
 
 fill-svctestmodule () {
-    template="templates/service/PROJECT_tests.lfe.tmpl"
+    template="templates/service/PROJECT-tests.lfe.tmpl"
     pattern="{{SVCTESTMODULE}}"
     fill-tool-var $template $pattern
 }
 
 fill-svcapp () {
-    template="templates/service/PROJECT_app.lfe.tmpl"
+    template="templates/service/PROJECT-app.lfe.tmpl"
     pattern="{{SVCAPP}}"
     fill-tool-var $template $pattern
 }
 
 fill-svcserver () {
-    template="templates/service/PROJECT_server.lfe.tmpl"
+    template="templates/service/PROJECT-server.lfe.tmpl"
     pattern="{{SVCSERVER}}"
     fill-tool-var $template $pattern
 }
 
 fill-svcsup () {
-    template="templates/service/PROJECT_sup.lfe.tmpl"
+    template="templates/service/PROJECT-sup.lfe.tmpl"
     pattern="{{SVCSUP}}"
     fill-tool-var $template $pattern
 }
 run () {
-	cp $template $dest
-	fill-usage
-	fill-gitignore
-	fill-rebar
-	fill-makefile
-	fill-readme
-	fill-script
-	fill-libappsrc
-	fill-libtestmodule
-	fill-libmodule
+    cp $template $dest
+    fill-usage
+    fill-gitignore
+    fill-rebar
+    fill-makefile
+    fill-readme
+    fill-script
+    fill-libappsrc
+    fill-libtestmodule
+    fill-libmodule
     fill-svcappsrc
     fill-svctestmodule
     fill-svcapp
     fill-svcserver
     fill-svcsup
-	chmod 755 $dest
+    chmod 755 $dest
 }
 
 run
