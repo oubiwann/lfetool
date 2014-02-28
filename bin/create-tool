@@ -34,6 +34,12 @@ fill-rebar () {
     fill-tool-var $template $pattern
 }
 
+fill-package () {
+    template="templates/common/package.exs.tmpl"
+    pattern="{{PACKAGE}}"
+    fill-tool-var $template $pattern
+}
+
 fill-makefile () {
     template="templates/common/Makefile.tmpl"
     pattern="{{MAKEFILE}}"
@@ -104,6 +110,7 @@ run () {
     fill-usage
     fill-gitignore
     fill-rebar
+    fill-package
     fill-makefile
     fill-readme
     fill-script
