@@ -5,6 +5,7 @@ version=0.0.9
 gitignore="{{GITIGNORE}}"
 usage="{{USAGE}}"
 rebarconfig="{{REBAR}}"
+package="{{PACKAGE}}"
 makefile="{{MAKEFILE}}"
 readme="{{README}}"
 scriptfile="{{SCRIPTFILE}}"
@@ -85,7 +86,7 @@ create-project-files () {
     create-file "$rebarconfig" $project/rebar.config
     create-file "$makefile" $project/Makefile {{PROJECT}} $project
     create-file "$readme" $project/README.rst {{PROJECT}} $project
-    create-file "$expm" $project/package.exs {{PROJECT}} $project
+    create-file "$package" $project/package.exs {{PROJECT}} $project
 }
 
 create-library-files () {
