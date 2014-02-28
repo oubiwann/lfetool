@@ -41,7 +41,7 @@ fill-makefile () {
 }
 
 fill-readme () {
-	template="templates/common/Makefile.tmpl"
+	template="templates/common/README.rst.tmpl"
 	pattern="{{README}}"
 	fill-tool-var $template $pattern
 }
