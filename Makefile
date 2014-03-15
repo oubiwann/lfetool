@@ -1,5 +1,10 @@
 TEST_PROJ=my-new-service
 
+get-version:
+	@echo "Version info:\n"
+	@echo "\tLatest tag:\t" `git tag|tail -1`
+	@echo "\tScript:\t\t" `./lfetool -v`
+
 build:
 	./bin/create-tool
 
