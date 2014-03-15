@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version=0.1.1
+version=0.1.2
 
 gitignore="{{GITIGNORE}}"
 usage="{{USAGE}}"
@@ -18,11 +18,23 @@ svcapp="{{SVCAPP}}"
 svcserver="{{SVCSERVER}}"
 svcsup="{{SVCSUP}}"
 
+decode () {
+    os=`uname`
+    case $os in
+        Darwin)
+            base64 -D
+            ;;
+        *)
+            base64 -d
+            ;;
+    esac
+}
+
 print-usage () {
     local fullpath=$1
     local version=$2
     local script=`basename $1`
-    echo "$usage" | base64 -D
+    echo "$usage" | decode
 }
 
 error () {
@@ -77,7 +89,7 @@ create-file () {
         project="{{NOOP}}"
         joinpattern="{{NOOP}}"
     fi
-    echo $data | base64 -D | sed -e "s/$joinpattern/$joinchar/" -e "s/$pattern/$project/" > $filename
+    echo $data | decode | sed -e "s/$joinpattern/$joinchar/" -e "s/$pattern/$project/" > $filename
 }
 
 create-project-files () {
