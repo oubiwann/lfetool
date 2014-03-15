@@ -5,7 +5,7 @@ get-version:
 	@echo "\tLatest tag:\t" `git tag|tail -1`
 	@echo "\tScript:\t\t" `./lfetool -v`
 
-build:
+build: get-version
 	./bin/create-tool
 
 push-all:
