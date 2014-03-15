@@ -112,15 +112,6 @@ check-no-deps: compile-no-deps compile-tests
 	@echo "Running unit tests ..."
 	@rebar eunit verbose=1 skip_deps=true
 
-run:
-	@echo "Running OTP app in the foreground ..."
-	@ERL_LIBS=$(ERL_LIBS) $(LFE) -eval "application:start('{{PROJECT}}')"
-
-daemon:
-	@echo "Running OTP app in the background ..."
-	@ERL_LIBS=$(ERL_LIBS) $(LFE) \
-	-eval "application:start('{{PROJECT}}')" -detached -noshell
-
 push-all:
 	@echo "Pusing code to github ..."
 	git push --all

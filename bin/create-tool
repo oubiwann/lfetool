@@ -53,9 +53,13 @@ fill-makefile () {
     template="templates/service/otp.mk.tmpl"
     pattern="{{OTPMK}}"
     fill-tool-var $template $pattern
-    # master make file
-    template="templates/common/Makefile.tmpl"
-    pattern="{{MAKEFILE}}"
+    # master make file for library projects
+    template="templates/library/Makefile.tmpl"
+    pattern="{{LIBMAKEFILE}}"
+    fill-tool-var $template $pattern
+    # master make file for service projects
+    template="templates/service/Makefile.tmpl"
+    pattern="{{SVCMAKEFILE}}"
     fill-tool-var $template $pattern
 }
 

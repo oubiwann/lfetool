@@ -8,7 +8,8 @@ rebarconfig="{{REBAR}}"
 package="{{PACKAGE}}"
 commonmk="{{COMMONMK}}"
 otpmk="{{OTPMK}}"
-makefile="{{MAKEFILE}}"
+libmakefile="{{LIBMAKEFILE}}"
+svcmakefile="{{SVCMAKEFILE}}"
 readme="{{README}}"
 scriptfile="{{SCRIPTFILE}}"
 libappsrc="{{LIBAPPSRC}}"
@@ -107,7 +108,7 @@ create-project-files () {
 
 create-library-files () {
     local project=$1
-    create-file "$makefile" $project/Makefile {{PROJECT}} $project
+    create-file "$libmakefile" $project/Makefile {{PROJECT}} $project
     create-file "$libappsrc" $project/src/$project.app.src {{PROJECT}} $project
     create-file "$libtestmodule" \
         $project/test/${project}$(dash-or-underscore-char $project)tests.lfe \
@@ -118,7 +119,7 @@ create-library-files () {
 create-service-files () {
     local project=$1
     create-file "$otpmk" $project/otp.mk {{PROJECT}} $project
-    create-file "$makefile" $project/Makefile {{PROJECT}} $project
+    create-file "$svcmakefile" $project/Makefile {{PROJECT}} $project
     create-file "$svcappsrc" $project/src/$project.app.src {{PROJECT}} $project
     create-file "$svctestmodule" \
         $project/test/${project}$(dash-or-underscore-char $project)tests.lfe \
