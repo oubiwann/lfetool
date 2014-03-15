@@ -12,7 +12,11 @@ fill-tool-var () {
         pattern="{{NOOP}}"
     fi
     data=`cat "$template" | base64`
-    sed -e "s/$pattern/$data/" $dest > $temp
+    # DEBUG
+    #echo $template
+    #echo $pattern
+    #echo $data
+    sed -e "s#$pattern#$data#g" $dest > $temp
     mv $temp $dest
 }
 
@@ -41,6 +45,15 @@ fill-package () {
 }
 
 fill-makefile () {
+    # base make include
+    template="templates/common/common.mk.tmpl"
+    pattern="{{COMMONMK}}"
+    fill-tool-var $template $pattern
+    # otp make include
+    template="templates/service/otp.mk.tmpl"
+    pattern="{{OTPMK}}"
+    fill-tool-var $template $pattern
+    # master make file
     template="templates/common/Makefile.tmpl"
     pattern="{{MAKEFILE}}"
     fill-tool-var $template $pattern
