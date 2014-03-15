@@ -4,9 +4,14 @@ get-version:
 	@echo "Version info:\n"
 	@echo "\tLatest tag:\t" `git tag|tail -1`
 	@echo "\tScript:\t\t" `./lfetool -v`
+	@echo
 
-build: get-version
-	./bin/create-tool
+build-no-version:
+	@echo "Building lfetool ..."
+	@./bin/create-tool
+	@echo "Finished."
+
+build: get-version build-no-version
 
 push-all:
 	git push --all
