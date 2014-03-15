@@ -10,6 +10,7 @@ commonmk="{{COMMONMK}}"
 otpmk="{{OTPMK}}"
 libmakefile="{{LIBMAKEFILE}}"
 svcmakefile="{{SVCMAKEFILE}}"
+travisci="{{TRAVISCI}}"
 readme="{{README}}"
 scriptfile="{{SCRIPTFILE}}"
 libappsrc="{{LIBAPPSRC}}"
@@ -102,6 +103,7 @@ create-project-files () {
     create-file "$gitignore" $project/.gitignore
     create-file "$rebarconfig" $project/rebar.config
     create-file "$commonmk" $project/common.mk {{PROJECT}} $project
+    create-file "$travisci" $project/.travis.yml {{PROJECT}} $project
     create-file "$readme" $project/README.rst {{PROJECT}} $project
     create-file "$package" $project/package.exs {{PROJECT}} $project
 }

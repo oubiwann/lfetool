@@ -63,6 +63,12 @@ fill-makefile () {
     fill-tool-var $template $pattern
 }
 
+fill-travisci () {
+    template="templates/common/.travis.yml.tmpl"
+    pattern="{{TRAVISCI}}"
+    fill-tool-var $template $pattern
+}
+
 fill-readme () {
     template="templates/common/README.rst.tmpl"
     pattern="{{README}}"
@@ -129,6 +135,7 @@ run () {
     fill-rebar
     fill-package
     fill-makefile
+    fill-travisci
     fill-readme
     fill-script
     fill-libappsrc
