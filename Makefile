@@ -32,3 +32,6 @@ test-proj-run: test-proj
 
 check:
 	bash test/tests.sh
+
+travis-check:
+	TRAVIS=true bash test/tests.sh
