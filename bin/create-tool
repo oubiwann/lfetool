@@ -21,7 +21,7 @@ fill-tool-var () {
 }
 
 fill-usage () {
-    template="templates/common/usage.txt.tmpl"
+    template="templates/lfetool/usage.txt.tmpl"
     pattern="{{USAGE}}"
     fill-tool-var $template $pattern
 }
