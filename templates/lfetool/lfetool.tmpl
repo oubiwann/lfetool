@@ -76,9 +76,21 @@ lfetool-not-found-error () {
     error 'Error: could not find `lfetool` on the $PATH'
 }
 
+get-separator () {
+    local project=$1
+    case "$project" in
+        *_*) local char="_" ;;
+        *) local char="-" ;;
+    esac
+    echo -n $char
+}
+
 create-dirs () {
     local project=$1
-    mkdir -p $project/src $project/test
+    mkdir -p $project/src \
+        $project/test/unit \
+        $project/test/integration \
+        $project/test/system
 }
 
 create-file () {
@@ -86,15 +98,11 @@ create-file () {
     local filename=$2
     local pattern=$3
     local project=$4
-    local joinchar=$(dash-or-underscore-char $project)
-    local joinpattern="{{JOINCHAR}}"
     if [ "$pattern" = "" ]; then
         pattern="{{NOOP}}"
         project="{{NOOP}}"
-        joinpattern="{{NOOP}}"
     fi
     echo $data | decode | sed \
-        -e "s/$joinpattern/$joinchar/" \
         -e "s/$pattern/$project/" > $filename
 }
 
@@ -113,7 +121,7 @@ create-library-files () {
     create-file "$libmakefile" $project/Makefile {{PROJECT}} $project
     create-file "$libappsrc" $project/src/$project.app.src {{PROJECT}} $project
     create-file "$libtestmodule" \
-        $project/test/${project}$(dash-or-underscore-char $project)tests.lfe \
+        $project/test/unit/unit$(get-separator $project)${project}$(get-separator $project)tests.lfe \
         {{PROJECT}} $project
     create-file "$libmodule" $project/src/$project.lfe {{PROJECT}} $project
 }
@@ -124,26 +132,17 @@ create-service-files () {
     create-file "$svcmakefile" $project/Makefile {{PROJECT}} $project
     create-file "$svcappsrc" $project/src/$project.app.src {{PROJECT}} $project
     create-file "$svctestmodule" \
-        $project/test/${project}$(dash-or-underscore-char $project)tests.lfe \
+        $project/test/unit/unit$(get-separator $project)${project}$(get-separator $project)tests.lfe \
         {{PROJECT}} $project
     create-file "$svcapp" \
-        $project/src/${project}$(dash-or-underscore-char $project)app.lfe \
+        $project/src/${project}$(get-separator $project)app.lfe \
         {{PROJECT}} $project
     create-file "$svcserver" \
-        $project/src/${project}$(dash-or-underscore-char $project)server.lfe \
+        $project/src/${project}$(get-separator $project)server.lfe \
         {{PROJECT}} $project
     create-file "$svcsup" \
-        $project/src/${project}$(dash-or-underscore-char $project)sup.lfe \
+        $project/src/${project}$(get-separator $project)sup.lfe \
         {{PROJECT}} $project
-}
-
-dash-or-underscore-char () {
-    local project=$1
-    case "$project" in
-        *_*) local char="_" ;;
-        *) local char="-" ;;
-    esac
-    echo -n $char
 }
 
 setup-script-project () {

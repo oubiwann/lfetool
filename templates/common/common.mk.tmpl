@@ -76,7 +76,7 @@ compile-no-deps: clean-ebin
 compile-tests: clean-eunit
 	@echo "Compiling tests ..."
 	@mkdir -p $(TEST_OUT_DIR)
-	@ERL_LIBS=$(ERL_LIBS) $(LFEC) -o $(TEST_OUT_DIR) $(TEST_DIR)/*[_-]tests.lfe
+	@ERL_LIBS=$(ERL_LIBS) $(LFEC) -o $(TEST_OUT_DIR) $(TEST_DIR)/*/*[_-]tests.lfe
 	@-ERL_LIBS=$(ERL_LIBS) $(LFEC) -o $(OUT_DIR) $(TEST_DIR)/testing[-_]*.lfe
 
 shell: compile
@@ -92,20 +92,37 @@ shell-no-deps: compile-no-deps
 clean: clean-ebin clean-eunit
 	@rebar clean
 
-check: compile compile-tests
-	@clear
-	@echo "Running unit tests ..."
-	@rebar eunit verbose=1 skip_deps=true
-
-check-travis: compile compile-tests
+check-unit:
 	@echo "Building and running unit tests ..."
 	@ERL_LIBS=$(ERL_LIBS) erl -pa .eunit -noshell \
 	-eval "eunit:test({inparallel,[\
-		`ls .eunit| \
+		`ls .eunit/unit*tests.beam| \
 		sed -e 's/.beam//'| \
 		awk '{print "\x27" $$1 "\x27"}'| \
-		sed -e :a -e N -e 's/\n/,/'`]},[verbose])" \
+		sed ':a;N;$$!ba;s/\n/,/g'`]},[verbose])" \
 	-s init stop
+
+check-integration:
+	@echo "Building and running integration tests ..."
+	@ERL_LIBS=$(ERL_LIBS) erl -pa .eunit -noshell \
+	-eval "eunit:test({inparallel,[\
+		`ls .eunit/integration*tests.beam| \
+		sed -e 's/.beam//'| \
+		awk '{print "\x27" $$1 "\x27"}'| \
+		sed ':a;N;$$!ba;s/\n/,/g'`]},[verbose])" \
+	-s init stop
+
+check-system:
+	@echo "Building and running system tests ..."
+	@ERL_LIBS=$(ERL_LIBS) erl -pa .eunit -noshell \
+	-eval "eunit:test({inparallel,[\
+		`ls .eunit/system*tests.beam| \
+		sed -e 's/.beam//'| \
+		awk '{print "\x27" $$1 "\x27"}'| \
+		sed ':a;N;$$!ba;s/\n/,/g'`]},[verbose])" \
+	-s init stop
+
+check: compile compile-tests check-unit check-integration check-system
 
 check-no-deps: compile-no-deps compile-tests
 	@clear
