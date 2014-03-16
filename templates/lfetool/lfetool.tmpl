@@ -158,7 +158,7 @@ setup-library-project () {
     create-dirs $project
     create-project-files $project
     create-library-files $project
-    cd $project && git init && git add * .gitignore && make check
+    cd $project && git init && git add * .gitignore .travis.yml && make check
 }
 
 setup-service-project () {
@@ -167,7 +167,7 @@ setup-service-project () {
     create-dirs $project
     create-project-files $project
     create-service-files $project
-    cd $project && git init && git add * .gitignore && make check
+    cd $project && git init && git add * .gitignore .travis.yml && make check
 }
 
 setup-e2-service-project () {
