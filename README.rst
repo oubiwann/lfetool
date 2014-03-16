@@ -150,8 +150,11 @@ to use just alphanumerica characters, dashes, and nothing else in your project
 names.
 
 The ``new`` command supports the following sub-commands:
+
 * ``script``
+
 * ``library``
+
 * ``service``
 
 To create an lfescript, simply run the following:
