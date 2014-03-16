@@ -3,6 +3,8 @@ expectedversion="0.1.2"
 scriptname="fibo-check"
 libname="test-lib"
 svcname="test-service"
+lferepo="test-lfe-repo"
+lfepath="$lferepo/bin"
 
 # support functions
 get-result-part () {
@@ -31,14 +33,22 @@ testVersion () {
 
 testNewScript () {
     ./lfetool new script $scriptname
-    result=`./fibo-check 42`
+    result=`PATH=$PATH:$lfepath ERL_LIBS=$lferepo ./fibo-check 42`
     expected="factorial 42 = 1405006117752879898543142606244511569936384000000000"
     assertEquals "$expected" "$result"
 }
 
+oneTimeSetUp () {
+    git clone https://github.com/rvirding/lfe $lferepo && \
+    cd $lferepo && \
+    make compile && \
+    cd - && \
+    clear
+}
+
 oneTimeTearDown () {
     rm $scriptname
-    rm -rf $libname $svcname
+    rm -rf $libname $svcname $lferepo
 }
 
 # pull in the framework
