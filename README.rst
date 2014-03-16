@@ -169,7 +169,7 @@ To create a "library" project, run the following:
 
     $ lfetool new library my-new-lib
 
-*Note*: upon running this script, not only with your project be set up with a
+*Note*: upon running this script, not only will your project be set up with a
 skeleton, but also:
 
 * the dependencies for your project will be downloaded to your new project's
