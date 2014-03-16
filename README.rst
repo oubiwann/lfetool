@@ -136,8 +136,8 @@ you may want to use this command to get the latest script from github:
 
     $ lfetool update
 
-Though the command takes no parameters, it will fail if ``lfetool`` is not on
-your ``$PATH``.
+The command takes no parameters. Note that it will fail if ``lfetool`` is not
+on your ``$PATH``.
 
 
 ``new`` Command
