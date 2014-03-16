@@ -31,4 +31,4 @@ test-proj-run: test-proj
 	cd $(TEST_PROJ) && make run
 
 check:
-	bash test/*tests.sh
+	bash test/tests.sh
