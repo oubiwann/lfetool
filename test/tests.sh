@@ -41,6 +41,7 @@ testVersion () {
 }
 
 testNewScript () {
+    local expected=""
     ./lfetool new script $scriptname
     if [ "$TRAVIS" = "true" ]; then
         result="`PATH=$PATH:$lfepath ERL_LIBS=$lferepo ./$scriptname 42`"
@@ -118,9 +119,8 @@ testNewService () {
 ##########
 
 oneTimeSetUp () {
-    echo "Setting up ..."
+    echo "Performing one-time set-up ..."
     if [ "$TRAVIS" = "true" ]; then
-        assertEquals $expected \
         git clone https://github.com/rvirding/lfe $lferepo && \
         cd $lferepo && \
         make compile && \
@@ -130,7 +130,7 @@ oneTimeSetUp () {
 }
 
 oneTimeTearDown () {
-    echo "Tearing down ..."
+    echo "Performing one-time tear-down ..."
     rm $scriptname
     rm -rf $libname $svcname $lferepo
 }
