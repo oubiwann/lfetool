@@ -4,7 +4,7 @@ lfetool
 
 .. image:: resources/images/logo-small.png
 
-*An Erlang Lisper's Tool for Admin Tasks and Infrastructure*
+*An Erlang Lisper's Tool for Admin Tasks, Project Creation, and Infrastructure*
 
 
 Introduction
