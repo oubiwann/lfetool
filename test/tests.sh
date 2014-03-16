@@ -119,13 +119,14 @@ testNewService () {
 ##########
 
 oneTimeSetUp () {
+    echo
     echo "Performing one-time set-up ..."
     echo
     if [ "$TRAVIS" = "true" ]; then
         git clone https://github.com/rvirding/lfe $lferepo &> /dev/null && \
         cd $lferepo && \
         make compile &> /dev/null && \
-        cd -
+        cd - &> /dev/null
     fi
 }
 
