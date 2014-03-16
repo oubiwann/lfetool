@@ -29,3 +29,6 @@ test-proj-shell: test-proj
 
 test-proj-run: test-proj
 	cd $(TEST_PROJ) && make run
+
+check:
+	bash test/*tests.sh
