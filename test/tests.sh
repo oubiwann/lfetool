@@ -120,15 +120,17 @@ testNewService () {
 
 oneTimeSetUp () {
     echo "Performing one-time set-up ..."
+    echo
     if [ "$TRAVIS" = "true" ]; then
         git clone https://github.com/rvirding/lfe $lferepo &> /dev/null && \
         cd $lferepo && \
         make compile &> /dev/null && \
-        cd - && \
+        cd -
     fi
 }
 
 oneTimeTearDown () {
+    echo
     echo "Performing one-time tear-down ..."
     rm $scriptname
     rm -rf $libname $svcname $lferepo
