@@ -38,7 +38,10 @@ print-usage () {
     local fullpath=$1
     local version=$2
     local script=`basename $1`
-    echo "$usage" | decode
+    echo "$usage" | decode | sed \
+        -e "s#{{SCRIPT}}#$script#g" \
+        -e "s#{{FULLPATH}}#$fullpath#g" \
+        -e "s#{{VERSION}}#$version#g"
 }
 
 error () {
