@@ -136,8 +136,8 @@ you may want to use this command to get the latest script from github:
 
     $ lfetool update
 
-Though the command takes no parameters, it will fail if ``lfetool`` is not on
-your ``$PATH``.
+The command takes no parameters. Note that it will fail if ``lfetool`` is not
+on your ``$PATH``.
 
 
 ``new`` Command
@@ -241,6 +241,84 @@ At a future date we will also support the e2 project in a similar fashion:
 .. code:: shell
 
     $ lfetool new e2-service my-new-service
+
+
+Development
+===========
+
+This section has been created for those that would like to submit patches/pull
+requests to lfetool for bug fixes and/or new features. At the very least, it
+should provide a means for understanding what is needed in order to add new
+commands to lfetool.
+
+
+Step 1
+------
+
+* Create a new subdirectory in templates using a descriptive name for your
+  new command. Hopefully this will be the same as the actual command itself.
+
+* In this directory, create all the files necessary to support your new
+  command. These files should all have the same name they would have once
+  added to a new project, with two exceptions: 1) they should have a ``.tmpl``
+  extension, and 2) anywhere a project name would have been used (e.g., a
+  module), ``PROJECT`` should be used instead.
+  
+* Note the use of of ``local varname=$n`` in other functions; to avoid name
+  collisions you will want to duplicate this in your own functions.
+
+* If you are creating a project type that has actual code, you need to add
+  a test module that has at least one unit test defined. To encourage TDD,
+  your unit test(s) should fail due to an intentional bug in the sample
+  implementation. (See the ``library`` and ``service`` templates for two
+  examples of these.)
+
+
+Step 2
+------
+
+* With the project files created, ``templates/lfetools/lfetool.tmpl`` needs to
+  be updated to accept the new command in the ``create-new`` function. You
+  will dispatch here to a new function that will create all the required files
+  for your new project type.
+
+* Create any other functions necessary in support of your new dispatch function.
+
+* For every file you need to create, you will add a new variable at the top of
+  ``lfetool.tmpl`` with a unique string of the form ``{{NAME}}`` which will later
+  be substituted with actual content (done in Step 3).
+
+  
+Step 3
+------
+
+* Edit ``bin/create-tool``; for almost every file you need to create for your
+  new project type, you will want to have a function that does the following:
+  1) points to the appropriate template for that file, and 2) subsitutes the
+  an actual value for instances of ``{{NAME}}`` that you put in your templates.
+  (The most common example of this is replacing ``{{PROJECT}}`` with the name
+  of the project passed when calling ``lfetool``.)
+  
+* Each function created for this should be prefixed by ``fill-``.
+  
+* Note that all Makefile-related files are currently managed in a single
+  function; if your project is creating its own ``Makefile`` and a ``*.mk``
+  include, you'll want to update this function.
+  
+* Update the ``run`` function to call all your new ``fill-*`` functions.
+  
+
+Step 4
+------
+
+* Build a local copy of ``lfetool`` by running ``make build``.
+
+* Run your new command, e.g.: ``lfetool new my-new-proj-type awesome-proj-name``
+
+* Check that all the expected files are created, that any new ``make`` targets
+  work as expected.
+
+* Submit a pull request!
 
 
 .. Links
