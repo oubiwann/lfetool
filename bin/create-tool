@@ -128,6 +128,7 @@ fill-svcsup () {
     pattern="{{SVCSUP}}"
     fill-tool-var $template $pattern
 }
+
 run () {
     cp $template $dest
     fill-usage
