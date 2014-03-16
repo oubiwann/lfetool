@@ -2,7 +2,7 @@
 lfetool
 #######
 
-.. image:: resources/images/logo.png
+.. image:: resources/images/logo-small.png
 
 *An Erlang Lisper's Tool for Admin Tasks and Infrastructure*
 
