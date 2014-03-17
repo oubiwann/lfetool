@@ -60,13 +60,7 @@ testNewLibrary () {
         "`head -1 $libname/Makefile`"
     assertEquals "PROJECT = test-lib" \
         "`head -1 $libname/common.mk`"
-    # this is different on the travis build server than locally
-    if [ "$TRAVIS" = "true" ]; then
-        expected=11
-    else
-        expected=12
-    fi
-    assertEquals $expected \
+    assertEquals 12 \
         "`find $libname -type f|egrep -v 'deps|.git'|wc -l|tr -d ' '`"
     assertEquals '(defmodule test-lib' \
         "`head -1 $libname/src/test-lib.lfe`"
@@ -89,13 +83,7 @@ testNewService () {
         "`head -1 $svcname/Makefile`"
     assertEquals "PROJECT = test-service" \
         "`head -1 $svcname/common.mk`"
-    # this is different on the travis build server than locally
-    if [ "$TRAVIS" = "true" ]; then
-        expected=16
-    else
-        expected=17
-    fi
-    assertEquals $expected \
+    assertEquals 17 \
         "`find $svcname -type f|egrep -v 'deps|.git'|wc -l|tr -d ' '`"
     assertEquals '(defmodule test-service-app' \
         "`head -1 $svcname/src/test-service-app.lfe`"
@@ -117,6 +105,8 @@ testNewService () {
 
 testNewYAWS () {
     ./lfetool new yaws $yawsname &> /dev/null
+    assertEquals 14 \
+        "`find $yawsname -type f|egrep -v 'deps|.git'|wc -l|tr -d ' '`"
     assertEquals "include yaws.mk" \
         "`head -1 $yawsname/Makefile`"
     assertEquals "PROJECT = test-yaws" \
