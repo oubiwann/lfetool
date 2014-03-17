@@ -3,9 +3,10 @@
 #############
 
 expectedversion="0.1.2"
-scriptname="fibo-check"
+scriptname="test-fibo"
 libname="test-lib"
 svcname="test-service"
+yawsname="test-yaws"
 lferepo="test-lfe-repo"
 lfepath="$lferepo/bin"
 
@@ -114,6 +115,28 @@ testNewService () {
         "`head -1 $svcname/rebar.config`"
 }
 
+testNewYAWS () {
+    ./lfetool new yaws $yawsname &> /dev/null
+    assertEquals "include yaws.mk" \
+        "`head -1 $yawsname/Makefile`"
+    assertEquals "PROJECT = test-yaws" \
+        "`head -1 $yawsname/common.mk`"
+    assertEquals '(defmodule test-yaws' \
+        "`head -1 $yawsname/src/test-yaws.lfe`"
+    assertEquals "{application, 'test-yaws'," \
+        "`head -2 $yawsname/src/test-yaws.app.src|tail -1`"
+    assertEquals '(defmodule test-yaws-tests' \
+        "`head -1 $yawsname/test/test-yaws-tests.lfe`"
+    assertEquals 'test-yaws' \
+        "`head -2 $yawsname/README.rst|tail -1`"
+    assertEquals 'name:"test-yaws",' \
+        "`head -2 $yawsname/package.exs|tail -1|tr -d ' '`"
+    assertEquals '{erl_opts, [debug_info, {src_dirs, ["test"]}]}.' \
+        "`head -1 $yawsname/rebar.config`"
+    assertEquals 'logdir = logs' \
+        "`head -1 $yawsname/etc/yaws.conf`"
+}
+
 ##########
 # fixtures
 ##########
@@ -134,7 +157,7 @@ oneTimeTearDown () {
     echo
     echo "Performing one-time tear-down ..."
     rm $scriptname
-    rm -rf $libname $svcname $lferepo
+    rm -rf $libname $svcname $yawsname $lferepo
 }
 
 #######################
