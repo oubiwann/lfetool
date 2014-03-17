@@ -106,7 +106,7 @@ testNewService () {
 testNewYAWS () {
     ./lfetool new yaws $yawsname &> /dev/null
     if [ "$TRAVIS" = "true" ]; then
-        expected="17"
+        expected="14"
     else
         expected="20"
     fi
