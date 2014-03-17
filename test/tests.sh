@@ -105,7 +105,12 @@ testNewService () {
 
 testNewYAWS () {
     ./lfetool new yaws $yawsname &> /dev/null
-    assertEquals 14 \
+    if [ "$TRAVIS" = "true" ]; then
+        expected="11"
+    else
+        expected="14"
+    fi
+    assertEquals $expected \
         "`find $yawsname -type f|egrep -v 'deps|.git'|wc -l|tr -d ' '`"
     assertEquals "include yaws.mk" \
         "`head -1 $yawsname/Makefile`"
