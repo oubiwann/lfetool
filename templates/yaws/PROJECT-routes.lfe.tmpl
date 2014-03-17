@@ -11,6 +11,9 @@
   ;; /content/:id
   (((list '"content" item-id) arg-data)
     (: {{PROJECT}}-content get-content item-id arg-data))
+  ;; /relation/:userid/:accountid
+  (((list '"relation" user-id account-id) arg-data)
+    (: {{PROJECT}}-content get-content user-id account-id arg-data))
   ;; potentially many other routes
   ;;
   ;; When nothing matches, do this
