@@ -149,9 +149,22 @@ fill-yawsconf () {
     fill-tool-var $template $pattern
 }
 
-fill-yawsmodule () {
+fill-yawsmodules () {
+    # entry point module
     template="templates/yaws/PROJECT.lfe.tmpl"
     pattern="{{YAWSMODULE}}"
+    fill-tool-var $template $pattern
+    # routes module
+    template="templates/yaws/PROJECT-routes.lfe.tmpl"
+    pattern="{{YAWSROUTESMODULE}}"
+    fill-tool-var $template $pattern
+    # content module
+    template="templates/yaws/PROJECT-content.lfe.tmpl"
+    pattern="{{YAWSCONTENTMODULE}}"
+    fill-tool-var $template $pattern
+    # util module
+    template="templates/yaws/PROJECT-util.lfe.tmpl"
+    pattern="{{YAWSUTILMODULE}}"
     fill-tool-var $template $pattern
 }
 
@@ -175,7 +188,7 @@ run () {
     fill-svcsup
     fill-yawsrebar
     fill-yawsconf
-    fill-yawsmodule
+    fill-yawsmodules
     chmod 755 $dest
 }
 

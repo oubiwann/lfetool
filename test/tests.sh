@@ -106,9 +106,9 @@ testNewService () {
 testNewYAWS () {
     ./lfetool new yaws $yawsname &> /dev/null
     if [ "$TRAVIS" = "true" ]; then
-        expected="11"
+        expected="17"
     else
-        expected="14"
+        expected="20"
     fi
     assertEquals $expected \
         "`find $yawsname -type f|egrep -v 'deps|.git'|wc -l|tr -d ' '`"
@@ -118,6 +118,12 @@ testNewYAWS () {
         "`head -1 $yawsname/common.mk`"
     assertEquals '(defmodule test-yaws' \
         "`head -1 $yawsname/src/test-yaws.lfe`"
+    assertEquals '(defmodule test-yaws-routes' \
+        "`head -1 $yawsname/src/test-yaws-routes.lfe`"
+    assertEquals '(defmodule test-yaws-content' \
+        "`head -1 $yawsname/src/test-yaws-content.lfe`"
+    assertEquals '(defmodule test-yaws-util' \
+        "`head -1 $yawsname/src/test-yaws-util.lfe`"
     assertEquals "{application, 'test-yaws'," \
         "`head -2 $yawsname/src/test-yaws.app.src|tail -1`"
     assertEquals '(defmodule test-yaws-tests' \
