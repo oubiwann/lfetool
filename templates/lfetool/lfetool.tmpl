@@ -8,6 +8,7 @@ rebarconfig="{{REBAR}}"
 package="{{PACKAGE}}"
 commonmk="{{COMMONMK}}"
 otpmk="{{OTPMK}}"
+yawsmk="{{YAWSMK}}"
 libmakefile="{{LIBMAKEFILE}}"
 svcmakefile="{{SVCMAKEFILE}}"
 travisci="{{TRAVISCI}}"
@@ -21,6 +22,13 @@ svctestmodule="{{SVCTESTMODULE}}"
 svcapp="{{SVCAPP}}"
 svcserver="{{SVCSERVER}}"
 svcsup="{{SVCSUP}}"
+yawsmakefile="{{YAWSMAKEFILE}}"
+yawsrebar="{{YAWSREBAR}}"
+yawsconf="{{YAWSCONF}}"
+yawsmodule="{{YAWSMODULE}}"
+yawsroutesmodule="{{YAWSROUTESMODULE}}"
+yawscontentmodule="{{YAWSCONTENTMODULE}}"
+yawsutilmodule="{{YAWSUTILMODULE}}"
 
 decode () {
     os=`uname`
@@ -81,7 +89,12 @@ lfetool-not-found-error () {
 
 create-dirs () {
     local project=$1
-    mkdir -p $project/src $project/test
+    mkdir -p $project/{src,test}
+}
+
+create-yaws-dirs () {
+    local project=$1
+    mkdir -p $project/{www,etc,logs}
 }
 
 create-file () {
@@ -89,7 +102,7 @@ create-file () {
     local filename=$2
     local pattern=$3
     local project=$4
-    local joinchar=$(dash-or-underscore-char $project)
+    local joinchar=-
     local joinpattern="{{JOINCHAR}}"
     if [ "$pattern" = "" ]; then
         pattern="{{NOOP}}"
@@ -116,8 +129,7 @@ create-library-files () {
     create-file "$libmakefile" $project/Makefile {{PROJECT}} $project
     create-file "$libappsrc" $project/src/$project.app.src {{PROJECT}} $project
     create-file "$libtestmodule" \
-        $project/test/${project}$(dash-or-underscore-char $project)tests.lfe \
-        {{PROJECT}} $project
+        $project/test/${project}-tests.lfe {{PROJECT}} $project
     create-file "$libmodule" $project/src/$project.lfe {{PROJECT}} $project
 }
 
@@ -127,26 +139,31 @@ create-service-files () {
     create-file "$svcmakefile" $project/Makefile {{PROJECT}} $project
     create-file "$svcappsrc" $project/src/$project.app.src {{PROJECT}} $project
     create-file "$svctestmodule" \
-        $project/test/${project}$(dash-or-underscore-char $project)tests.lfe \
-        {{PROJECT}} $project
+        $project/test/${project}-tests.lfe {{PROJECT}} $project
     create-file "$svcapp" \
-        $project/src/${project}$(dash-or-underscore-char $project)app.lfe \
-        {{PROJECT}} $project
+        $project/src/${project}-app.lfe {{PROJECT}} $project
     create-file "$svcserver" \
-        $project/src/${project}$(dash-or-underscore-char $project)server.lfe \
-        {{PROJECT}} $project
+        $project/src/${project}-server.lfe {{PROJECT}} $project
     create-file "$svcsup" \
-        $project/src/${project}$(dash-or-underscore-char $project)sup.lfe \
-        {{PROJECT}} $project
+        $project/src/${project}-sup.lfe {{PROJECT}} $project
 }
 
-dash-or-underscore-char () {
+create-yaws-files () {
     local project=$1
-    case "$project" in
-        *_*) local char="_" ;;
-        *) local char="-" ;;
-    esac
-    echo -n $char
+    create-file "$yawsmk" $project/yaws.mk {{PROJECT}} $project
+    create-file "$yawsmakefile" $project/Makefile {{PROJECT}} $project
+    create-file "$yawsrebar" $project/rebar.config
+    create-file "$yawsconf" $project/etc/yaws.conf {{PROJECT}} $project
+    create-file "$svcappsrc" $project/src/$project.app.src {{PROJECT}} $project
+    create-file "$yawsmodule" $project/src/${project}.lfe {{PROJECT}} $project
+    create-file "$yawsroutesmodule" \
+        $project/src/${project}-routes.lfe {{PROJECT}} $project
+    create-file "$yawscontentmodule" \
+        $project/src/${project}-content.lfe {{PROJECT}} $project
+    create-file "$yawsutilmodule" \
+        $project/src/${project}-util.lfe {{PROJECT}} $project
+    create-file "$libtestmodule" \
+        $project/test/${project}-tests.lfe {{PROJECT}} $project
 }
 
 setup-script-project () {
@@ -179,6 +196,16 @@ setup-e2-service-project () {
     not-implemented-error
 }
 
+setup-yaws-project () {
+    echo "Setting up starter YAWS project ..."
+    local project=$1
+    create-dirs $project
+    create-yaws-dirs $project
+    create-project-files $project
+    create-yaws-files $project
+    cd $project && git init && git add * .gitignore .travis.yml && make check
+}
+
 check-context () {
     local context=$1
     if [ "$context" = "" ]; then
@@ -208,6 +235,9 @@ create-new () {
             ;;
         e2service)
             setup-e2-service-project $arg
+            ;;
+        yaws)
+            setup-yaws-project $arg
             ;;
         *)
             unknown-context-error $context

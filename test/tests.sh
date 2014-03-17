@@ -3,9 +3,10 @@
 #############
 
 expectedversion="0.1.2"
-scriptname="fibo-check"
+scriptname="test-fibo"
 libname="test-lib"
 svcname="test-service"
+yawsname="test-yaws"
 lferepo="test-lfe-repo"
 lfepath="$lferepo/bin"
 
@@ -59,13 +60,7 @@ testNewLibrary () {
         "`head -1 $libname/Makefile`"
     assertEquals "PROJECT = test-lib" \
         "`head -1 $libname/common.mk`"
-    # this is different on the travis build server than locally
-    if [ "$TRAVIS" = "true" ]; then
-        expected=11
-    else
-        expected=12
-    fi
-    assertEquals $expected \
+    assertEquals 12 \
         "`find $libname -type f|egrep -v 'deps|.git'|wc -l|tr -d ' '`"
     assertEquals '(defmodule test-lib' \
         "`head -1 $libname/src/test-lib.lfe`"
@@ -88,13 +83,7 @@ testNewService () {
         "`head -1 $svcname/Makefile`"
     assertEquals "PROJECT = test-service" \
         "`head -1 $svcname/common.mk`"
-    # this is different on the travis build server than locally
-    if [ "$TRAVIS" = "true" ]; then
-        expected=16
-    else
-        expected=17
-    fi
-    assertEquals $expected \
+    assertEquals 17 \
         "`find $svcname -type f|egrep -v 'deps|.git'|wc -l|tr -d ' '`"
     assertEquals '(defmodule test-service-app' \
         "`head -1 $svcname/src/test-service-app.lfe`"
@@ -112,6 +101,41 @@ testNewService () {
         "`head -2 $svcname/package.exs|tail -1|tr -d ' '`"
     assertEquals '{erl_opts, [debug_info, {src_dirs, ["test"]}]}.' \
         "`head -1 $svcname/rebar.config`"
+}
+
+testNewYAWS () {
+    ./lfetool new yaws $yawsname &> /dev/null
+    if [ "$TRAVIS" = "true" ]; then
+        expected="17"
+    else
+        expected="20"
+    fi
+    assertEquals $expected \
+        "`find $yawsname -type f|egrep -v 'deps|.git'|wc -l|tr -d ' '`"
+    assertEquals "include yaws.mk" \
+        "`head -1 $yawsname/Makefile`"
+    assertEquals "PROJECT = test-yaws" \
+        "`head -1 $yawsname/common.mk`"
+    assertEquals '(defmodule test-yaws' \
+        "`head -1 $yawsname/src/test-yaws.lfe`"
+    assertEquals '(defmodule test-yaws-routes' \
+        "`head -1 $yawsname/src/test-yaws-routes.lfe`"
+    assertEquals '(defmodule test-yaws-content' \
+        "`head -1 $yawsname/src/test-yaws-content.lfe`"
+    assertEquals '(defmodule test-yaws-util' \
+        "`head -1 $yawsname/src/test-yaws-util.lfe`"
+    assertEquals "{application, 'test-yaws'," \
+        "`head -2 $yawsname/src/test-yaws.app.src|tail -1`"
+    assertEquals '(defmodule test-yaws-tests' \
+        "`head -1 $yawsname/test/test-yaws-tests.lfe`"
+    assertEquals 'test-yaws' \
+        "`head -2 $yawsname/README.rst|tail -1`"
+    assertEquals 'name:"test-yaws",' \
+        "`head -2 $yawsname/package.exs|tail -1|tr -d ' '`"
+    assertEquals '{erl_opts, [debug_info, {src_dirs, ["test"]}]}.' \
+        "`head -1 $yawsname/rebar.config`"
+    assertEquals 'logdir = logs' \
+        "`head -1 $yawsname/etc/yaws.conf`"
 }
 
 ##########
@@ -134,7 +158,7 @@ oneTimeTearDown () {
     echo
     echo "Performing one-time tear-down ..."
     rm $scriptname
-    rm -rf $libname $svcname $lferepo
+    rm -rf $libname $svcname $yawsname $lferepo
 }
 
 #######################
