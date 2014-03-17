@@ -21,6 +21,11 @@ svctestmodule="{{SVCTESTMODULE}}"
 svcapp="{{SVCAPP}}"
 svcserver="{{SVCSERVER}}"
 svcsup="{{SVCSUP}}"
+yawsmk="{{YAWSMK}}"
+yawsmakefile="{{YAWSMAKEFILE}}"
+yawsrebar="{{YAWSREBAR}}"
+yawsconf="{{YAWSCONF}}"
+yawsmodule="{{YAWSMODULE}}"
 
 decode () {
     os=`uname`
@@ -38,10 +43,7 @@ print-usage () {
     local fullpath=$1
     local version=$2
     local script=`basename $1`
-    echo "$usage" | decode | sed \
-        -e "s#{{SCRIPT}}#$script#g" \
-        -e "s#{{FULLPATH}}#$fullpath#g" \
-        -e "s#{{VERSION}}#$version#g"
+    echo "$usage" | decode
 }
 
 error () {
@@ -84,27 +86,26 @@ create-dirs () {
     mkdir -p $project/src $project/test
 }
 
+create-yaws-dirs () {
+    mkdir -p www etc logs
+}
+
 create-file () {
     local data=$1
     local filename=$2
     local pattern=$3
     local project=$4
-    local joinchar=$(dash-or-underscore-char $project)
-    local joinpattern="{{JOINCHAR}}"
     if [ "$pattern" = "" ]; then
         pattern="{{NOOP}}"
         project="{{NOOP}}"
-        joinpattern="{{NOOP}}"
     fi
     echo $data | decode | sed \
-        -e "s/$joinpattern/$joinchar/" \
         -e "s/$pattern/$project/" > $filename
 }
 
 create-project-files () {
     local project=$1
     create-file "$gitignore" $project/.gitignore
-    create-file "$rebarconfig" $project/rebar.config
     create-file "$commonmk" $project/common.mk {{PROJECT}} $project
     create-file "$travisci" $project/.travis.yml {{PROJECT}} $project
     create-file "$readme" $project/README.rst {{PROJECT}} $project
@@ -113,40 +114,39 @@ create-project-files () {
 
 create-library-files () {
     local project=$1
+    create-file "$rebarconfig" $project/rebar.config
     create-file "$libmakefile" $project/Makefile {{PROJECT}} $project
     create-file "$libappsrc" $project/src/$project.app.src {{PROJECT}} $project
     create-file "$libtestmodule" \
-        $project/test/${project}$(dash-or-underscore-char $project)tests.lfe \
-        {{PROJECT}} $project
+        $project/test/${project}-tests.lfe {{PROJECT}} $project
     create-file "$libmodule" $project/src/$project.lfe {{PROJECT}} $project
 }
 
 create-service-files () {
     local project=$1
+    create-file "$rebarconfig" $project/rebar.config
     create-file "$otpmk" $project/otp.mk {{PROJECT}} $project
     create-file "$svcmakefile" $project/Makefile {{PROJECT}} $project
     create-file "$svcappsrc" $project/src/$project.app.src {{PROJECT}} $project
     create-file "$svctestmodule" \
-        $project/test/${project}$(dash-or-underscore-char $project)tests.lfe \
-        {{PROJECT}} $project
+        $project/test/${project}-tests.lfe {{PROJECT}} $project
     create-file "$svcapp" \
-        $project/src/${project}$(dash-or-underscore-char $project)app.lfe \
-        {{PROJECT}} $project
+        $project/src/${project}-app.lfe {{PROJECT}} $project
     create-file "$svcserver" \
-        $project/src/${project}$(dash-or-underscore-char $project)server.lfe \
-        {{PROJECT}} $project
+        $project/src/${project}-server.lfe {{PROJECT}} $project
     create-file "$svcsup" \
-        $project/src/${project}$(dash-or-underscore-char $project)sup.lfe \
-        {{PROJECT}} $project
+        $project/src/${project}-sup.lfe {{PROJECT}} $project
 }
 
-dash-or-underscore-char () {
+create-yaws-files () {
     local project=$1
-    case "$project" in
-        *_*) local char="_" ;;
-        *) local char="-" ;;
-    esac
-    echo -n $char
+    create-file "$yawsmk" $project/yaws.mk {{PROJECT}} $project
+    create-file "$yawsmakefile" $project/Makefile {{PROJECT}} $project
+    create-file "$yawsrebar" $project/rebar.config
+    create-file "$yawsconf" $project/etc/yaws.conf {{PROJECT}} $project
+    create-file "$yawsmodule" $project/src/${project}.lfe {{PROJECT}} $project
+    create-file "$libtestmodule" \
+        $project/test/${project}-tests.lfe {{PROJECT}} $project
 }
 
 setup-script-project () {
@@ -161,7 +161,7 @@ setup-library-project () {
     create-dirs $project
     create-project-files $project
     create-library-files $project
-    cd $project && git init && git add * .gitignore .travis.yml && make check
+    cd $project && git init && git add * .gitignore && make check
 }
 
 setup-service-project () {
@@ -170,13 +170,23 @@ setup-service-project () {
     create-dirs $project
     create-project-files $project
     create-service-files $project
-    cd $project && git init && git add * .gitignore .travis.yml && make check
+    cd $project && git init && git add * .gitignore && make check
 }
 
 setup-e2-service-project () {
     #echo "Setting up starter e2 service project ..."
     local project=$1
     not-implemented-error
+}
+
+setup-yaws-project () {
+    echo "Setting up starter YAWS project ..."
+    local project=$1
+    create-dirs $project
+    create-yaws-dirs
+    create-project-files $project
+    create-yaws-files $project
+    cd $project && git init && git add * .gitignore && make check
 }
 
 check-context () {
@@ -208,6 +218,9 @@ create-new () {
             ;;
         e2service)
             setup-e2-service-project $arg
+            ;;
+        yaws)
+            setup-yaws-project $arg
             ;;
         *)
             unknown-context-error $context

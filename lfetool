@@ -21,6 +21,11 @@ svctestmodule="KGRlZm1vZHVsZSB7e1BST0pFQ1R9fXt7Sk9JTkNIQVJ9fXRlc3RzCiAgKGV4cG9yd
 svcapp="KGRlZm1vZHVsZSB7e1BST0pFQ1R9fXt7Sk9JTkNIQVJ9fWFwcAogIChiZWhhdmlvdXIgYXBwbGljYXRpb24pCiAgKGV4cG9ydCAoc3RhcnQgMikKICAgICAgICAgIChzdG9wIDEpKSkKCihkZWZ1biBzdGFydCAodHlwZSBhcmdzKQogIChsZXQgKChyZXN1bHQgKDoge3tQUk9KRUNUfX17e0pPSU5DSEFSfX1zdXAgc3RhcnRfbGluaykpKQogICAgKGNhc2UgcmVzdWx0CiAgICAgICgodHVwbGUgJ29rIHBpZCkKICAgICAgICByZXN1bHQpCiAgICAgIChfCiAgICAgICAgKHR1cGxlICdlcnJvciByZXN1bHQpKSkpKQoKKGRlZnVuIHN0b3AgKHN0YXRlKQogICdvaykK"
 svcserver="Ozs7LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQo7OzsgQGF1dGhvciAgWU9VUiBOQU1FLCA8WU9VUiBFTUFJTD4KOzs7IEBjb3B5cmlnaHQgKEMpIFlFQVIsCjs7OyBAZG9jCjs7OyAgICAgWU9VUiBQUk9KRUNUIGFwcGxpY2F0aW9uIHNlcnZlcgo7OzsgQGVuZAo7OzsgQ3JlYXRlZCA6IFRPREFZIGJ5IFlPVVIgRU1BSUwKOzs7LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQooZGVmbW9kdWxlIHt7UFJPSkVDVH19e3tKT0lOQ0hBUn19c2VydmVyCiAgKGJlaGF2aW91ciBnZW5fc2VydmVyKQogIDs7IEFQSQogIChleHBvcnQgKHN0YXJ0X2xpbmsgMCkKICAgICAgICAgICh0ZXN0LWNhbGwgMSkKICAgICAgICAgICh0ZXN0LWNhc3QgMSkpCiAgOzsgZ2VuX3NlcnZlciBjYWxsYmFja3MKICAoZXhwb3J0IChpbml0IDEpCiAgICAgICAgICAoaGFuZGxlX2NhbGwgMykKICAgICAgICAgIChoYW5kbGVfY2FzdCAyKQogICAgICAgICAgKGhhbmRsZV9pbmZvIDIpCiAgICAgICAgICAodGVybWluYXRlIDIpCiAgICAgICAgICAoY29kZV9jaGFuZ2UgMykpKQoKKGRlZnJlY29yZCBzdGF0ZQogIChkYXRhICh0dXBsZSkpKQoKKGRlZnVuIHNlcnZlci1uYW1lICgpCiAgJ3t7UFJPSkVDVH19e3tKT0lOQ0hBUn19c2VydmVyKQoKOzs7PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQo7OzsgQVBJCjs7Oz09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KCjs7LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KOzsgQGRvYwo7OyBTdGFydHMgdGhlIHNlcnZlcgo7Owo7OyBAc3BlYyBzdGFydF9saW5rKCkgLT4ge29rLCBQaWR9IHwgaWdub3JlIHwge2Vycm9yLCBFcnJvcn0KOzsgQGVuZAo7Oy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCihkZWZ1biBzdGFydF9saW5rICgpCiAgKDogZ2VuX3NlcnZlciBzdGFydF9saW5rCiAgICAgKHR1cGxlICdsb2NhbCAoc2VydmVyLW5hbWUpKSAoTU9EVUxFKSAnKCkgJygpKSkKCihkZWZ1biB0ZXN0LWNhbGwgKG1lc3NhZ2UpCiAgKDogZ2VuX3NlcnZlciBjYWxsCiAgICAgKHNlcnZlci1uYW1lKSAodHVwbGUgJ3Rlc3QgbWVzc2FnZSkpKQoKKGRlZnVuIHRlc3QtY2FzdCAobWVzc2FnZSkKICAoOiBnZW5fc2VydmVyIGNhc3QKICAgICAoc2VydmVyLW5hbWUpICh0dXBsZSAndGVzdCBtZXNzYWdlKSkpCgo7Ozs9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09Cjs7OyBnZW5fc2VydmVyIGNhbGxiYWNrcwo7Ozs9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09Cgo7Oy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCjs7IEBwcml2YXRlCjs7IEBkb2MKOzsgSW5pdGlhbGl6ZXMgdGhlIHNlcnZlcgo7Owo7OyBAc3BlYyBpbml0KEFyZ3MpIC0+IHtvaywgU3RhdGV9IHwKOzsgICAgICAgICAgICAgICAgICAgICB7b2ssIFN0YXRlLCBUaW1lb3V0fSB8Cjs7ICAgICAgICAgICAgICAgICAgICAgaWdub3JlIHwKOzsgICAgICAgICAgICAgICAgICAgICB7c3RvcCwgUmVhc29ufQo7OyBAZW5kCjs7LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KKGRlZnVuIGluaXQgKGFyZ3MpCiAgKHR1cGxlICdvayAobWFrZS1zdGF0ZSkpKQoKCjs7LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KOzsgQHByaXZhdGUKOzsgQGRvYwo7OyBIYW5kbGluZyBjYWxsIG1lc3NhZ2VzCjs7Cjs7IEBzcGVjIGhhbmRsZV9jYWxsKFJlcXVlc3QsIEZyb20sIFN0YXRlKSAtPgo7OyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAge3JlcGx5LCBSZXBseSwgU3RhdGV9IHwKOzsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHtyZXBseSwgUmVwbHksIFN0YXRlLCBUaW1lb3V0fSB8Cjs7ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB7bm9yZXBseSwgU3RhdGV9IHwKOzsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHtub3JlcGx5LCBTdGF0ZSwgVGltZW91dH0gfAo7OyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAge3N0b3AsIFJlYXNvbiwgUmVwbHksIFN0YXRlfSB8Cjs7ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB7c3RvcCwgUmVhc29uLCBTdGF0ZX0KOzsgQGVuZAo7Oy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCihkZWZ1biBoYW5kbGVfY2FsbAogICgoKHR1cGxlICd0ZXN0IG1lc3NhZ2UpIGZyb20gc3RhdGUpCiAgICAoOiBsZmVfaW8gZm9ybWF0ICciQ2FsbDogfnB+biIgKGxpc3QgbWVzc2FnZSkpCiAgICAodHVwbGUgJ3JlcGx5ICdvayBzdGF0ZSkpCiAgKChyZXF1ZXN0IGZyb20gc3RhdGUpCiAgICAodHVwbGUgJ3JlcGx5ICdvayBzdGF0ZSkpKQoKOzstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQo7OyBAcHJpdmF0ZQo7OyBAZG9jCjs7IEhhbmRsaW5nIGNhc3QgbWVzc2FnZXMKOzsKOzsgQHNwZWMgaGFuZGxlX2Nhc3QoTXNnLCBTdGF0ZSkgLT4ge25vcmVwbHksIFN0YXRlfSB8Cjs7ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHtub3JlcGx5LCBTdGF0ZSwgVGltZW91dH0gfAo7OyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB7c3RvcCwgUmVhc29uLCBTdGF0ZX0KOzsgQGVuZAo7Oy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCihkZWZ1biBoYW5kbGVfY2FzdAogICgoKHR1cGxlICd0ZXN0IG1lc3NhZ2UpIHN0YXRlKQogICAgKDogbGZlX2lvIGZvcm1hdCAnIkNhc3Q6IH5wfm4iIChsaXN0IG1lc3NhZ2UpKQogICAgKHR1cGxlICdub3JlcGx5IHN0YXRlKSkKICAoKG1lc3NhZ2Ugc3RhdGUpCiAgICAodHVwbGUgJ25vcmVwbHkgc3RhdGUpKSkKCjs7LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KOzsgQHByaXZhdGUKOzsgQGRvYwo7OyBIYW5kbGluZyBhbGwgbm9uIGNhbGwvY2FzdCBtZXNzYWdlcwo7Owo7OyBAc3BlYyBoYW5kbGVfaW5mbyhJbmZvLCBTdGF0ZSkgLT4ge25vcmVwbHksIFN0YXRlfSB8Cjs7ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB7bm9yZXBseSwgU3RhdGUsIFRpbWVvdXR9IHwKOzsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHtzdG9wLCBSZWFzb24sIFN0YXRlfQo7OyBAZW5kCjs7LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KKGRlZnVuIGhhbmRsZV9pbmZvIChpbmZvIHN0YXRlKQogICh0dXBsZSAnbm9yZXBseSBzdGF0ZSkpCgo7Oy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCjs7IEBwcml2YXRlCjs7IEBkb2MKOzsgVGhpcyBmdW5jdGlvbiBpcyBjYWxsZWQgYnkgYSBnZW5fc2VydmVyIHdoZW4gaXQgaXMgYWJvdXQgdG8KOzsgdGVybWluYXRlLiBJdCBzaG91bGQgYmUgdGhlIG9wcG9zaXRlIG9mIE1vZHVsZTppbml0LzEgYW5kIGRvIGFueQo7OyBuZWNlc3NhcnkgY2xlYW5pbmcgdXAuIFdoZW4gaXQgcmV0dXJucywgdGhlIGdlbl9zZXJ2ZXIgdGVybWluYXRlcwo7OyB3aXRoIFJlYXNvbi4gVGhlIHJldHVybiB2YWx1ZSBpcyBpZ25vcmVkLgo7Owo7OyBAc3BlYyB0ZXJtaW5hdGUoUmVhc29uLCBTdGF0ZSkgLT4gdm9pZCgpCjs7IEBlbmQKOzstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQooZGVmdW4gdGVybWluYXRlIChyZWFzb24gc3RhdGUpCiAgJ29rKQoKOzstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQo7OyBAcHJpdmF0ZQo7OyBAZG9jCjs7IENvbnZlcnQgcHJvY2VzcyBzdGF0ZSB3aGVuIGNvZGUgaXMgY2hhbmdlZAo7Owo7OyBAc3BlYyBjb2RlX2NoYW5nZShPbGRWc24sIFN0YXRlLCBFeHRyYSkgLT4ge29rLCBOZXdTdGF0ZX0KOzsgQGVuZAo7Oy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCihkZWZ1biBjb2RlX2NoYW5nZSAob2xkLXZlcnNpb24gc3RhdGUgZXh0cmEpCiAgKHR1cGxlICdvayBzdGF0ZSkpCgo7Ozs9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09Cjs7OyBJbnRlcm5hbCBmdW5jdGlvbnMKOzs7PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQo="
 svcsup="KGRlZm1vZHVsZSB7e1BST0pFQ1R9fXt7Sk9JTkNIQVJ9fXN1cAogIChiZWhhdmlvdXIgc3VwZXJ2aXNvcikKICA7OyBBUEkKICAoZXhwb3J0IChzdGFydF9saW5rIDApKQogIDs7IFN1cGVydmlzb3IgY2FsbGJhY2tzCiAgKGV4cG9ydCAoaW5pdCAxKSkpCgooZGVmdW4gc2VydmVyLW5hbWUgKCkKICAne3tQUk9KRUNUfX17e0pPSU5DSEFSfX1zdXApCgooZGVmdW4gc3RhcnRfbGluayAoKQogICg6IHN1cGVydmlzb3Igc3RhcnRfbGluawogICAgKHR1cGxlICdsb2NhbCAoc2VydmVyLW5hbWUpKSAoTU9EVUxFKSAnKCkpKQoKKGRlZnVuIGluaXQgKGFyZ3MpCiAgKGxldCogKChzZXJ2ZXIgKHR1cGxlCiAgICAgICAgICAgICAgICAgICAne3tQUk9KRUNUfX17e0pPSU5DSEFSfX1zZXJ2ZXIKICAgICAgICAgICAgICAgICAgICh0dXBsZSAne3tQUk9KRUNUfX17e0pPSU5DSEFSfX1zZXJ2ZXIgJ3N0YXJ0X2xpbmsgJygpKQogICAgICAgICAgICAgICAgICAgJ3Blcm1hbmVudAogICAgICAgICAgICAgICAgICAgMjAwMAogICAgICAgICAgICAgICAgICAgJ3dvcmtlcgogICAgICAgICAgICAgICAgICAgKGxpc3QgJ3t7UFJPSkVDVH19e3tKT0lOQ0hBUn19c2VydmVyKQogICAgICAgICAgICAgICAgICAgKSkKICAgICAgICAgKGNoaWxkcmVuIChsaXN0IHNlcnZlcikpCiAgICAgICAgIChyZXN0YXJ0LXN0cmF0ZWd5ICh0dXBsZSAnb25lX2Zvcl9vbmUgMyAxKSkpCiAgICAodHVwbGUgJ29rICh0dXBsZSByZXN0YXJ0LXN0cmF0ZWd5IGNoaWxkcmVuKSkpKQo="
+yawsmk="aW5jbHVkZSBjb21tb24ubWsKCmRldjogY29tcGlsZS1iby1kZXBzCkBFUkxfTElCUz0kKEVSTF9MSUJTKSAkKFlBV1MpIC1pIC0tY29uZiAkKFlBV1NfQ09ORikgLS1pZCAkKFlBV1NfU0VSVkVSX0lEKQoKcnVuOiBjb21waWxlCkBFUkxfTElCUz0kKEVSTF9MSUJTKSAkKFlBV1MpIC1EIC0taGVhcnQgLS1jb25mICQoWUFXU19DT05GKSAtLWlkICQoWUFXU19TRVJWRVJfSUQpCgp1cGRhdGUtY29uZjoKQEVSTF9MSUJTPSQoRVJMX0xJQlMpICQoWUFXUykgLWggLS1jb25mICQoWUFXU19DT05GKSAtLWlkICQoWUFXU19TRVJWRVJfSUQpCgpzdGF0czoKQEVSTF9MSUJTPSQoRVJMX0xJQlMpICQoWUFXUykgLVMgLS1pZCAkKFlBV1NfU0VSVkVSX0lEKQoKc3RvcDoKQEVSTF9MSUJTPSQoRVJMX0xJQlMpICQoWUFXUykgLS1zdG9wIC0taWQgJChZQVdTX1NFUlZFUl9JRCkK"
+yawsmakefile="aW5jbHVkZSB5YXdzLm1rCg=="
+yawsrebar="e2VybF9vcHRzLCBbZGVidWdfaW5mbywge3NyY19kaXJzLCBbInRlc3QiXX1dfS4Ke2xmZV9maXJzdF9maWxlcywgW119Lgp7ZGVwc19kaXIsIFsiZGVwcyJdfS4Ke2V1bml0X2NvbXBpbGVfb3B0cywgWwogICB7c3JjX2RpcnMsIFsidGVzdCIsICJzcmMiXX0KICBdfS4Ke2RlcHMsIFsKICAge2xmZSwgIi4qIiwge2dpdCwgImdpdDovL2dpdGh1Yi5jb20vcnZpcmRpbmcvbGZlLmdpdCIsICJkZXZlbG9wIn19LAogICB7J2xmZS11dGlscycsICIuKiIsIHtnaXQsICJodHRwczovL2dpdGh1Yi5jb20vbGZlL2xmZS11dGlscy5naXQiLCAibWFzdGVyIn19LAogICB7bGZldW5pdCwgIi4qIiwge2dpdCwgImdpdDovL2dpdGh1Yi5jb20vbGZlL2xmZXVuaXQuZ2l0IiwgIm1hc3RlciJ9fSwKICAge3lhd3MsICIuKiIsIHtnaXQsICJnaXQ6Ly9naXRodWIuY29tL2tsYWNrZS95YXdzLmdpdCIsICJtYXN0ZXIifX0KICBdfS4K"
+yawsconf="bG9nZGlyID0gbG9ncwplYmluX2RpciA9IGRlcHMveWF3cy92YXIveWF3cy9lYmluCmViaW5fZGlyID0gZWJpbgpsb2dfcmVzb2x2ZV9ob3N0bmFtZSA9IGZhbHNlCmZhaWxfb25fYmluZF9lcnIgPSB0cnVlCgo8c2VydmVyIGxvY2FsaG9zdD4KICAgICAgICBwb3J0ID0gNTA5OQogICAgICAgIGxpc3RlbiA9IDAuMC4wLjAKICAgICAgICBhcHBtb2RzID0gPC8sIHt7UFJPSkVDVH19PgogICAgICAgIGRvY3Jvb3QgPSB3d3cKPC9zZXJ2ZXI+Cg=="
+yawsmodule="KGRlZm1vZHVsZSB7e1BST0pFQ1R9fQogIChleHBvcnQgYWxsKSkKCihkZWZ1biBteS1hZGRlciAoeCB5KQogICgrIHggKCsgeSAxKSkpCg=="
 
 decode () {
     os=`uname`
@@ -38,10 +43,7 @@ print-usage () {
     local fullpath=$1
     local version=$2
     local script=`basename $1`
-    echo "$usage" | decode | sed \
-        -e "s#{{SCRIPT}}#$script#g" \
-        -e "s#{{FULLPATH}}#$fullpath#g" \
-        -e "s#{{VERSION}}#$version#g"
+    echo "$usage" | decode
 }
 
 error () {
@@ -84,27 +86,26 @@ create-dirs () {
     mkdir -p $project/src $project/test
 }
 
+create-yaws-dirs () {
+    mkdir -p www etc logs
+}
+
 create-file () {
     local data=$1
     local filename=$2
     local pattern=$3
     local project=$4
-    local joinchar=$(dash-or-underscore-char $project)
-    local joinpattern="{{JOINCHAR}}"
     if [ "$pattern" = "" ]; then
         pattern="{{NOOP}}"
         project="{{NOOP}}"
-        joinpattern="{{NOOP}}"
     fi
     echo $data | decode | sed \
-        -e "s/$joinpattern/$joinchar/" \
         -e "s/$pattern/$project/" > $filename
 }
 
 create-project-files () {
     local project=$1
     create-file "$gitignore" $project/.gitignore
-    create-file "$rebarconfig" $project/rebar.config
     create-file "$commonmk" $project/common.mk {{PROJECT}} $project
     create-file "$travisci" $project/.travis.yml {{PROJECT}} $project
     create-file "$readme" $project/README.rst {{PROJECT}} $project
@@ -113,40 +114,39 @@ create-project-files () {
 
 create-library-files () {
     local project=$1
+    create-file "$rebarconfig" $project/rebar.config
     create-file "$libmakefile" $project/Makefile {{PROJECT}} $project
     create-file "$libappsrc" $project/src/$project.app.src {{PROJECT}} $project
     create-file "$libtestmodule" \
-        $project/test/${project}$(dash-or-underscore-char $project)tests.lfe \
-        {{PROJECT}} $project
+        $project/test/${project}-tests.lfe {{PROJECT}} $project
     create-file "$libmodule" $project/src/$project.lfe {{PROJECT}} $project
 }
 
 create-service-files () {
     local project=$1
+    create-file "$rebarconfig" $project/rebar.config
     create-file "$otpmk" $project/otp.mk {{PROJECT}} $project
     create-file "$svcmakefile" $project/Makefile {{PROJECT}} $project
     create-file "$svcappsrc" $project/src/$project.app.src {{PROJECT}} $project
     create-file "$svctestmodule" \
-        $project/test/${project}$(dash-or-underscore-char $project)tests.lfe \
-        {{PROJECT}} $project
+        $project/test/${project}-tests.lfe {{PROJECT}} $project
     create-file "$svcapp" \
-        $project/src/${project}$(dash-or-underscore-char $project)app.lfe \
-        {{PROJECT}} $project
+        $project/src/${project}-app.lfe {{PROJECT}} $project
     create-file "$svcserver" \
-        $project/src/${project}$(dash-or-underscore-char $project)server.lfe \
-        {{PROJECT}} $project
+        $project/src/${project}-server.lfe {{PROJECT}} $project
     create-file "$svcsup" \
-        $project/src/${project}$(dash-or-underscore-char $project)sup.lfe \
-        {{PROJECT}} $project
+        $project/src/${project}-sup.lfe {{PROJECT}} $project
 }
 
-dash-or-underscore-char () {
+create-yaws-files () {
     local project=$1
-    case "$project" in
-        *_*) local char="_" ;;
-        *) local char="-" ;;
-    esac
-    echo -n $char
+    create-file "$yawsmk" $project/yaws.mk {{PROJECT}} $project
+    create-file "$yawsmakefile" $project/Makefile {{PROJECT}} $project
+    create-file "$yawsrebar" $project/rebar.config
+    create-file "$yawsconf" $project/etc/yaws.conf {{PROJECT}} $project
+    create-file "$yawsmodule" $project/src/${project}.lfe {{PROJECT}} $project
+    create-file "$libtestmodule" \
+        $project/test/${project}-tests.lfe {{PROJECT}} $project
 }
 
 setup-script-project () {
@@ -161,7 +161,7 @@ setup-library-project () {
     create-dirs $project
     create-project-files $project
     create-library-files $project
-    cd $project && git init && git add * .gitignore .travis.yml && make check
+    cd $project && git init && git add * .gitignore && make check
 }
 
 setup-service-project () {
@@ -170,13 +170,23 @@ setup-service-project () {
     create-dirs $project
     create-project-files $project
     create-service-files $project
-    cd $project && git init && git add * .gitignore .travis.yml && make check
+    cd $project && git init && git add * .gitignore && make check
 }
 
 setup-e2-service-project () {
     #echo "Setting up starter e2 service project ..."
     local project=$1
     not-implemented-error
+}
+
+setup-yaws-project () {
+    echo "Setting up starter YAWS project ..."
+    local project=$1
+    create-dirs $project
+    create-yaws-dirs
+    create-project-files $project
+    create-yaws-files $project
+    cd $project && git init && git add * .gitignore && make check
 }
 
 check-context () {
@@ -208,6 +218,9 @@ create-new () {
             ;;
         e2service)
             setup-e2-service-project $arg
+            ;;
+        yaws)
+            setup-yaws-project $arg
             ;;
         *)
             unknown-context-error $context

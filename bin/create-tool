@@ -53,6 +53,10 @@ fill-makefile () {
     template="templates/service/otp.mk.tmpl"
     pattern="{{OTPMK}}"
     fill-tool-var $template $pattern
+    # yaws make include
+    template="templates/yaws/yaws.mk.tmpl"
+    pattern="{{YAWSMK}}"
+    fill-tool-var $template $pattern
     # master make file for library projects
     template="templates/library/Makefile.tmpl"
     pattern="{{LIBMAKEFILE}}"
@@ -129,6 +133,30 @@ fill-svcsup () {
     fill-tool-var $template $pattern
 }
 
+fill-yawsmakefile () {
+    template="templates/yaws/Makefile.tmpl"
+    pattern="{{YAWSMAKEFILE}}"
+    fill-tool-var $template $pattern
+}
+
+fill-yawsrebar () {
+    template="templates/yaws/rebar.config.tmpl"
+    pattern="{{YAWSREBAR}}"
+    fill-tool-var $template $pattern
+}
+
+fill-yawsconf () {
+    template="templates/yaws/yaws.conf.tmpl"
+    pattern="{{YAWSCONF}}"
+    fill-tool-var $template $pattern
+}
+
+fill-yawsmodule () {
+    template="templates/yaws/PROJECT.lfe.tmpl"
+    pattern="{{YAWSMODULE}}"
+    fill-tool-var $template $pattern
+}
+
 run () {
     cp $template $dest
     fill-usage
@@ -147,6 +175,10 @@ run () {
     fill-svcapp
     fill-svcserver
     fill-svcsup
+    fill-yawsmakefile
+    fill-yawsrebar
+    fill-yawsconf
+    fill-yawsmodule
     chmod 755 $dest
 }
 

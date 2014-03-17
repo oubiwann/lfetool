@@ -6,6 +6,7 @@ expectedversion="0.1.2"
 scriptname="fibo-check"
 libname="test-lib"
 svcname="test-service"
+yawsname="test-yaws"
 lferepo="test-lfe-repo"
 lfepath="$lferepo/bin"
 
@@ -114,6 +115,14 @@ testNewService () {
         "`head -1 $svcname/rebar.config`"
 }
 
+testNewYAWS () {
+    ./lfetool new yaws $yawsname &> /dev/null
+    assertEquals "include yaws.mk" \
+        "`head -1 $yawsname/Makefile`"
+    assertEquals "PROJECT = test-yaws" \
+        "`head -1 $yawsname/common.mk`"
+}
+
 ##########
 # fixtures
 ##########
@@ -134,7 +143,7 @@ oneTimeTearDown () {
     echo
     echo "Performing one-time tear-down ..."
     rm $scriptname
-    rm -rf $libname $svcname $lferepo
+    rm -rf $libname $svcname $lferepo $yawsname
 }
 
 #######################
