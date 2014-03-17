@@ -157,11 +157,20 @@ The ``new`` command supports the following sub-commands:
 
 * ``service``
 
+* ``yaws``
+
+
+``new script``
+,,,,,,,,,,,,,,
+
 To create an lfescript, simply run the following:
 
 .. code:: shell
 
     $ lfetool new script my-script
+
+``new library``
+,,,,,,,,,,,,,,,
 
 To create a "library" project, run the following:
 
@@ -182,6 +191,9 @@ skeleton, but also:
 
 * the new project files will be added to the repo.
 
+
+``new service``
+,,,,,,,,,,,,,,,,
 
 One may create a "service" project by running the following:
 
@@ -235,6 +247,30 @@ via a command line option in the ``Makefile``.
 
 If you would simply like to run in daemon mode, you may do that as well with the
 supplied ``daemon`` target.
+
+
+``new yaws``
+,,,,,,,,,,,,
+
+This command creates a new YAWS web project in LFE (using the `exemplar`_
+library for generating HTML with S-expressions).
+
+.. code:: cl
+
+    $ lfetool new yaws my-web-project
+
+After this, you can view your new project by executing these commands:
+
+.. code:: bash
+
+    $ cd my-web-project
+    $ make dev
+
+and then visiting your web browser at http://localhost:5099/.
+
+
+``new e2service``
+,,,,,,,,,,,,,,,,,
 
 At a future date we will also support the e2 project in a similar fashion:
 

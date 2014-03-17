@@ -1,0 +1,55 @@
+(defmodule {{PROJECT}}-content
+  (export all))
+
+(include-lib "deps/exemplar/include/html-macros.lfe")
+
+(defun get-content (arg-data)
+  ""
+  (: {{PROJECT}}-util make-200-result
+    (html
+      (list
+          (head
+            (title '"Main Page"))
+          (body
+            (main
+              (div
+                (list
+                  (h1 '"Main Page")
+                  (h2 '"Links")
+                  (ul
+                    (list
+                      (li (a '(href "/content/1") '"/content/1"))
+                      (li (a '(href "/content/2") '"/content/2"))
+                      (li (a '(href "/content/3") '"/content/3"))
+                      (li (a '(href "/bob") '"404"))))))))))))
+
+(defun get-content (item-id arg-data)
+  "Content API."
+  ;; we'll pretent to pull content from a data store here ...
+  (let ((fetched-title '"Queried Title")
+        (fetched-content '"Some super-great queried lorem ipsum."))
+    (: {{PROJECT}}-util make-200-result
+      (html
+        (list
+            (head
+              (title fetched-title))
+            (body
+              (main
+                (div '(class "dynamic content")
+                  (list
+                    (h1 fetched-title)
+                    (h2 (++ '"Item " item-id))
+                    (div (p fetched-content)))))))))))
+
+(defun four-oh-four (message)
+    (: yaws-1-util make-404-result
+      (html
+        (list
+            (head
+              (title '"404"))
+            (body
+              (main
+                (div
+                  (list
+                    (h1 '"404 - Not Found")
+                    (div (p message))))))))))
