@@ -266,7 +266,7 @@ After this, you can view your new project by executing these commands:
     $ cd my-web-project
     $ make dev
 
-and then visiting your web browser at http://localhost:5099/.
+and then pointing your web browser at http://localhost:5099/.
 
 
 ``new e2service``
@@ -299,7 +299,7 @@ Step 1
   added to a new project, with two exceptions: 1) they should have a ``.tmpl``
   extension, and 2) anywhere a project name would have been used (e.g., a
   module), ``PROJECT`` should be used instead.
-  
+
 * Note the use of of ``local varname=$n`` in other functions; to avoid name
   collisions you will want to duplicate this in your own functions.
 
@@ -324,7 +324,7 @@ Step 2
   ``lfetool.tmpl`` with a unique string of the form ``{{NAME}}`` which will later
   be substituted with actual content (done in Step 3).
 
-  
+
 Step 3
 ------
 
@@ -334,15 +334,15 @@ Step 3
   an actual value for instances of ``{{NAME}}`` that you put in your templates.
   (The most common example of this is replacing ``{{PROJECT}}`` with the name
   of the project passed when calling ``lfetool``.)
-  
+
 * Each function created for this should be prefixed by ``fill-``.
-  
+
 * Note that all Makefile-related files are currently managed in a single
   function; if your project is creating its own ``Makefile`` and a ``*.mk``
   include, you'll want to update this function.
-  
+
 * Update the ``run`` function to call all your new ``fill-*`` functions.
-  
+
 
 Step 4
 ------
