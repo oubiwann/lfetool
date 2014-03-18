@@ -89,7 +89,7 @@ lfetool-not-found-error () {
 
 create-dirs () {
     local project=$1
-    mkdir -p $project/{src,test}
+    mkdir -p $project/{src,test/unit,test/integration,test/system}
 }
 
 create-yaws-dirs () {
@@ -135,7 +135,7 @@ create-service-files () {
     create-file "$svcmakefile" $project/Makefile {{PROJECT}} $project
     create-file "$svcappsrc" $project/src/$project.app.src {{PROJECT}} $project
     create-file "$svctestmodule" \
-        $project/test/${project}-tests.lfe {{PROJECT}} $project
+        $project/test/unit/unit-${project}-tests.lfe {{PROJECT}} $project
     create-file "$svcapp" \
         $project/src/${project}-app.lfe {{PROJECT}} $project
     create-file "$svcserver" \
@@ -159,7 +159,7 @@ create-yaws-files () {
     create-file "$yawsutilmodule" \
         $project/src/${project}-util.lfe {{PROJECT}} $project
     create-file "$libtestmodule" \
-        $project/test/${project}-tests.lfe {{PROJECT}} $project
+        $project/test/unit/unit-${project}-tests.lfe {{PROJECT}} $project
 }
 
 setup-script-project () {
