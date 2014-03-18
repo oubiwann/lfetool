@@ -6,7 +6,7 @@
 ;;; @end
 ;;; Created : TODAY by YOUR EMAIL
 ;;;-------------------------------------------------------------------
-(defmodule {{PROJECT}}{{JOINCHAR}}server
+(defmodule {{PROJECT}}-server
   (behaviour gen_server)
   ;; API
   (export (start_link 0)
@@ -24,7 +24,7 @@
   (data (tuple)))
 
 (defun server-name ()
-  '{{PROJECT}}{{JOINCHAR}}server)
+  '{{PROJECT}}-server)
 
 ;;;===================================================================
 ;;; API
