@@ -146,6 +146,7 @@ oneTimeSetUp () {
     echo
     echo "Performing one-time set-up ..."
     echo
+    make build
     if [ "$TRAVIS" = "true" ]; then
         git clone https://github.com/rvirding/lfe $lferepo &> /dev/null && \
         cd $lferepo && \
