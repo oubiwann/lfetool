@@ -26,25 +26,30 @@ fill-usage () {
     fill-tool-var $template $pattern
 }
 
-fill-gitignore () {
+fill-common-files () {
+    # ignores
     template="templates/common/.gitignore.tmpl"
     pattern="{{GITIGNORE}}"
     fill-tool-var $template $pattern
-}
-
-fill-rebar () {
-    template="templates/common/rebar.config.tmpl"
-    pattern="{{REBAR}}"
-    fill-tool-var $template $pattern
-}
-
-fill-package () {
+    # expm package file
     template="templates/common/package.exs.tmpl"
     pattern="{{PACKAGE}}"
     fill-tool-var $template $pattern
+    # rebar config file
+    template="templates/common/rebar.config.tmpl"
+    pattern="{{REBAR}}"
+    fill-tool-var $template $pattern
+    # Travis CI file
+    template="templates/common/.travis.yml.tmpl"
+    pattern="{{TRAVISCI}}"
+    fill-tool-var $template $pattern
+    # README file
+    template="templates/common/README.rst.tmpl"
+    pattern="{{README}}"
+    fill-tool-var $template $pattern
 }
 
-fill-makefile () {
+fill-makefiles () {
     # base make include
     template="templates/common/common.mk.tmpl"
     pattern="{{COMMONMK}}"
@@ -71,85 +76,59 @@ fill-makefile () {
     fill-tool-var $template $pattern
 }
 
-fill-travisci () {
-    template="templates/common/.travis.yml.tmpl"
-    pattern="{{TRAVISCI}}"
-    fill-tool-var $template $pattern
-}
-
-fill-readme () {
-    template="templates/common/README.rst.tmpl"
-    pattern="{{README}}"
-    fill-tool-var $template $pattern
-}
-
 fill-script () {
     template="templates/script/SCRIPT.tmpl"
     pattern="{{SCRIPTFILE}}"
     fill-tool-var $template $pattern
 }
 
-fill-libappsrc () {
+fill-library-files () {
+    # app.src file
     template="templates/library/PROJECT.app.src.tmpl"
     pattern="{{LIBAPPSRC}}"
     fill-tool-var $template $pattern
-}
-
-fill-libtestmodule () {
+    # test module
     template="templates/common/PROJECT-tests.lfe.tmpl"
     pattern="{{LIBTESTMODULE}}"
     fill-tool-var $template $pattern
-}
-
-fill-libmodule () {
+    # module
     template="templates/common/PROJECT.lfe.tmpl"
     pattern="{{LIBMODULE}}"
     fill-tool-var $template $pattern
 }
 
-fill-svcappsrc () {
+fill-service-files () {
+    # app.src file
     template="templates/service/PROJECT.app.src.tmpl"
     pattern="{{SVCAPPSRC}}"
     fill-tool-var $template $pattern
-}
-
-fill-svctestmodule () {
+    # test module
     template="templates/service/PROJECT-tests.lfe.tmpl"
     pattern="{{SVCTESTMODULE}}"
     fill-tool-var $template $pattern
-}
-
-fill-svcapp () {
+    # server module
+    template="templates/service/PROJECT-server.lfe.tmpl"
+    pattern="{{SVCSERVER}}"
+    fill-tool-var $template $pattern
+    # supervisor
+    template="templates/service/PROJECT-sup.lfe.tmpl"
+    pattern="{{SVCSUP}}"
+    fill-tool-var $template $pattern
+    # app
     template="templates/service/PROJECT-app.lfe.tmpl"
     pattern="{{SVCAPP}}"
     fill-tool-var $template $pattern
 }
 
-fill-svcserver () {
-    template="templates/service/PROJECT-server.lfe.tmpl"
-    pattern="{{SVCSERVER}}"
-    fill-tool-var $template $pattern
-}
-
-fill-svcsup () {
-    template="templates/service/PROJECT-sup.lfe.tmpl"
-    pattern="{{SVCSUP}}"
-    fill-tool-var $template $pattern
-}
-
-fill-yawsrebar () {
-    template="templates/yaws/rebar.config.tmpl"
-    pattern="{{YAWSREBAR}}"
-    fill-tool-var $template $pattern
-}
-
-fill-yawsconf () {
+fill-yawsmodules () {
+    # yaws conf
     template="templates/yaws/yaws.conf.tmpl"
     pattern="{{YAWSCONF}}"
     fill-tool-var $template $pattern
-}
-
-fill-yawsmodules () {
+    # yaws rebar
+    template="templates/yaws/rebar.config.tmpl"
+    pattern="{{YAWSREBAR}}"
+    fill-tool-var $template $pattern
     # entry point module
     template="templates/yaws/PROJECT.lfe.tmpl"
     pattern="{{YAWSMODULE}}"
@@ -171,24 +150,12 @@ fill-yawsmodules () {
 run () {
     cp $template $dest
     fill-usage
-    fill-gitignore
-    fill-rebar
-    fill-package
-    fill-makefile
-    fill-travisci
-    fill-readme
+    fill-commoon-files
+    fill-makefiles
     fill-script
-    fill-libappsrc
-    fill-libtestmodule
-    fill-libmodule
-    fill-svcappsrc
-    fill-svctestmodule
-    fill-svcapp
-    fill-svcserver
-    fill-svcsup
-    fill-yawsrebar
-    fill-yawsconf
-    fill-yawsmodules
+    fill-library-files
+    fill-service-files
+    fill-yaws-files
     chmod 755 $dest
 }
 
