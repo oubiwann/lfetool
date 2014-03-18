@@ -126,7 +126,7 @@ testNewYAWS () {
         "`head -1 $yawsname/src/my-yaws-util.lfe`"
     assertEquals "{application, 'my-yaws'," \
         "`head -2 $yawsname/src/my-yaws.app.src|tail -1`"
-    assertEquals '(defmodule my-yaws-tests' \
+    assertEquals '(defmodule unit-my-yaws-tests' \
         "`head -1 $yawsname/test/unit/unit-my-yaws-tests.lfe`"
     assertEquals 'my-yaws' \
         "`head -2 $yawsname/README.rst|tail -1`"
