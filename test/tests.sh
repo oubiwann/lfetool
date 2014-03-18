@@ -3,10 +3,10 @@
 #############
 
 expectedversion="0.1.2"
-scriptname="test-fibo"
-libname="test-lib"
-svcname="test-service"
-yawsname="test-yaws"
+scriptname="my-fibo"
+libname="my-lib"
+svcname="my-service"
+yawsname="my-yaws"
 lferepo="test-lfe-repo"
 lfepath="$lferepo/bin"
 
@@ -58,21 +58,21 @@ testNewLibrary () {
     ./lfetool new library $libname &> /dev/null
     assertEquals "include common.mk" \
         "`head -1 $libname/Makefile`"
-    assertEquals "PROJECT = test-lib" \
+    assertEquals "PROJECT = my-lib" \
         "`head -1 $libname/common.mk`"
     assertEquals 12 \
         "`find $libname -type f|egrep -v 'deps|.git'|wc -l|tr -d ' '`"
-    assertEquals '(defmodule test-lib' \
-        "`head -1 $libname/src/test-lib.lfe`"
-    assertEquals "{application, 'test-lib'," \
-        "`head -2 $libname/src/test-lib.app.src|tail -1`"
-    assertEquals '(defmodule test-lib-tests' \
-        "`head -1 $libname/test/test-lib-tests.lfe`"
-    assertEquals 'test-lib' \
+    assertEquals '(defmodule my-lib' \
+        "`head -1 $libname/src/my-lib.lfe`"
+    assertEquals "{application, 'my-lib'," \
+        "`head -2 $libname/src/my-lib.app.src|tail -1`"
+    assertEquals '(defmodule unit-my-lib-tests' \
+        "`head -1 $libname/test/unit/unit-my-lib-tests.lfe`"
+    assertEquals 'my-lib' \
         "`head -2 $libname/README.rst|tail -1`"
-    assertEquals 'name:"test-lib",' \
+    assertEquals 'name:"my-lib",' \
         "`head -2 $libname/package.exs|tail -1|tr -d ' '`"
-    assertEquals '{erl_opts, [debug_info, {src_dirs, ["test"]}]}.' \
+    assertEquals '{erl_opts, [debug_info, {src_dirs, ["test/unit",' \
         "`head -1 $libname/rebar.config`"
 }
 
@@ -81,25 +81,25 @@ testNewService () {
     ./lfetool new service $svcname &> /dev/null
     assertEquals "include otp.mk" \
         "`head -1 $svcname/Makefile`"
-    assertEquals "PROJECT = test-service" \
+    assertEquals "PROJECT = my-service" \
         "`head -1 $svcname/common.mk`"
     assertEquals 17 \
         "`find $svcname -type f|egrep -v 'deps|.git'|wc -l|tr -d ' '`"
-    assertEquals '(defmodule test-service-app' \
-        "`head -1 $svcname/src/test-service-app.lfe`"
-    assertEquals '(defmodule test-service-server' \
-        "`head -9 $svcname/src/test-service-server.lfe|tail -1`"
-    assertEquals '(defmodule test-service-sup' \
-        "`head -1 $svcname/src/test-service-sup.lfe`"
-    assertEquals "{application, 'test-service'," \
-        "`head -2 $svcname/src/test-service.app.src|tail -1`"
-    assertEquals '(defmodule test-service-tests' \
-        "`head -1 $svcname/test/test-service-tests.lfe`"
-    assertEquals 'test-service' \
+    assertEquals '(defmodule my-service-app' \
+        "`head -1 $svcname/src/my-service-app.lfe`"
+    assertEquals '(defmodule my-service-server' \
+        "`head -9 $svcname/src/my-service-server.lfe|tail -1`"
+    assertEquals '(defmodule my-service-sup' \
+        "`head -1 $svcname/src/my-service-sup.lfe`"
+    assertEquals "{application, 'my-service'," \
+        "`head -2 $svcname/src/my-service.app.src|tail -1`"
+    assertEquals '(defmodule unit-my-service-tests' \
+        "`head -1 $svcname/test/unit/unit-my-service-tests.lfe`"
+    assertEquals 'my-service' \
         "`head -2 $svcname/README.rst|tail -1`"
-    assertEquals 'name:"test-service",' \
+    assertEquals 'name:"my-service",' \
         "`head -2 $svcname/package.exs|tail -1|tr -d ' '`"
-    assertEquals '{erl_opts, [debug_info, {src_dirs, ["test"]}]}.' \
+    assertEquals '{erl_opts, [debug_info, {src_dirs, ["test/unit",' \
         "`head -1 $svcname/rebar.config`"
 }
 
@@ -114,25 +114,25 @@ testNewYAWS () {
         "`find $yawsname -type f|egrep -v 'deps|.git'|wc -l|tr -d ' '`"
     assertEquals "include yaws.mk" \
         "`head -1 $yawsname/Makefile`"
-    assertEquals "PROJECT = test-yaws" \
+    assertEquals "PROJECT = my-yaws" \
         "`head -1 $yawsname/common.mk`"
-    assertEquals '(defmodule test-yaws' \
-        "`head -1 $yawsname/src/test-yaws.lfe`"
-    assertEquals '(defmodule test-yaws-routes' \
-        "`head -1 $yawsname/src/test-yaws-routes.lfe`"
-    assertEquals '(defmodule test-yaws-content' \
-        "`head -1 $yawsname/src/test-yaws-content.lfe`"
-    assertEquals '(defmodule test-yaws-util' \
-        "`head -1 $yawsname/src/test-yaws-util.lfe`"
-    assertEquals "{application, 'test-yaws'," \
-        "`head -2 $yawsname/src/test-yaws.app.src|tail -1`"
-    assertEquals '(defmodule test-yaws-tests' \
-        "`head -1 $yawsname/test/test-yaws-tests.lfe`"
-    assertEquals 'test-yaws' \
+    assertEquals '(defmodule my-yaws' \
+        "`head -1 $yawsname/src/my-yaws.lfe`"
+    assertEquals '(defmodule my-yaws-routes' \
+        "`head -1 $yawsname/src/my-yaws-routes.lfe`"
+    assertEquals '(defmodule my-yaws-content' \
+        "`head -1 $yawsname/src/my-yaws-content.lfe`"
+    assertEquals '(defmodule my-yaws-util' \
+        "`head -1 $yawsname/src/my-yaws-util.lfe`"
+    assertEquals "{application, 'my-yaws'," \
+        "`head -2 $yawsname/src/my-yaws.app.src|tail -1`"
+    assertEquals '(defmodule my-yaws-tests' \
+        "`head -1 $yawsname/test/unit/unit-my-yaws-tests.lfe`"
+    assertEquals 'my-yaws' \
         "`head -2 $yawsname/README.rst|tail -1`"
-    assertEquals 'name:"test-yaws",' \
+    assertEquals 'name:"my-yaws",' \
         "`head -2 $yawsname/package.exs|tail -1|tr -d ' '`"
-    assertEquals '{erl_opts, [debug_info, {src_dirs, ["test"]}]}.' \
+    assertEquals '{erl_opts, [debug_info, {src_dirs, ["test/unit",' \
         "`head -1 $yawsname/rebar.config`"
     assertEquals 'logdir = logs' \
         "`head -1 $yawsname/etc/yaws.conf`"
