@@ -134,16 +134,6 @@ check-system-only:
 		sed ':a;N;$!ba;s/\n/ /g'`]},[verbose])" \
 	-s init stop
 
-check-travis: compile compile-tests
-	@echo "Building and running unit tests ..."
-	@ERL_LIBS=$(ERL_LIBS) erl -pa .eunit -noshell \
-	-eval "eunit:test({inparallel,[\
-		`ls .eunit| \
-		sed -e 's/.beam//' -e 's/^.eunit\///'| \
-		awk '{print "\x27" $$1 "\x27"}'| \
-		sed ':a;N;$!ba;s/\n/ /g'`]},[verbose])" \
-	-s init stop
-
 check-unit-with-deps: compile compile-tests check-unit-only
 check-unit: get-deps compile-no-deps compile-tests check-unit-only
 check-integration: compile compile-tests check-integration-only
