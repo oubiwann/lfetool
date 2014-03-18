@@ -92,13 +92,44 @@ shell-no-deps: compile-no-deps
 clean: clean-ebin clean-eunit
 	@rebar clean
 
-check: compile compile-tests
-	@clear
+check-unit-only:
+	@echo
+	@echo "------------------"
 	@echo "Running unit tests ..."
+	@echo "------------------"
+	@echo
 	@ERL_LIBS=$(ERL_LIBS) erl -pa .eunit -noshell \
 	-eval "eunit:test({inparallel,[\
-		`ls .eunit| \
-		sed -e 's/.beam//'| \
+		`ls .eunit/unit*| \
+		sed -e 's/.beam//' -e 's/^.eunit\///'| \
+		awk '{print "\x27" $$1 "\x27"}'| \
+		sed ':a;N;$!ba;s/\n/ /g'`]},[verbose])" \
+	-s init stop
+
+check-integration-only:
+	@echo
+	@echo "-------------------------"
+	@echo "Running integration tests ..."
+	@echo "-------------------------"
+	@echo
+	@ERL_LIBS=$(ERL_LIBS) erl -pa .eunit -noshell \
+	-eval "eunit:test({inparallel,[\
+		`ls .eunit/integration*| \
+		sed -e 's/.beam//' -e 's/^.eunit\///'| \
+		awk '{print "\x27" $$1 "\x27"}'| \
+		sed ':a;N;$!ba;s/\n/ /g'`]},[verbose])" \
+	-s init stop
+
+check-system-only:
+	@echo
+	@echo "--------------------"
+	@echo "Running system tests ..."
+	@echo "--------------------"
+	@echo
+	@ERL_LIBS=$(ERL_LIBS) erl -pa .eunit -noshell \
+	-eval "eunit:test({inparallel,[\
+		`ls .eunit/system*| \
+		sed -e 's/.beam//' -e 's/^.eunit\///'| \
 		awk '{print "\x27" $$1 "\x27"}'| \
 		sed ':a;N;$!ba;s/\n/ /g'`]},[verbose])" \
 	-s init stop
@@ -108,21 +139,25 @@ check-travis: compile compile-tests
 	@ERL_LIBS=$(ERL_LIBS) erl -pa .eunit -noshell \
 	-eval "eunit:test({inparallel,[\
 		`ls .eunit| \
-		sed -e 's/.beam//'| \
+		sed -e 's/.beam//' -e 's/^.eunit\///'| \
 		awk '{print "\x27" $$1 "\x27"}'| \
 		sed ':a;N;$!ba;s/\n/ /g'`]},[verbose])" \
 	-s init stop
 
-check-no-deps: compile-no-deps compile-tests
-	@clear
-	@echo "Running unit tests ..."
-	@ERL_LIBS=$(ERL_LIBS) erl -pa .eunit -noshell \
-	-eval "eunit:test({inparallel,[\
-		`ls .eunit| \
-		sed -e 's/.beam//'| \
-		awk '{print "\x27" $$1 "\x27"}'| \
-		sed ':a;N;$!ba;s/\n/ /g'`]},[verbose])" \
-	-s init stop
+check-unit-with-deps: compile compile-tests check-unit-only
+check-unit: get-deps compile-no-deps compile-tests check-unit-only
+check-integration: compile compile-tests check-integration-only
+check-system: compile compile-tests check-system-only
+check-all-with-deps: compile compile-tests check-unit-only \
+	check-integration-only check-system-only
+check-all: get-deps compile-no-deps compile-tests check-unit-only \
+	check-integration-only check-system-only
+
+# XXX all the custom test checkers above have an issue, described here:
+# 	https://github.com/lfe/lfetool/issues/14
+# until that gets fixed, use the target below for Travis CI
+check: compile compile-tests
+	@rebar eunit verbose=1 skip_deps=true
 
 push-all:
 	@echo "Pusing code to github ..."
