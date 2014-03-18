@@ -2,7 +2,7 @@
 # common vars
 #############
 
-expectedversion="0.1.2"
+expectedversion="0.2.0"
 scriptname="my-fibo"
 libname="my-lib"
 svcname="my-service"
