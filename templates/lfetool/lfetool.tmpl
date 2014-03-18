@@ -102,15 +102,11 @@ create-file () {
     local filename=$2
     local pattern=$3
     local project=$4
-    local joinchar=-
-    local joinpattern="{{JOINCHAR}}"
     if [ "$pattern" = "" ]; then
         pattern="{{NOOP}}"
         project="{{NOOP}}"
-        joinpattern="{{NOOP}}"
     fi
     echo $data | decode | sed \
-        -e "s/$joinpattern/$joinchar/" \
         -e "s/$pattern/$project/" > $filename
 }
 
@@ -129,7 +125,7 @@ create-library-files () {
     create-file "$libmakefile" $project/Makefile {{PROJECT}} $project
     create-file "$libappsrc" $project/src/$project.app.src {{PROJECT}} $project
     create-file "$libtestmodule" \
-        $project/test/${project}-tests.lfe {{PROJECT}} $project
+        $project/test/unit/unit-${project}-tests.lfe {{PROJECT}} $project
     create-file "$libmodule" $project/src/$project.lfe {{PROJECT}} $project
 }
 
