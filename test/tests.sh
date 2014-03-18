@@ -146,7 +146,8 @@ oneTimeSetUp () {
     echo
     echo "Performing one-time set-up ..."
     echo
-    make build
+    # the next line seems to be causing errors
+    #make build
     if [ "$TRAVIS" = "true" ]; then
         git clone https://github.com/rvirding/lfe $lferepo &> /dev/null && \
         cd $lferepo && \
