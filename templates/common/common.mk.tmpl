@@ -95,7 +95,13 @@ clean: clean-ebin clean-eunit
 check: compile compile-tests
 	@clear
 	@echo "Running unit tests ..."
-	@rebar eunit verbose=1 skip_deps=true
+	@ERL_LIBS=$(ERL_LIBS) erl -pa .eunit -noshell \
+	-eval "eunit:test({inparallel,[\
+		`ls .eunit| \
+		sed -e 's/.beam//'| \
+		awk '{print "\x27" $$1 "\x27"}'| \
+		sed ':a;N;$!ba;s/\n/ /g'`]},[verbose])" \
+	-s init stop
 
 check-travis: compile compile-tests
 	@echo "Building and running unit tests ..."
@@ -104,13 +110,19 @@ check-travis: compile compile-tests
 		`ls .eunit| \
 		sed -e 's/.beam//'| \
 		awk '{print "\x27" $$1 "\x27"}'| \
-		sed -e :a -e N -e 's/\n/,/'`]},[verbose])" \
+		sed ':a;N;$!ba;s/\n/ /g'`]},[verbose])" \
 	-s init stop
 
 check-no-deps: compile-no-deps compile-tests
 	@clear
 	@echo "Running unit tests ..."
-	@rebar eunit verbose=1 skip_deps=true
+	@ERL_LIBS=$(ERL_LIBS) erl -pa .eunit -noshell \
+	-eval "eunit:test({inparallel,[\
+		`ls .eunit| \
+		sed -e 's/.beam//'| \
+		awk '{print "\x27" $$1 "\x27"}'| \
+		sed ':a;N;$!ba;s/\n/ /g'`]},[verbose])" \
+	-s init stop
 
 push-all:
 	@echo "Pusing code to github ..."
