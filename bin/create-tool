@@ -120,7 +120,7 @@ fill-service-files () {
     fill-tool-var $template $pattern
 }
 
-fill-yawsmodules () {
+fill-yaws-files () {
     # yaws conf
     template="templates/yaws/yaws.conf.tmpl"
     pattern="{{YAWSCONF}}"
@@ -150,7 +150,7 @@ fill-yawsmodules () {
 run () {
     cp $template $dest
     fill-usage
-    fill-commoon-files
+    fill-common-files
     fill-makefiles
     fill-script
     fill-library-files
