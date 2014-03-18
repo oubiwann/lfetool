@@ -174,7 +174,8 @@ setup-library-project () {
     create-dirs $project
     create-project-files $project
     create-library-files $project
-    cd $project && git init && git add * .gitignore .travis.yml && make check
+    cd $project && git init && git add * .gitignore .travis.yml && \
+    make check-all-with-deps
 }
 
 setup-service-project () {
@@ -183,7 +184,8 @@ setup-service-project () {
     create-dirs $project
     create-project-files $project
     create-service-files $project
-    cd $project && git init && git add * .gitignore .travis.yml && make check
+    cd $project && git init && git add * .gitignore .travis.yml && \
+    make check-all-with-deps
 }
 
 setup-e2-service-project () {
@@ -199,7 +201,8 @@ setup-yaws-project () {
     create-yaws-dirs $project
     create-project-files $project
     create-yaws-files $project
-    cd $project && git init && git add * .gitignore .travis.yml && make check
+    cd $project && git init && git add * .gitignore .travis.yml && \
+    make check-all-with-deps
 }
 
 check-context () {
