@@ -107,7 +107,7 @@ create-file () {
         project="{{NOOP}}"
     fi
     echo $data | decode | sed \
-        -e "s/$pattern/$project/" > $filename
+        -e "s/$pattern/$project/g" > $filename
 }
 
 create-project-files () {
