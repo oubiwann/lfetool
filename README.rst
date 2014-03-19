@@ -282,7 +282,7 @@ At a future date we will also support the e2 project in a similar fashion:
 lfetool Plugins
 ===============
 
-*Developing additional ``lfetool`` commands*
+*Developing additional lfetool commands*
 
 This section has been created for those that would like to submit patches/pull
 requests to lfetool for bug fixes and/or new features. At the very least, it
