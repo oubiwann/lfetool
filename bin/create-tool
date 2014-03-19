@@ -9,6 +9,7 @@ for FILE in `ls plugins/*/filler.sh`; do
     source $FILE
 done
 
+# substitute template patterns with values
 fill-tool-var () {
     template=$1
     pattern=$2
@@ -24,93 +25,10 @@ fill-tool-var () {
     mv $temp $dest
 }
 
-fill-common-files () {
-    # ignores
-    template="templates/common/.gitignore.tmpl"
-    pattern="{{GITIGNORE}}"
-    fill-tool-var $template $pattern
-    # expm package file
-    template="templates/common/package.exs.tmpl"
-    pattern="{{PACKAGE}}"
-    fill-tool-var $template $pattern
-    # rebar config file
-    template="templates/common/rebar.config.tmpl"
-    pattern="{{REBAR}}"
-    fill-tool-var $template $pattern
-    # Travis CI file
-    template="templates/common/.travis.yml.tmpl"
-    pattern="{{TRAVISCI}}"
-    fill-tool-var $template $pattern
-    # README file
-    template="templates/common/README.rst.tmpl"
-    pattern="{{README}}"
-    fill-tool-var $template $pattern
-}
-
-fill-makefiles () {
-    # base make include
-    template="templates/common/common.mk.tmpl"
-    pattern="{{COMMONMK}}"
-    fill-tool-var $template $pattern
-    # otp make include
-    template="templates/service/otp.mk.tmpl"
-    pattern="{{OTPMK}}"
-    fill-tool-var $template $pattern
-    # master make file for library projects
-    template="templates/library/Makefile.tmpl"
-    pattern="{{LIBMAKEFILE}}"
-    fill-tool-var $template $pattern
-    # master make file for service projects
-    template="templates/service/Makefile.tmpl"
-    pattern="{{SVCMAKEFILE}}"
-    fill-tool-var $template $pattern
-}
-
-fill-library-files () {
-    # app.src file
-    template="templates/library/PROJECT.app.src.tmpl"
-    pattern="{{LIBAPPSRC}}"
-    fill-tool-var $template $pattern
-    # test module
-    template="templates/common/PROJECT-tests.lfe.tmpl"
-    pattern="{{LIBTESTMODULE}}"
-    fill-tool-var $template $pattern
-    # module
-    template="templates/common/PROJECT.lfe.tmpl"
-    pattern="{{LIBMODULE}}"
-    fill-tool-var $template $pattern
-}
-
-fill-service-files () {
-    # app.src file
-    template="templates/service/PROJECT.app.src.tmpl"
-    pattern="{{SVCAPPSRC}}"
-    fill-tool-var $template $pattern
-    # test module
-    template="templates/service/PROJECT-tests.lfe.tmpl"
-    pattern="{{SVCTESTMODULE}}"
-    fill-tool-var $template $pattern
-    # server module
-    template="templates/service/PROJECT-server.lfe.tmpl"
-    pattern="{{SVCSERVER}}"
-    fill-tool-var $template $pattern
-    # supervisor
-    template="templates/service/PROJECT-sup.lfe.tmpl"
-    pattern="{{SVCSUP}}"
-    fill-tool-var $template $pattern
-    # app
-    template="templates/service/PROJECT-app.lfe.tmpl"
-    pattern="{{SVCAPP}}"
-    fill-tool-var $template $pattern
-}
-
-
-
 run () {
     cp $template $dest
     fill-usage
     fill-common-files
-    fill-makefiles
     fill-script
     fill-library-files
     fill-service-files
