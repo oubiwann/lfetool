@@ -1,6 +1,6 @@
 #!/bin/bash
 
-template="templates/lfetool/lfetool.tmpl"
+template="plugins/lfetool/templates/lfetool.tmpl"
 temp="lfetool-temp"
 dest="lfetool"
 
@@ -22,12 +22,6 @@ fill-tool-var () {
     #echo $data
     sed -e "s#$pattern#$data#g" $dest > $temp
     mv $temp $dest
-}
-
-fill-usage () {
-    template="templates/lfetool/usage.txt.tmpl"
-    pattern="{{USAGE}}"
-    fill-tool-var $template $pattern
 }
 
 fill-common-files () {
