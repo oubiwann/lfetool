@@ -362,4 +362,4 @@ Step 4
 .. _LFE rebar: hhttps://github.com/oubiwann/lfe-sample-rebar-plugin
 .. _lfe-skel: https://github.com/lfe/skeleton-project
 .. _shell script: https://raw.github.com/lfe/lfetool/master/lfetool
-
+.. _exemplar: https://github.com/lfe/exemplar
