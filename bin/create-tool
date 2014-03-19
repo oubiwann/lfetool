@@ -27,7 +27,7 @@ fill-tool-var () {
 
 run () {
     cp $template $dest
-    fill-usage
+    fill-lfetool-files
     fill-common-files
     fill-script
     fill-library-files
