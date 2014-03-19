@@ -56,10 +56,6 @@ fill-makefiles () {
     template="templates/service/otp.mk.tmpl"
     pattern="{{OTPMK}}"
     fill-tool-var $template $pattern
-    # yaws make include
-    template="templates/yaws/yaws.mk.tmpl"
-    pattern="{{YAWSMK}}"
-    fill-tool-var $template $pattern
     # master make file for library projects
     template="templates/library/Makefile.tmpl"
     pattern="{{LIBMAKEFILE}}"
@@ -67,10 +63,6 @@ fill-makefiles () {
     # master make file for service projects
     template="templates/service/Makefile.tmpl"
     pattern="{{SVCMAKEFILE}}"
-    fill-tool-var $template $pattern
-    # master make file for yaws projects
-    template="templates/yaws/Makefile.tmpl"
-    pattern="{{YAWSMAKEFILE}}"
     fill-tool-var $template $pattern
 }
 
@@ -112,32 +104,7 @@ fill-service-files () {
     fill-tool-var $template $pattern
 }
 
-fill-yaws-files () {
-    # yaws conf
-    template="templates/yaws/yaws.conf.tmpl"
-    pattern="{{YAWSCONF}}"
-    fill-tool-var $template $pattern
-    # yaws rebar
-    template="templates/yaws/rebar.config.tmpl"
-    pattern="{{YAWSREBAR}}"
-    fill-tool-var $template $pattern
-    # entry point module
-    template="templates/yaws/PROJECT.lfe.tmpl"
-    pattern="{{YAWSMODULE}}"
-    fill-tool-var $template $pattern
-    # routes module
-    template="templates/yaws/PROJECT-routes.lfe.tmpl"
-    pattern="{{YAWSROUTESMODULE}}"
-    fill-tool-var $template $pattern
-    # content module
-    template="templates/yaws/PROJECT-content.lfe.tmpl"
-    pattern="{{YAWSCONTENTMODULE}}"
-    fill-tool-var $template $pattern
-    # util module
-    template="templates/yaws/PROJECT-util.lfe.tmpl"
-    pattern="{{YAWSUTILMODULE}}"
-    fill-tool-var $template $pattern
-}
+
 
 run () {
     cp $template $dest
