@@ -279,26 +279,41 @@ At a future date we will also support the e2 project in a similar fashion:
     $ lfetool new e2-service my-new-service
 
 
-Development
-===========
+Development (lfetool Plugins)
+=============================
 
 This section has been created for those that would like to submit patches/pull
 requests to lfetool for bug fixes and/or new features. At the very least, it
 should provide a means for understanding what is needed in order to add new
 commands to lfetool.
 
+Adding new commands to lfetool is as simple as creating a new plugin. One can
+start by either copying an existing plugin that most closely resembles the sort
+of plugin you want to create, or starting completely from scratch.
+
+For those that wish to start from scratch, the following guidelines are
+provided:
 
 Step 1
 ------
 
-* Create a new subdirectory in templates using a descriptive name for your
-  new command. Hopefully this will be the same as the actual command itself.
+Create a new plugin directory, filller file, and subdirectory for file
+tempaltes:
 
-* In this directory, create all the files necessary to support your new
-  command. These files should all have the same name they would have once
-  added to a new project, with two exceptions: 1) they should have a ``.tmpl``
-  extension, and 2) anywhere a project name would have been used (e.g., a
-  module), ``PROJECT`` should be used instead.
+.. code:: bash
+
+    $ mkdir -p plugins/my-plugin/templates
+    $ touch plugins/my-plugin/filler.sh
+    $ touch plugins/my-plugin/templates/special-file.lfe
+
+* In ``plugins/my-plugin/templates``, create all the files necessary to
+  support your new command. These files should all have the same name they
+  would have once added to a new project, with two exceptions:
+
+  #. they should have a ``.tmpl`` extension, and
+
+  #. anywhere a project name would have been used (e.g., a module), ``PROJECT``
+     should be used instead.
 
 * Note the use of of ``local varname=$n`` in other functions; to avoid name
   collisions you will want to duplicate this in your own functions.
@@ -313,38 +328,73 @@ Step 1
 Step 2
 ------
 
-* With the project files created, ``templates/lfetools/lfetool.tmpl`` needs to
-  be updated to accept the new command in the ``create-new`` function. You
-  will dispatch here to a new function that will create all the required files
-  for your new project type.
+Edit ``plugins/my-plugin/filler.sh`` to create a function named something
+sensible (e.g., fill-my-plugin). This function needs to define two variables:
 
-* Create any other functions necessary in support of your new dispatch function.
+#. ``template`` - this should be a string value for the path to the template
+   file whose template variables you want to replace (e.g.,
+   ``plugins/my-plugin/templates/special-file.lfe``); and
 
-* For every file you need to create, you will add a new variable at the top of
-  ``lfetool.tmpl`` with a unique string of the form ``{{NAME}}`` which will later
-  be substituted with actual content (done in Step 3).
+#. ``pattern`` - this should be the placeholder text in your template that
+   needs to be substituted with a value (e.g., {{NAME}}.
+
+This function then needs to call the ``fill-tool-var`` function (defined in
+``./bin/create-tool``).
+
+If you have more than one template variable you'd like to replace, simply add
+another line that defines the next ``pattern`` and then a call to
+``fill-tool-var $template $pattern``.
 
 
 Step 3
 ------
 
-* Edit ``bin/create-tool``; for almost every file you need to create for your
-  new project type, you will want to have a function that does the following:
-  1) points to the appropriate template for that file, and 2) subsitutes the
-  an actual value for instances of ``{{NAME}}`` that you put in your templates.
-  (The most common example of this is replacing ``{{PROJECT}}`` with the name
-  of the project passed when calling ``lfetool``.)
-
-* Each function created for this should be prefixed by ``fill-``.
-
-* Note that all Makefile-related files are currently managed in a single
-  function; if your project is creating its own ``Makefile`` and a ``*.mk``
-  include, you'll want to update this function.
-
-* Update the ``run`` function to call all your new ``fill-*`` functions.
+Each ``filler.sh`` file created in ``plugins/*/`` will be be sourced by
+``./bin/create-tool``. As such, once you have created the ``filler.sh``
+file for your plugin, you need to add it to the ``run`` function in
+``./bin/create-tool``.
 
 
 Step 4
+------
+
+* With the project files created, ``plugins/lfetools/templates/lfetool.tmpl``
+  needs to be updated to accept the new command in the ``create-new`` function.
+  You will dispatch here to a new function that will create all the required
+  files for your new project type.
+
+* Create any other functions necessary in support of your new dispatch function.
+
+
+Step 5
+------
+
+* For every file you have added to your plugin's template directory (which will
+  be created by ``lfetool`` when it runs your plugin's commands), you will need
+  to add a new variable at the top of
+  ``plugins/lfetools/templates/lfetool.tmpl`` with a unique string of the form
+  ``{{NAME}}`` which will later be substituted with actual content when
+  ``./bin/create-tool`` is run.
+
+
+Step 6
+------
+
+* Write a unit test in ``test/test.sh`` which checks for the existence of all
+  the files you have created and examines at least some of the file contents to
+  make sure they got created as expected.
+
+* Your unit test functions will need to be in headless camel case (e.g.,
+  ``testMyNewCommand``).
+
+* Run the test suite:
+
+.. code:: bash
+
+    $ make check
+
+
+Step 7
 ------
 
 * Build a local copy of ``lfetool`` by running ``make build``.
