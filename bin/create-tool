@@ -4,6 +4,10 @@ template="templates/lfetool/lfetool.tmpl"
 temp="lfetool-temp"
 dest="lfetool"
 
+# load all the fillers from the plugins
+for FILE in `ls plugins/*/filler.sh`; do
+    source $FILE
+done
 
 fill-tool-var () {
     template=$1
@@ -73,12 +77,6 @@ fill-makefiles () {
     # master make file for yaws projects
     template="templates/yaws/Makefile.tmpl"
     pattern="{{YAWSMAKEFILE}}"
-    fill-tool-var $template $pattern
-}
-
-fill-script () {
-    template="templates/script/SCRIPT.tmpl"
-    pattern="{{SCRIPTFILE}}"
     fill-tool-var $template $pattern
 }
 
