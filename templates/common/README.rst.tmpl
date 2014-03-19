@@ -2,10 +2,12 @@
 {{PROJECT}}
 ###########
 
+
 Introduction
 ============
 
 Add content to me here!
+
 
 Dependencies
 ------------
@@ -19,25 +21,27 @@ directory of this project when you run ``make deps``:
 * `LFE`_ (Lisp Flavored Erlang; needed only to compile)
 * `lfeunit`_ (needed only to run the unit tests)
 
+
 Installation
 ============
 
 Just add it to your ``rebar.config`` deps:
 
-```erlang
+.. code:: erlang
+
     {deps, [
         ...
         {{{PROJECT}}, ".*", {git, "git@github.com:YOURNAME/{{PROJECT}}.git", "master"}}
       ]}.
-```
+
 
 And then do the usual:
 
-```bash
+.. code:: bash
 
     $ rebar get-deps
     $ rebar compile
-```
+
 
 Usage
 =====
