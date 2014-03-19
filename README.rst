@@ -279,8 +279,10 @@ At a future date we will also support the e2 project in a similar fashion:
     $ lfetool new e2-service my-new-service
 
 
-Development (lfetool Plugins)
-=============================
+lfetool Plugins
+===============
+
+*Developing additional ``lfetool`` commands*
 
 This section has been created for those that would like to submit patches/pull
 requests to lfetool for bug fixes and/or new features. At the very least, it
@@ -293,6 +295,7 @@ of plugin you want to create, or starting completely from scratch.
 
 For those that wish to start from scratch, the following guidelines are
 provided:
+
 
 Step 1
 ------
@@ -336,7 +339,7 @@ sensible (e.g., fill-my-plugin). This function needs to define two variables:
    ``plugins/my-plugin/templates/special-file.lfe``); and
 
 #. ``pattern`` - this should be the placeholder text in your template that
-   needs to be substituted with a value (e.g., {{NAME}}.
+   needs to be substituted with a value (e.g., {{NAME}}).
 
 This function then needs to call the ``fill-tool-var`` function (defined in
 ``./bin/create-tool``).
