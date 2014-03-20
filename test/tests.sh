@@ -7,7 +7,10 @@ scriptname="my-fibo"
 libname="my-lib"
 svcname="my-service"
 yawsname="my-yaws"
-lferepo="test-lfe-repo"
+yawsbootstrapname="my-yaws-bootstrap"
+projecttestdirs="$libname $svcname $yawsname $yawsbootstrapname"
+tmpdir=`date "+%Y%d%m%H%M%S_test_dir"`
+lferepo="$tmpdir/lfe"
 lfepath="$lferepo/bin"
 
 ###################
@@ -24,26 +27,26 @@ get-result-part () {
 ############
 
 testHelp () {
-    result1=`./lfetool -h`
+    result1=`../lfetool -h`
     expected1="Script: lfetool, v$expectedversion"
     assertEquals "$expected1" "`get-result-part "$result1"`"
-    result2=`./lfetool help`
+    result2=`../lfetool help`
     expected2="Script: lfetool, v$expectedversion"
     assertEquals "$expected2" "`get-result-part "$result2"`"
     assertEquals "$result1" "$result2"
 }
 
 testVersion () {
-    result1=`./lfetool -v`
+    result1=`../lfetool -v`
     assertEquals "$result1" "$expectedversion"
-    result2=`./lfetool version`
+    result2=`../lfetool version`
     assertEquals "$result2" "$expectedversion"
     assertEquals "$result1" "$result2"
 }
 
 testNewScript () {
     local expected=""
-    ./lfetool new script $scriptname
+    ../lfetool new script $scriptname
     if [ "$TRAVIS" = "true" ]; then
         result="`PATH=$PATH:$lfepath ERL_LIBS=$lferepo ./$scriptname 42`"
     else
@@ -55,7 +58,9 @@ testNewScript () {
 
 testNewLibrary () {
     local expected=""
-    ./lfetool new library $libname &> /dev/null
+    ../lfetool new library $libname &> /dev/null && \
+        cd $libname && make check &> /dev/null
+    cd - &> /dev/null
     assertEquals "include common.mk" \
         "`head -1 $libname/Makefile`"
     assertEquals "PROJECT = my-lib" \
@@ -78,7 +83,9 @@ testNewLibrary () {
 
 testNewService () {
     local expected=""
-    ./lfetool new service $svcname &> /dev/null
+    ../lfetool new service $svcname &> /dev/null && \
+        cd $svcname && make check &> /dev/null
+    cd - &> /dev/null
     assertEquals "include otp.mk" \
         "`head -1 $svcname/Makefile`"
     assertEquals "PROJECT = my-service" \
@@ -104,7 +111,9 @@ testNewService () {
 }
 
 testNewYAWS () {
-    ./lfetool new yaws $yawsname &> /dev/null
+    ../lfetool new yaws $yawsname &> /dev/null && \
+        cd $yawsname && make check &> /dev/null
+    cd - &> /dev/null
     if [ "$TRAVIS" = "true" ]; then
         expected="14"
     else
@@ -138,6 +147,21 @@ testNewYAWS () {
         "`head -1 $yawsname/etc/yaws.conf`"
 }
 
+testNewYAWSBootstrap () {
+    ../lfetool new yaws bootstrap $yawsbootstrapname &> /dev/null && \
+        cd $yawsbootstrapname && make check &> /dev/null
+    cd - &> /dev/null
+    if [ "$TRAVIS" = "true" ]; then
+        expected="22"
+    else
+        expected="28"
+    fi
+    assertEquals $expected \
+        "`find $yawsbootstrapname -type f|egrep -v 'deps|.git'|wc -l|tr -d ' '`"
+    assertEquals '(defmodule my-yaws-bootstrap-content' \
+        "`head -1 $yawsbootstrapname/src/my-yaws-bootstrap-content.lfe`"
+}
+
 ##########
 # fixtures
 ##########
@@ -146,6 +170,8 @@ oneTimeSetUp () {
     echo
     echo "Performing one-time set-up ..."
     echo
+    mkdir -p $tmpdir/{test,deps} && cd $tmpdir && \
+      cp ../test/shunit2 ../test/tests.sh ./test
     # the next line seems to be causing errors
     #make build
     if [ "$TRAVIS" = "true" ]; then
@@ -154,13 +180,18 @@ oneTimeSetUp () {
         make compile &> /dev/null && \
         cd - &> /dev/null
     fi
+    # set up a download cache
+    for DIR in $projecttestdirs; do
+        mkdir -p $DIR && cd $DIR && ln -s ../deps deps
+        cd - &> /dev/null
+    done
 }
 
 oneTimeTearDown () {
     echo
     echo "Performing one-time tear-down ..."
-    rm $scriptname
-    rm -rf $libname $svcname $yawsname $lferepo
+    #rm $scriptname
+    #rm -rf $libname $svcname $yawsname $yawsbootstrapname $lferepo $tmpdir
 }
 
 #######################
