@@ -66,6 +66,12 @@ unknown-command-error () {
     error "Unknown command: '$command'";
 }
 
+unknown-subcommand-error () {
+    local command=$1
+    local subcommand=$2
+    error "Unknown subcommand for '$command': '$subcommand'";
+}
+
 unknown-context-error () {
     local context=$1
     error "Unknown context: '$context'";
@@ -228,24 +234,45 @@ setup-yaws-project () {
     make check-all-with-deps
 }
 
+create-new-yaws () {
+    local command=$1
+    local subcommand=$2
+    local arg=$3
+    case $subcommand in
+        default)
+            setup-yaws-project $arg
+            ;;
+        *)
+            unknown-subcommand-error $command $subcommand
+            ;;
+    esac
+}
+
 create-new () {
     local context=$1
-    local arg=$2
+    local arg1=$2
+    local arg2=$3
     case $context in
         script)
-            setup-script-project $arg
+            setup-script-project $arg1
             ;;
         library)
-            setup-library-project $arg
+            setup-library-project $arg1
             ;;
         service)
-            setup-service-project $arg
+            setup-service-project $arg1
             ;;
         e2service)
-            setup-e2-service-project $arg
+            setup-e2-service-project $arg1
             ;;
         yaws)
-            setup-yaws-project $arg
+            # check if arg2 is empty string; if so, assume no subcommand was
+            # passed and use the default subcommand
+            if [ "$arg2" == "" ]; then
+                arg2=$arg1
+                arg1="default"
+            fi
+            create-new-yaws $context $arg1 $arg2
             ;;
         *)
             unknown-context-error $context
@@ -271,7 +298,8 @@ run () {
     local script=$0
     local command=$1
     local context=$2
-    local arg=$3
+    local arg1=$3
+    local arg2=$4
 
     case $command in
         -h)
@@ -295,8 +323,8 @@ run () {
             ;;
         new)
             check-context $context
-            check-arg $arg
-            create-new $context $arg
+            check-arg $arg1
+            create-new $context $arg1 $arg2
             exit 0
             ;;
         update)
