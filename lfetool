@@ -87,6 +87,29 @@ lfetool-not-found-error () {
     error 'Error: could not find `lfetool` on the $PATH'
 }
 
+install-lfetool () {
+    local directory=$1
+    local mode=$2
+    local path=$directory/lfetool
+    curl -o $path https://raw.github.com/lfe/lfetool/master/lfetool
+    chmod 755 $path
+    if [ "$mode" = "" ]; then
+        echo
+        echo "Installed lfetool to $path."
+    fi
+}
+
+update-lfetool () {
+    local path=`which lfetool`
+    if [ "$path" = "" ]; then
+      lfetool-not-found-error
+    fi
+    local directory=`dirname $path`
+    install-lfetool $directory "update"
+    echo
+    echo "Updated lfetool at $path."
+}
+
 create-dirs () {
     local project=$1
     mkdir -p $project/{src,test/unit,test/integration,test/system}
@@ -205,20 +228,6 @@ setup-yaws-project () {
     make check-all-with-deps
 }
 
-check-context () {
-    local context=$1
-    if [ "$context" = "" ]; then
-        missing-context-error
-    fi
-}
-
-check-arg () {
-    local arg=$1
-    if [ "$arg" = "" ]; then
-        missing-arg-error
-    fi
-}
-
 create-new () {
     local context=$1
     local arg=$2
@@ -244,27 +253,18 @@ create-new () {
     esac
 }
 
-install-lfetool () {
-    local directory=$1
-    local mode=$2
-    local path=$directory/lfetool
-    curl -o $path https://raw.github.com/lfe/lfetool/master/lfetool
-    chmod 755 $path
-    if [ "$mode" = "" ]; then
-        echo
-        echo "Installed lfetool to $path."
+check-context () {
+    local context=$1
+    if [ "$context" = "" ]; then
+        missing-context-error
     fi
 }
 
-update-lfetool () {
-    local path=`which lfetool`
-    if [ "$path" = "" ]; then
-      lfetool-not-found-error
+check-arg () {
+    local arg=$1
+    if [ "$arg" = "" ]; then
+        missing-arg-error
     fi
-    local directory=`dirname $path`
-    install-lfetool $directory "update"
-    echo
-    echo "Updated lfetool at $path."
 }
 
 run () {
