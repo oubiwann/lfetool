@@ -33,6 +33,7 @@ run () {
     fill-library-files
     fill-service-files
     fill-yaws-files
+    fill-yaws-bootstrap-files
     chmod 755 $dest
 }
 

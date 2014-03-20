@@ -1,0 +1,91 @@
+(defmodule {{PROJECT}}-content
+  (export all))
+
+(include-lib "deps/exemplar/include/html-macros.lfe")
+
+(defun base-page (title remaining)
+  "We can also make building HTML easier by using functions."
+  (list
+    (!doctype 'html)
+    (html '(lang "en")
+      (list
+        (head
+          (list
+            (title title)
+            (link '(rel "stylesheet" href "/css/bootstrap-min.css"))
+            (link '(rel "stylesheet" href "/css/bootstrap-slate-min.css"))
+            (script '(src "/js/bootstrap-min.js"))))
+        (body
+          (main remaining))))))
+
+(defun get-content (arg-data)
+  "1-arity content API.
+
+  This function generates its HTML from scratch."
+  (let ((title '"Main Page"))
+    (: {{PROJECT}}-util make-200-result
+        (base-page
+          title
+          (div
+            (list
+              (h1 title)
+              (h2 '"Links")
+              (ul
+                (list
+                  (li (a '(href "/content/1") '"/content/1"))
+                  (li (a '(href "/content/2") '"/content/2"))
+                  (li (a '(href "/content/3") '"/content/3"))
+                  (li
+                    (list
+                      (a '(href "/relation/1/2") '"/relation/1/2")
+                      '" (a template-based page)"))
+                  (li (a '(href "/bob") '"404"))))))))))
+
+(defun get-content (item-id arg-data)
+  "2-arity content API.
+
+  This function generates its HTML from scratch."
+  ;; we'll pretent to pull content from a data store here ...
+  (let ((fetched-title '"Queried Title")
+        (fetched-content '"Some super-great queried lorem ipsum."))
+    (: {{PROJECT}}-util make-200-result
+      (base-page
+        fetched-title
+        (div '(class "dynamic content")
+          (list
+            (h1 fetched-title)
+            (h2 (++ '"Item " item-id))
+            (div (p fetched-content))))))))
+
+(defun get-content (user-id account-id arg-data)
+  "3-arity content API.
+
+  This function generates its HTML by calling another function. This is an
+  example of how one could do templating -- including putting HTML-generating
+  functions in their own modules."
+  ;; we'll pretent to pull content from a data store here ...
+  (let ((fetched-title '"Queried Title")
+        (fetched-content '"Some super-great queried lorem ipsum."))
+    (: {{PROJECT}}-util make-200-result
+      (base-page
+        fetched-title
+        (div '(class "dynamic content")
+          (list
+            (h1 fetched-title)
+            (h2 (++ '"Relation: "
+                    user-id '" (user id) | "
+                    account-id '" (account id)"))
+            (div (p fetched-content))))))))
+
+(defun four-oh-four (message)
+  "Custom 404 page."
+    (: yaws-1-util make-404-result
+      (base-page '"404"
+        (div
+          (list
+            (h1 '"404 - Not Found")
+            (div (p message)))))))
+
+
+
+
