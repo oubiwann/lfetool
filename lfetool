@@ -229,7 +229,7 @@ create-yaws-bootstrap-files () {
 
 post-create () {
     local project=$1
-    cd $project && add-git-files && mkdir deps && make check-all-with-deps
+    cd $project && add-git-files && mkdir -p deps && make check-all-with-deps
 }
 
 setup-script-project () {
