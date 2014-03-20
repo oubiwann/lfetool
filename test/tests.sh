@@ -190,8 +190,7 @@ oneTimeSetUp () {
 oneTimeTearDown () {
     echo
     echo "Performing one-time tear-down ..."
-    #rm $scriptname
-    #rm -rf $libname $svcname $yawsname $yawsbootstrapname $lferepo $tmpdir
+    rm -rf ../$tmpdir
 }
 
 #######################
