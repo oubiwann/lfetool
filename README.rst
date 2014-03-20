@@ -252,12 +252,42 @@ supplied ``daemon`` target.
 ``new yaws``
 ,,,,,,,,,,,,
 
-This command creates a new YAWS web project in LFE (using the `exemplar`_
-library for generating HTML with S-expressions).
+``yaws`` takes several subcommands:
+
+ * ``default`` - creates a basic, multi-module web project using the
+   `exemplar`_ library for generating HTML with S-expressions.
+
+ * ``simple`` - creates a very simple web project with only one module.
+
+ * ``bootstrap`` - creates the same project as ``default`` but with
+   `Twitter Bootsrap`_ enabled.
+
+ * ``websocket`` - creates a project that demos YAWS websocket support via a
+   simple chat deno.
+
+ * ``rest`` - creates a RESTful service example, using the classic "coffeeshop"
+   model.
+
+
+Note that ``new yaws`` is an alias for ``new yaws default``.
+
+Example usage:
 
 .. code:: cl
 
     $ lfetool new yaws my-web-project
+
+or
+
+.. code:: cl
+
+    $ lfetool new yaws default my-web-project
+
+or
+
+.. code:: cl
+
+    $ lfetool new yaws bootstrap my-web-project
 
 After this, you can view your new project by executing these commands:
 
