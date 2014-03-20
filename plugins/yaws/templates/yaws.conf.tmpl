@@ -7,6 +7,6 @@ fail_on_bind_err = true
 <server localhost>
         port = 5099
         listen = 0.0.0.0
-        appmods = </, {{PROJECT}}>
+        appmods = </, {{PROJECT}} exclude_paths js css images icons fonts>
         docroot = www
 </server>
