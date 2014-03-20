@@ -16,7 +16,7 @@ fill-tool-var () {
     if [ "$pattern" = "" ]; then
         pattern="{{NOOP}}"
     fi
-    data=`cat "$template" | base64`
+    data=`cat "$template" | base64 --wrap=0`
     # DEBUG
     #echo $template
     #echo $pattern
