@@ -140,6 +140,10 @@ create-yaws-bootstrap-dirs () {
     mkdir -p $project/{www/css,www/images,www/js,www/icons,www/fonts}
 }
 
+add-git-files () {
+    git init && git add * .gitignore .travis.yml
+}
+
 create-file () {
     local data=$1
     local filename=$2
@@ -149,8 +153,8 @@ create-file () {
         pattern="{{IGNORE}}"
         project="{{IGNORE}}"
     fi
-    echo $data | decode | sed \
-        -e "s#$pattern#$project#g" > $filename
+    echo $data | decode | LC_CTYPE=C LANG=C sed \
+        "s#$pattern#$project#g" > $filename
 }
 
 create-project-files () {
@@ -223,6 +227,11 @@ create-yaws-bootstrap-files () {
         $project/www/fonts/glyphicons-halflings-regular.woff
 }
 
+post-create () {
+    local project=$1
+    cd $project && add-git-files && mkdir deps && make check-all-with-deps
+}
+
 setup-script-project () {
     local script=$1
     create-file "$scriptfile" $script
@@ -235,8 +244,7 @@ setup-library-project () {
     create-dirs $project
     create-project-files $project
     create-library-files $project
-    cd $project && git init && git add * .gitignore .travis.yml && \
-    make check-all-with-deps
+    post-create $project
 }
 
 setup-service-project () {
@@ -245,8 +253,7 @@ setup-service-project () {
     create-dirs $project
     create-project-files $project
     create-service-files $project
-    cd $project && git init && git add * .gitignore .travis.yml && \
-    make check-all-with-deps
+    post-create $project
 }
 
 setup-e2-service-project () {
@@ -262,12 +269,11 @@ setup-yaws-project () {
     create-yaws-dirs $project
     create-project-files $project
     create-yaws-files $project
-    cd $project && git init && git add * .gitignore .travis.yml && \
-    make check-all-with-deps
+    post-create $project
 }
 
 setup-yaws-bootstrap-project () {
-    echo "Setting up default starter YAWS project ..."
+    echo "Setting up Bootstrap starter YAWS project ..."
     local project=$1
     create-dirs $project
     create-yaws-dirs $project
@@ -275,8 +281,7 @@ setup-yaws-bootstrap-project () {
     create-project-files $project
     create-yaws-files $project
     create-yaws-bootstrap-files $project
-    cd $project && git init && git add * .gitignore .travis.yml && \
-    make check-all-with-deps
+    post-create $project
 }
 
 create-new-yaws () {

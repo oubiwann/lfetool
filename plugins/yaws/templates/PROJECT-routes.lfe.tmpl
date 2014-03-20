@@ -18,8 +18,12 @@
   ;;
   ;; When nothing matches, do this
   ((path arg-data)
-    (: io format
-      '"Unmatched route!~n Path-info: ~p~n arg-data: ~p~n~n"
-      (list path arg-data))
+   (let* ((joined-path (++ '"/" (: string join path '"/")))
+          (msg (++ '"Unmatched route!~n~n"
+                   '"Path-info: ~p~n"
+                   '"joined path: ~p~n"
+                   '"arg-data: ~p~n~n"))
+          (msg-args (list path joined-path arg-data)))
+    (: io format msg msg-args)
     (: {{PROJECT}}-content four-oh-four
-      (++ (strong '"Unmatched Route: ") '"/" (: string join path '"/")))))
+      (++ (strong '"Unmatched Route: ") joined-path)))))
