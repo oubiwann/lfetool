@@ -29,6 +29,15 @@ yawsmodule="{{YAWSMODULE}}"
 yawsroutesmodule="{{YAWSROUTESMODULE}}"
 yawscontentmodule="{{YAWSCONTENTMODULE}}"
 yawsutilmodule="{{YAWSUTILMODULE}}"
+yawsbootstrapcontentmodule="{{YAWSBOOTSTRAPCONTENTMODULE}}"
+yawsbootstrapcss="{{YAWSBOOTSTRAPCSS}}"
+yawsbootstrapcssmin="{{YAWSBOOTSTRAPCSSMIN}}"
+yawsbootstrapjs="{{YAWSBOOTSTRAPJS}}"
+yawsbootstrapjsmin="{{YAWSBOOTSTRAPJSMIN}}"
+yawsbootstrapfonteot="{{YAWSBOOTSTRAPFONTEOT}}"
+yawsbootstrapfontsvg="{{YAWSBOOTSTRAPFONTSVG}}"
+yawsbootstrapfontttf="{{YAWSBOOTSTRAPFONTTTF}}"
+yawsbootstrapfontwoff="{{YAWSBOOTSTRAPFONTWOFF}}"
 
 decode () {
     os=`uname`
@@ -66,6 +75,12 @@ unknown-command-error () {
     error "Unknown command: '$command'";
 }
 
+unknown-subcommand-error () {
+    local command=$1
+    local subcommand=$2
+    error "Unknown subcommand for '$command': '$subcommand'";
+}
+
 unknown-context-error () {
     local context=$1
     error "Unknown context: '$context'";
@@ -87,6 +102,29 @@ lfetool-not-found-error () {
     error 'Error: could not find `lfetool` on the $PATH'
 }
 
+install-lfetool () {
+    local directory=$1
+    local mode=$2
+    local path=$directory/lfetool
+    curl -o $path https://raw.github.com/lfe/lfetool/master/lfetool
+    chmod 755 $path
+    if [ "$mode" = "" ]; then
+        echo
+        echo "Installed lfetool to $path."
+    fi
+}
+
+update-lfetool () {
+    local path=`which lfetool`
+    if [ "$path" = "" ]; then
+      lfetool-not-found-error
+    fi
+    local directory=`dirname $path`
+    install-lfetool $directory "update"
+    echo
+    echo "Updated lfetool at $path."
+}
+
 create-dirs () {
     local project=$1
     mkdir -p $project/{src,test/unit,test/integration,test/system}
@@ -97,17 +135,22 @@ create-yaws-dirs () {
     mkdir -p $project/{www,etc,logs}
 }
 
+create-yaws-bootstrap-dirs () {
+    local project=$1
+    mkdir -p $project/{www/css,www/images,www/js,www/icons,www/fonts}
+}
+
 create-file () {
     local data=$1
     local filename=$2
     local pattern=$3
     local project=$4
     if [ "$pattern" = "" ]; then
-        pattern="{{NOOP}}"
-        project="{{NOOP}}"
+        pattern="{{IGNORE}}"
+        project="{{IGNORE}}"
     fi
     echo $data | decode | sed \
-        -e "s/$pattern/$project/g" > $filename
+        -e "s#$pattern#$project#g" > $filename
 }
 
 create-project-files () {
@@ -162,6 +205,24 @@ create-yaws-files () {
         $project/test/unit/unit-${project}-tests.lfe {{PROJECT}} $project
 }
 
+create-yaws-bootstrap-files () {
+    local project=$1
+    create-file "$yawsbootstrapcontentmodule" \
+        $project/src/${project}-content.lfe {{PROJECT}} $project
+    create-file "$yawsbootstrapcss" $project/www/css/bootstrap.css
+    create-file "$yawsbootstrapcssmin" $project/www/css/bootstrap-min.css
+    create-file "$yawsbootstrapjs" $project/www/js/bootstrap.js
+    create-file "$yawsbootstrapjsmin" $project/www/js/bootstrap-min.js
+    create-file "$yawsbootstrapfonteot" \
+        $project/www/fonts/glyphicons-halflings-regular.eot
+    create-file "$yawsbootstrapfontsvg" \
+        $project/www/fonts/glyphicons-halflings-regular.svg
+    create-file "$yawsbootstrapfontttf" \
+        $project/www/fonts/glyphicons-halflings-regular.ttf
+    create-file "$yawsbootstrapfontwoff" \
+        $project/www/fonts/glyphicons-halflings-regular.woff
+}
+
 setup-script-project () {
     local script=$1
     create-file "$scriptfile" $script
@@ -195,7 +256,7 @@ setup-e2-service-project () {
 }
 
 setup-yaws-project () {
-    echo "Setting up starter YAWS project ..."
+    echo "Setting up default starter YAWS project ..."
     local project=$1
     create-dirs $project
     create-yaws-dirs $project
@@ -203,6 +264,71 @@ setup-yaws-project () {
     create-yaws-files $project
     cd $project && git init && git add * .gitignore .travis.yml && \
     make check-all-with-deps
+}
+
+setup-yaws-bootstrap-project () {
+    echo "Setting up default starter YAWS project ..."
+    local project=$1
+    create-dirs $project
+    create-yaws-dirs $project
+    create-yaws-bootstrap-dirs $project
+    create-project-files $project
+    create-yaws-files $project
+    create-yaws-bootstrap-files $project
+    cd $project && git init && git add * .gitignore .travis.yml && \
+    make check-all-with-deps
+}
+
+create-new-yaws () {
+    local command=$1
+    local subcommand=$2
+    local arg=$3
+    case $subcommand in
+        default)
+            setup-yaws-project $arg
+            ;;
+        bootstrap)
+            setup-yaws-bootstrap-project $arg
+            ;;
+        simple)
+            setup-yaws-simple-project $arg
+            ;;
+        *)
+            unknown-subcommand-error $command $subcommand
+            ;;
+    esac
+}
+
+create-new () {
+    local context=$1
+    local arg1=$2
+    local arg2=$3
+    case $context in
+        script)
+            setup-script-project $arg1
+            ;;
+        library)
+            setup-library-project $arg1
+            ;;
+        service)
+            setup-service-project $arg1
+            ;;
+        e2service)
+            setup-e2-service-project $arg1
+            ;;
+        yaws)
+            # check if arg2 is empty string; if so, assume no subcommand was
+            # passed and use the default subcommand
+            if [ "$arg2" == "" ]; then
+                arg2=$arg1
+                arg1="default"
+            fi
+            create-new-yaws $context $arg1 $arg2
+            ;;
+        *)
+            unknown-context-error $context
+            ;;
+    esac
 }
 
 check-context () {
@@ -219,59 +345,12 @@ check-arg () {
     fi
 }
 
-create-new () {
-    local context=$1
-    local arg=$2
-    case $context in
-        script)
-            setup-script-project $arg
-            ;;
-        library)
-            setup-library-project $arg
-            ;;
-        service)
-            setup-service-project $arg
-            ;;
-        e2service)
-            setup-e2-service-project $arg
-            ;;
-        yaws)
-            setup-yaws-project $arg
-            ;;
-        *)
-            unknown-context-error $context
-            ;;
-    esac
-}
-
-install-lfetool () {
-    local directory=$1
-    local mode=$2
-    local path=$directory/lfetool
-    curl -o $path https://raw.github.com/lfe/lfetool/master/lfetool
-    chmod 755 $path
-    if [ "$mode" = "" ]; then
-        echo
-        echo "Installed lfetool to $path."
-    fi
-}
-
-update-lfetool () {
-    local path=`which lfetool`
-    if [ "$path" = "" ]; then
-      lfetool-not-found-error
-    fi
-    local directory=`dirname $path`
-    install-lfetool $directory "update"
-    echo
-    echo "Updated lfetool at $path."
-}
-
 run () {
     local script=$0
     local command=$1
     local context=$2
-    local arg=$3
+    local arg1=$3
+    local arg2=$4
 
     case $command in
         -h)
@@ -295,8 +374,8 @@ run () {
             ;;
         new)
             check-context $context
-            check-arg $arg
-            create-new $context $arg
+            check-arg $arg1
+            create-new $context $arg1 $arg2
             exit 0
             ;;
         update)
