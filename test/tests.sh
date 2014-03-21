@@ -152,7 +152,7 @@ testNewYAWSBootstrap () {
         cd $yawsbootstrapname && make check &> /dev/null
     cd - &> /dev/null
     if [ "$TRAVIS" = "true" ]; then
-        expected="26"
+        expected="25"
     else
         expected="32"
     fi
