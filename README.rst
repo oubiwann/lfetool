@@ -254,19 +254,19 @@ supplied ``daemon`` target.
 
 ``yaws`` takes several subcommands:
 
- * ``default`` - creates a basic, multi-module web project using the
-   `exemplar`_ library for generating HTML with S-expressions.
+* ``default`` - creates a basic, multi-module web project using the
+  `exemplar`_ library for generating HTML with S-expressions.
 
- * ``simple`` - creates a very simple web project with only one module.
+* ``simple`` - creates a very simple web project with only one module.
 
- * ``bootstrap`` - creates the same project as ``default`` but with
-   `Twitter Bootsrap`_ enabled.
+* ``bootstrap`` - creates the same project as ``default`` but with
+  `Twitter Bootsrap`_ enabled.
 
- * ``websocket`` - creates a project that demos YAWS websocket support via a
-   simple chat deno.
+* ``websocket`` - creates a project that demos YAWS websocket support via a
+  simple chat deno.
 
- * ``rest`` - creates a RESTful service example, using the classic "coffeeshop"
-   model.
+* ``rest`` - creates a RESTful service example, using the classic "coffeeshop"
+  model.
 
 
 Note that ``new yaws`` is an alias for ``new yaws default``.
