@@ -260,18 +260,22 @@ powered by the YAWS web server.
 * ``default`` - creates a basic, multi-module web project using the
   `exemplar`_ library for generating HTML with S-expressions.
 
-* ``simple`` - creates a very simple web project with only one module.
+.. XXX under development
+.. * ``simple`` - creates a very simple web project with only one module.
 
 * ``bootstrap`` - creates a `Twitter Bootsrap`_ version of the ``default``
   project.
 
-* ``websocket`` - creates a project that demos YAWS websocket support via a
-  simple chat deno.
+.. XXX under development
+.. * ``websocket`` - creates a project that demos YAWS websocket support via a
+     simple chat deno.
 
-* ``rest`` - creates a RESTful service example, using the classic "coffeeshop"
-  model.
+.. XXX under development
+   * ``rest`` - creates a RESTful service example, using the classic "coffeeshop"
+     model.
 
-Note that ``new yaws`` is an alias for ``new yaws default``.
+Note that ``new yaws`` is an alias for ``new yaws default``; if a subcommand is not passed, the
+``default`` subcommand is assumed.
 
 Example usage:
 
@@ -284,9 +288,6 @@ or
 .. code:: cl
 
     $ lfetool new yaws default my-web-project
-
-Note that these two are equivalent; if a subcommand is not passed, the
-``default`` subcommand is assumed.
 
 Another example:
 
