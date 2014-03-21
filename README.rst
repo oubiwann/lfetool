@@ -262,8 +262,8 @@ powered by the YAWS web server.
 
 * ``simple`` - creates a very simple web project with only one module.
 
-* ``bootstrap`` - creates the same project as ``default`` but with
-  `Twitter Bootsrap`_ enabled.
+* ``bootstrap`` - creates a `Twitter Bootsrap`_ version of the ``default``
+  project.
 
 * ``websocket`` - creates a project that demos YAWS websocket support via a
   simple chat deno.
@@ -293,6 +293,10 @@ Another example:
 .. code:: cl
 
     $ lfetool new yaws bootstrap my-web-project
+
+Here is a screenshot of the lfetool demo bootstrap project:
+
+.. image:: resources/images/YAWS-LFE-Bootstrap-Exemplar-screenshot.png
 
 After this, you can view your new project by executing these commands:
 
@@ -451,3 +455,4 @@ Step 7
 .. _lfe-skel: https://github.com/lfe/skeleton-project
 .. _shell script: https://raw.github.com/lfe/lfetool/master/lfetool
 .. _exemplar: https://github.com/lfe/exemplar
+.. _Twitter Bootstrap: http://getbootstrap.com/
