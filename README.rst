@@ -253,7 +253,7 @@ supplied ``daemon`` target.
 ,,,,,,,,,,,,
 
 The ``yaws`` command builds out a number of skeleton web projects that are
-powered by the YAWS web server. 
+powered by the YAWS web server.
 
 ``yaws`` takes several subcommands:
 
