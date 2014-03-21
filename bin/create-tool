@@ -1,6 +1,8 @@
 #!/bin/bash
 
-template="plugins/lfetool/templates/lfetool.tmpl"
+version=0.2.2
+tooltemplate="plugins/lfetool/templates/lfetool.tmpl"
+compresstemplate="plugins/lfetool/templates/compressed.tmpl"
 temp="lfetool-temp"
 dest="lfetool"
 
@@ -11,8 +13,8 @@ done
 
 # substitute template patterns with values
 fill-tool-var () {
-    template=$1
-    pattern=$2
+    local template=$1
+    local pattern=$2
     if [ "$pattern" = "" ]; then
         pattern="{{NOOP}}"
     fi
@@ -25,8 +27,8 @@ fill-tool-var () {
     mv $temp $dest
 }
 
-run () {
-    cp $template $dest
+fill-templates () {
+    cp $tooltemplate $dest
     fill-lfetool-files
     fill-common-files
     fill-script
@@ -34,6 +36,36 @@ run () {
     fill-service-files
     fill-yaws-files
     fill-yaws-bootstrap-files
+}
+
+compress-tool () {
+    data=`gzip --best --stdout $dest|base64`
+    cat << ENDSCRIPT >$temp
+#!/usr/bin/env bash
+
+version=$version
+lfetool="$data"
+
+decode () {
+    os=`uname`
+    case \$os in
+        Darwin)
+            base64 -D
+            ;;
+        *)
+            base64 -d
+            ;;
+    esac
+}
+
+echo \$lfetool | decode | gzip -d --stdout | bash -s -- "\$@"
+ENDSCRIPT
+    mv $temp $dest
+}
+
+run () {
+    fill-templates
+    compress-tool
     chmod 755 $dest
 }
 

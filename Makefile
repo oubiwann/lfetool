@@ -11,9 +11,9 @@ get-version:
 build-no-version:
 	@echo "Building lfetool ..."
 	@./bin/create-tool
-	@echo "Finished."
 
 build: get-version build-no-version
+	@echo "Finished."
 
 push-all:
 	git push --all
