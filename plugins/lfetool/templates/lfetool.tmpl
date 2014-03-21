@@ -30,8 +30,12 @@ yawsroutesmodule="{{YAWSROUTESMODULE}}"
 yawscontentmodule="{{YAWSCONTENTMODULE}}"
 yawsutilmodule="{{YAWSUTILMODULE}}"
 yawsbootstrapcontentmodule="{{YAWSBOOTSTRAPCONTENTMODULE}}"
+yawsbootstrapnavmodule="{{YAWSBOOTSTRAPNAVMODULE}}"
+yawsbootstraproutesmodule="{{YAWSBOOTSTRAPROUTESMODULE}}"
 yawsbootstrapcss="{{YAWSBOOTSTRAPCSS}}"
 yawsbootstrapcssmin="{{YAWSBOOTSTRAPCSSMIN}}"
+yawsbootstrapslatecss="{{YAWSBOOTSTRAPCSSSLATE}}"
+yawsbootstrapslatecssmin="{{YAWSBOOTSTRAPCSSMINSLATE}}"
 yawsbootstrapjs="{{YAWSBOOTSTRAPJS}}"
 yawsbootstrapjsmin="{{YAWSBOOTSTRAPJSMIN}}"
 yawsbootstrapfonteot="{{YAWSBOOTSTRAPFONTEOT}}"
@@ -213,7 +217,16 @@ create-yaws-bootstrap-files () {
     local project=$1
     create-file "$yawsbootstrapcontentmodule" \
         $project/src/${project}-content.lfe {{PROJECT}} $project
+    create-file "$yawsbootstrapnavmodule" \
+        $project/src/${project}-nav.lfe {{PROJECT}} $project
+    create-file "$yawsbootstraproutesmodule" \
+        $project/src/${project}-routes.lfe {{PROJECT}} $project
     create-file "$yawsbootstrapcss" $project/www/css/bootstrap.css
+    create-file "$yawsbootstrapcssmin" $project/www/css/bootstrap-min.css
+    create-file "$yawsbootstrapslatecss" $project/www/css/bootstrap-slate.css
+    create-file "$yawsbootstrapslatecssmin" \
+        $project/www/css/bootstrap-slate-min.css
+    create-file "$yawsbootstrapjs" $project/www/js/bootstrap.js
     create-file "$yawsbootstrapcssmin" $project/www/css/bootstrap-min.css
     create-file "$yawsbootstrapjs" $project/www/js/bootstrap.js
     create-file "$yawsbootstrapjsmin" $project/www/js/bootstrap-min.js
