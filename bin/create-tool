@@ -47,7 +47,7 @@ version=$version
 lfetool="$data"
 
 decode () {
-    os=`uname`
+    os=\`uname\`
     case \$os in
         Darwin)
             base64 -D
