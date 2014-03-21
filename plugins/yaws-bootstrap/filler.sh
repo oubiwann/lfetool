@@ -1,7 +1,13 @@
 fill-yaws-bootstrap-files () {
-    # LFE module
+    # LFE modules
     template="plugins/yaws-bootstrap/templates/PROJECT-content.lfe.tmpl"
     pattern="{{YAWSBOOTSTRAPCONTENTMODULE}}"
+    fill-tool-var $template $pattern
+    template="plugins/yaws-bootstrap/templates/PROJECT-nav.lfe.tmpl"
+    pattern="{{YAWSBOOTSTRAPNAVMODULE}}"
+    fill-tool-var $template $pattern
+    template="plugins/yaws-bootstrap/templates/PROJECT-routes.lfe.tmpl"
+    pattern="{{YAWSBOOTSTRAPROUTESMODULE}}"
     fill-tool-var $template $pattern
     # css files
     template="plugins/yaws-bootstrap/templates/bootstrap.css"
