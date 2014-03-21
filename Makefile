@@ -6,6 +6,7 @@ get-version:
 	@echo "\tScript:\t\t" `./lfetool -v`
 	@echo "\tUnit tests:\t" `grep expectedversion test/tests.sh|head -1| \
 		awk -F= '{print $$2}'|sed -e 's/"//g'`
+	@echo "\tGit tags:\t" `git tag|tail -1`
 	@echo
 
 build-no-version:
