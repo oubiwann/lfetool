@@ -32,8 +32,11 @@ test-proj-shell: test-proj
 test-proj-run: test-proj
 	cd $(TEST_PROJ) && make run
 
-check:
+check: build
 	@bash test/tests.sh
+	./lfetool -x
+	@bash test/tests.sh
+	git checkout lfetool
 
 travis-check:
 	@TRAVIS=true bash test/tests.sh

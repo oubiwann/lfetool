@@ -1,20 +1,22 @@
 Script: {{SCRIPT}}, v{{VERSION}}
-Usage: {{FULLPATH}} <command> <context> <arg> | <options>
+
+Usage: {{FULLPATH}} <command> <context> [<arg> | <context command> <arg>] | <options>
 
 Currently, {{SCRIPT}} supports these commands:
  * help
  * version
+ * extract
  * install
  * update
  * new
 
-The new command accpets the following:
+The new command accpets the following contexts:
  * script
  * library
  * service
  * yaws
 
-The yaws command accepts the following:
+The yaws context accepts the following commands:
  * default
  * bootstrap
 
@@ -22,6 +24,11 @@ Additionally, instead of passing a command, you may choose to run the script
 with one of the following options:
  -h    display this usage message and exit
  -v    display the version number and exit
+
+If you are running the compressed {{SCRIPT}}, the following options are also
+available:
+ -x    extract the compressed lfetool source and use that instead of
+       the wrapper
 
 These commands are documented on the project page here:
   https://github.com/lfe/lfetool

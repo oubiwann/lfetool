@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 version=0.2.2
 tooltemplate="plugins/lfetool/templates/lfetool.tmpl"
@@ -58,8 +58,40 @@ decode () {
     esac
 }
 
-echo \$lfetool | decode | gzip -d --stdout | \
-    bash -s -- "\${BASH_SOURCE[0]} \$version \$@"
+uncompress () {
+    echo \$lfetool | decode | gzip -d --stdout
+}
+
+run () {
+    local script=\$0
+    local command=\$1
+    case \$command in
+        -x)
+            echo
+            echo "Extracting file ..."
+            tmp=/tmp/`date "+%Y%d%m%H%M%S_lfetool"`
+            echo "#!/usr/bin/env bash" > \$tmp
+            echo "" >> \$tmp
+            echo "version=$version" >> \$tmp
+            echo "" >> \$tmp
+            uncompress >> \$tmp
+            chmod 755 \$tmp
+            mv \$tmp \$script
+            echo "Done."
+            exit 0
+            ;;
+        extract)
+            \$script -x
+            ;;
+        *)
+            uncompress | bash -s -- \$script \$version \$@ \\
+              && exit 0 \
+              || exit 1
+            ;;
+    esac
+}
+
+run \$@
 ENDSCRIPT
     mv $temp $dest
 }
