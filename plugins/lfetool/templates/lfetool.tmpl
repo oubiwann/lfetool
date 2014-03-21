@@ -360,13 +360,22 @@ check-arg () {
 }
 
 run () {
-    local shell=$0
-    local script=$1
-    local version=$2
-    local command=$3
-    local context=$4
-    local arg1=$5
-    local arg2=$6
+    if [ "$0" == "bash" ]; then
+        # this script is being executed by the wrapper
+        local script=$1
+        local version=$2
+        local command=$3
+        local context=$4
+        local arg1=$5
+        local arg2=$6
+    else
+        # this script is being executed directly
+        local script=$0
+        local command=$1
+        local context=$2
+        local arg1=$3
+        local arg2=$4
+    fi
 
     case $command in
         -h)
@@ -378,11 +387,18 @@ run () {
             echo "$version"
             exit 0
             ;;
+        -x)
+            echo "Script has already been extracted."
+            echo 1
+            ;;
         help)
             $script -h
             ;;
         version)
             $script -v
+            ;;
+        extract)
+            $script -x
             ;;
         install)
             check-context $context
