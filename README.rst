@@ -271,7 +271,6 @@ powered by the YAWS web server.
 * ``rest`` - creates a RESTful service example, using the classic "coffeeshop"
   model.
 
-
 Note that ``new yaws`` is an alias for ``new yaws default``.
 
 Example usage:
