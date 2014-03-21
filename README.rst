@@ -252,6 +252,9 @@ supplied ``daemon`` target.
 ``new yaws``
 ,,,,,,,,,,,,
 
+The ``yaws`` command builds out a number of skeleton web projects that are
+powered by the YAWS web server. 
+
 ``yaws`` takes several subcommands:
 
 * ``default`` - creates a basic, multi-module web project using the
@@ -283,7 +286,10 @@ or
 
     $ lfetool new yaws default my-web-project
 
-or
+Note that these two are equivalent; if a subcommand is not passed, the
+``default`` subcommand is assumed.
+
+Another example:
 
 .. code:: cl
 
