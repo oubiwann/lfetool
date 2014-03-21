@@ -152,14 +152,18 @@ testNewYAWSBootstrap () {
         cd $yawsbootstrapname && make check &> /dev/null
     cd - &> /dev/null
     if [ "$TRAVIS" = "true" ]; then
-        expected="22"
+        expected="26"
     else
-        expected="28"
+        expected="32"
     fi
     assertEquals $expected \
         "`find $yawsbootstrapname -type f|egrep -v 'deps|.git'|wc -l|tr -d ' '`"
     assertEquals '(defmodule my-yaws-bootstrap-content' \
         "`head -1 $yawsbootstrapname/src/my-yaws-bootstrap-content.lfe`"
+    assertEquals '(defmodule my-yaws-bootstrap-nav' \
+        "`head -1 $yawsbootstrapname/src/my-yaws-bootstrap-nav.lfe`"
+    assertEquals '(defmodule my-yaws-bootstrap-routes' \
+        "`head -1 $yawsbootstrapname/src/my-yaws-bootstrap-routes.lfe`"
 }
 
 ##########
