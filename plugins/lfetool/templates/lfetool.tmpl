@@ -1,7 +1,3 @@
-#!/usr/bin/env bash
-
-version=0.2.2
-
 gitignore="{{GITIGNORE}}"
 usage="{{USAGE}}"
 rebarconfig="{{REBAR}}"
@@ -58,7 +54,7 @@ decode () {
 print-usage () {
     local fullpath=$1
     local version=$2
-    local script=`basename $1`
+    local script=`basename $fullpath`
     echo "$usage" | decode | sed \
         -e "s#{{SCRIPT}}#$script#g" \
         -e "s#{{FULLPATH}}#$fullpath#g" \
@@ -364,11 +360,13 @@ check-arg () {
 }
 
 run () {
-    local script=$0
-    local command=$1
-    local context=$2
-    local arg1=$3
-    local arg2=$4
+    local shell=$0
+    local script=$1
+    local version=$2
+    local command=$3
+    local context=$4
+    local arg1=$5
+    local arg2=$6
 
     case $command in
         -h)

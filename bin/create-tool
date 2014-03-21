@@ -58,7 +58,8 @@ decode () {
     esac
 }
 
-echo \$lfetool | decode | gzip -d --stdout | bash -s -- "\$@"
+echo \$lfetool | decode | gzip -d --stdout | \
+    bash -s -- "\${BASH_SOURCE[0]} \$version \$@"
 ENDSCRIPT
     mv $temp $dest
 }
