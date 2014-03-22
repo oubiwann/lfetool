@@ -346,8 +346,8 @@ At a future date we will also support the e2 project in a similar fashion:
     $ lfetool new e2-service my-new-service
 
 
-lfetool Plugins
-===============
+Creating lfetool Plugins
+========================
 
 *Developing additional lfetool commands*
 
