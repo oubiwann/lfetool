@@ -12,12 +12,12 @@ Introduction
 
 Currently, the script supports these commands:
 
-* ``install``
-* ``update``
-* ``new``
 * ``help``
 * ``version``
+* ``install``
+* ``update``
 * ``extract``
+* ``new``
 
 Usage information for each of these is presented below.
 
