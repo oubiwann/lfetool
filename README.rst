@@ -111,32 +111,6 @@ Optionally, you may also use a flag:
     $ lfetool -v
 
 
-``extract`` Command
--------------------
-
-As of version 0.2.3, ``lfetool`` runs as a compressed, self-extracting script. 
-This is due to the increasing number files that are embedded in it and is an
-effort to reduce the download size of the script. The down-side of this is that
-every time the script is run, it needs to decode a large chunk of base64 text
-and then ``gunzip`` that, which takes more time.
-
-For those who would prefer faster performance of the script, there is an option
-to extract the compressed, encoded script from the self-extracting wrapper:
-
-.. code:: bash
-
-    $ lfetool extract
-
-Optionally, you may also use a flag:
-
-.. code:: bash
-
-    $ lfetool -x
-    
-This will replace the wrapper (containing the compressed script) with an
-uncompressed version of the script.
-
-
 ``install`` Command
 -------------------
 
@@ -165,6 +139,32 @@ you may want to use this command to get the latest script from github:
 
 The command takes no parameters. Note that it will fail if ``lfetool`` is not
 on your ``$PATH``.
+
+
+``extract`` Command
+-------------------
+
+As of version 0.2.3, ``lfetool`` runs as a compressed, self-extracting script. 
+This is due to the increasing number files that are embedded in it and is an
+effort to reduce the download size of the script. The down-side of this is that
+every time the script is run, it needs to decode a large chunk of base64 text
+and then ``gunzip`` that, which takes more time.
+
+For those who would prefer faster performance of the script, there is an option
+to extract the compressed, encoded script from the self-extracting wrapper:
+
+.. code:: bash
+
+    $ lfetool extract
+
+Optionally, you may also use a flag:
+
+.. code:: bash
+
+    $ lfetool -x
+    
+This will replace the wrapper (containing the compressed script) with an
+uncompressed version of the script.
 
 
 ``new`` Command
