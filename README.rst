@@ -202,7 +202,7 @@ To get a list of available releases, you can use the following:
 ``install kerl``
 ,,,,,,,,,,,,,,,,
 
-lfetool depends upon ``kerl`` quite heavily, and as such, we provide a means
+We depend upon ``kerl`` quite heavily, and as such, we provide a means
 of easily installing it:
 
 .. code:: bash
