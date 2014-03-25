@@ -24,14 +24,6 @@ Usage information for each of these is presented below.
 *Note*: This project superscedes its precursor, the `lfe-skel`_ project.
 
 
-``rebar`` and the Future
-------------------------
-
-Eventually, lfetool will be converted to an `LFE rebar`_ script. Perhaps someone
-else will have the time and rebar chops to do it? Until then, this shell script
-handles the necessary tasks suitably well.
-
-
 Installation
 ============
 
