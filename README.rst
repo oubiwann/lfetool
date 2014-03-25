@@ -473,8 +473,11 @@ For those that wish to start from scratch, the following guidelines are
 provided:
 
 
+Create the Plugin
+-----------------
+
 Step 1
-------
+,,,,,,
 
 Create a new plugin directory, filller file, and subdirectory for file
 tempaltes:
@@ -505,7 +508,7 @@ tempaltes:
 
 
 Step 2
-------
+,,,,,,
 
 Edit ``plugins/my-plugin/filler.sh`` to create a function named something
 sensible (e.g., fill-my-plugin). This function needs to define two variables:
@@ -526,16 +529,7 @@ another line that defines the next ``pattern`` and then a call to
 
 
 Step 3
-------
-
-Each ``filler.sh`` file created in ``plugins/*/`` will be be sourced by
-``./bin/create-tool``. As such, once you have created the ``filler.sh``
-file for your plugin, you need to add it to the ``run`` function in
-``./bin/create-tool``.
-
-
-Step 4
-------
+,,,,,,
 
 * With the project files created, ``plugins/lfetools/templates/lfetool.tmpl``
   needs to be updated to accept the new command in the ``create-new`` function.
@@ -545,8 +539,21 @@ Step 4
 * Create any other functions necessary in support of your new dispatch function.
 
 
+Tell ``lfetool`` about the Plugin
+---------------------------------
+
+
+Step 4
+,,,,,,
+
+Each ``filler.sh`` file created in ``plugins/*/``  (**Step 2**) will be be
+sourced by ``./bin/create-tool``. As such, once you have created the
+``filler.sh`` file for your plugin, you need to add it to the ``run``
+function in ``./bin/create-tool``.
+
+
 Step 5
-------
+,,,,,,
 
 * For every file you have added to your plugin's template directory (which will
   be created by ``lfetool`` when it runs your plugin's commands), you will need
@@ -556,8 +563,11 @@ Step 5
   ``./bin/create-tool`` is run.
 
 
+Testing
+-------
+
 Step 6
-------
+,,,,,,
 
 * Write a unit test in ``test/test.sh`` which checks for the existence of all
   the files you have created and examines at least some of the file contents to
@@ -574,7 +584,7 @@ Step 6
 
 
 Step 7
-------
+,,,,,,
 
 * Build a local copy of ``lfetool`` by running ``make build``.
 
