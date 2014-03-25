@@ -114,6 +114,27 @@ Optionally, you may also use a flag:
 ``install`` Command
 -------------------
 
+The ``install`` command supports the following sub-commands:
+
+* ``lfetool``
+
+* ``lfe``
+
+* ``erlang``
+
+* ``kerl``
+
+* ``rebar``
+
+* ``relx``
+
+You may also call ``./lfetool install`` without any parameters; this is an
+alias for ``./lfetool install lfetool``.
+
+
+``install`` or ``install lfetool``
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
 Assuming you have downloaded ``lfetool`` to your local directory, you can use it
 to install the script to a path of your choosing. Simply provide the
 installation directory:
@@ -122,9 +143,97 @@ installation directory:
 
     $ ./lfetool install /usr/local/bin
 
+or (for lovers of verbosity):
+
+.. code:: bash
+
+    $ ./lfetool install lfetool /usr/local/bin
+
 You need to have write permissions to the given directory in order for this
 command to succeed. Note that the installation procedure sets the executable
 bit for the script.
+
+
+``install lfe``
+,,,,,,,,,,,,,,,
+
+If you would like to install LFE system-wide, you may use the following command
+to do so. This does assume that you have ``erl`` in your path.
+
+.. code:: bash
+
+    $ lfetool install lfe
+
+If using ``kerl``, this will install LFE in the lib dir for whichever Erlang
+install was most recently ``activate``ed by ``kerl``.
+
+Installing LFE is really only justified if you will be running ``lfescript``-
+based scripts. In general, we discourage system-wide LFE installations and
+suggest using something like `rebar`_ or `erlang.mk`_ to pull your
+dependencies into a project dir and running LFE from there.
+
+
+``install erlang``
+,,,,,,,,,,,,,,,,,,
+
+This command is merely a convenience wrapper for the ``kerl`` tool and assumes
+that you have ``kerl`` installed and in your ``$PATH``. It takes a single
+parameter, the release name of Erlang:
+
+.. code:: bash
+
+    $ lfetool install erlang R16B03-1
+
+This will install the given release of Erlang at ``/opt/erlang/R16B03-1``.
+You can override the install dir by passing a different one:
+
+.. code:: bash
+
+    $ lfetool install erlang R16B03-1 /usr/local
+
+
+To get a list of available releases, you can use the following:
+
+.. code:: bash
+
+    $ kerl list releases
+
+
+``install kerl``
+,,,,,,,,,,,,,,,,
+
+lfetool depends upon ``kerl`` quite heavily, and as such, we provide a means
+of easily installing it:
+
+.. code:: bash
+
+    $ lfetool install kerl
+
+
+``install relx``
+,,,,,,,,,,,,,,,,
+
+For building releases, we recommend `relx`_. We go so far as to provide a
+command to install it:
+
+.. code:: bash
+
+    $ lfetool install relx
+
+Note that if you don't have a recent version of ``rebar`` installed, this may
+fail. We have provided a ``rebar`` isntall command for your convenience.
+After installing a new version of ``rebar`` the ``relx`` install should work.
+
+
+``install rebar``
+,,,,,,,,,,,,,,,,,
+
+``rebar`` is a widely used tool in the Erlang community, and one that can be
+used with LFE and LFE projects. Here's how you install it:
+
+.. code:: bash
+
+    $ lfetool install rebar
 
 
 ``update`` Command
@@ -144,7 +253,7 @@ on your ``$PATH``.
 ``extract`` Command
 -------------------
 
-As of version 0.2.3, ``lfetool`` runs as a compressed, self-extracting script. 
+As of version 0.2.3, ``lfetool`` runs as a compressed, self-extracting script.
 This is due to the increasing number files that are embedded in it and is an
 effort to reduce the download size of the script. The down-side of this is that
 every time the script is run, it needs to decode a large chunk of base64 text
@@ -162,7 +271,7 @@ Optionally, you may also use a flag:
 .. code:: bash
 
     $ lfetool -x
-    
+
 This will replace the wrapper (containing the compressed script) with an
 uncompressed version of the script.
 
@@ -484,3 +593,6 @@ Step 7
 .. _shell script: https://raw.github.com/lfe/lfetool/master/lfetool
 .. _exemplar: https://github.com/lfe/exemplar
 .. _Twitter Bootstrap: http://getbootstrap.com/
+.. _rebar: https://github.com/rebar/rebar
+.. _erlang.mk: https://github.com/extend/erlang.mk
+.. _relx: https://github.com/erlware/relx
