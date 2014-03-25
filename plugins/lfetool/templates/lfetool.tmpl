@@ -102,16 +102,98 @@ lfetool-not-found-error () {
     error 'Error: could not find `lfetool` on the $PATH'
 }
 
+clone-repo () {
+    git clone $url
+}
+
+download-file () {
+    url=$1
+    curl -O "$url" && echo "Download succeeded." || echo "Download failed."
+}
+
+install-file () {
+    local src=$1
+    local directory=$2
+    local mode=$3
+    local msg=""
+    if [ "$directory" = "" ]; then
+        directory=/usr/local/bin
+    fi
+    chmod 755 $src
+    if [ "$mode" = "" ]; then
+        echo
+        success="Installed $src to $directory."
+        failure="Failed to install $src."
+    else
+        success="Updated $directory."
+        failure="Update failed."
+    fi
+    mv $src $directory && echo $success || echo $failure
+}
+
 install-lfetool () {
     local directory=$1
     local mode=$2
-    local path=$directory/lfetool
-    curl -o $path https://raw.github.com/lfe/lfetool/master/lfetool
-    chmod 755 $path
-    if [ "$mode" = "" ]; then
-        echo
-        echo "Installed lfetool to $path."
+    local url="https://raw.github.com/lfe/lfetool/master/lfetool"
+    local file=lfetool
+    download-file $url
+    install-file $file $directory
+}
+
+install-lfe () {
+    local directory=$1
+    local url="https://github.com/rvirding/lfe.git"
+    local repo=lfe
+    local file=$repo
+    clone-repo $url
+    cd $repo && make compile && \
+    ERL_LIBS=`erl -eval 'io:fwrite(code:lib_dir()), halt().' -noshell` \
+        make install && \
+    rm -rf $repo && \
+    cd - &> /dev/null
+}
+
+install-erlang () {
+    local release=$1
+    local directory=$2
+    if [ "$directory" = "" ]; then
+        directory=/opt/erlang/$release
     fi
+    kerl build $1 $1 && \
+    kerl install $release $directory && \
+    echo "Installed Erlang." || echo "Failed to install Erlang."
+}
+
+install-kerl () {
+    local directory=$1
+    local url="https://raw.github.com/spawngrid/kerl/master/kerl"
+    local file=kerl
+    download-file $url
+    install-file $file $directory
+}
+
+install-rebar () {
+    local directory=$1
+    local url="https://github.com/rebar/rebar.git"
+    local repo=rebar
+    local file=$repo
+    clone-repo $url
+    cd $repo && make && \
+    install-file $file $directory && \
+    rm -rf $repo && \
+    cd - &> /dev/null
+}
+
+install-relx () {
+    local directory=$1
+    local url="https://github.com/erlware/relx.git"
+    local repo=relx
+    local file=$repo
+    clone-repo $url
+    cd $repo && make && \
+    install-file $file $directory && \
+    rm -rf $repo && \
+    cd - &> /dev/null
 }
 
 update-lfetool () {
@@ -345,6 +427,39 @@ create-new () {
     esac
 }
 
+install () {
+    local context=$1
+    local arg1=$2
+    local arg2=$3
+    # the default option is to install lfetool itself
+    if [ "$context" == "" ]; then
+        context="lfetool"
+    fi
+    case $context in
+        lfetool)
+            install-lfetool $arg
+            ;;
+        lfe)
+            install-lfe
+            ;;
+        erlang)
+            install-erlang $arg1 $arg2
+            ;;
+        kerl)
+            install-kerl
+            ;;
+        rebar)
+            install-rebar
+            ;;
+        relx)
+            install-relx
+            ;;
+        *)
+            unknown-context-error $context
+            ;;
+    esac
+}
+
 check-context () {
     local context=$1
     if [ "$context" = "" ]; then
@@ -402,7 +517,7 @@ run () {
             ;;
         install)
             check-context $context
-            install-lfetool $context
+            install $context $arg1 $arg2
             ;;
         new)
             check-context $context
