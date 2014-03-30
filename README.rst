@@ -271,7 +271,7 @@ uncompressed version of the script.
 ``new`` Command
 ---------------
 
-For the collowing commands, keep in mind that Lisp functions and modules do not
+For the following commands, keep in mind that Lisp functions and modules do not
 use underscores by convention, but rather dashes. When naming your project,
 it is recommended that you do this as well. Also note that it's probably best
 to use just alphanumerica characters, dashes, and nothing else in your project
@@ -445,6 +445,107 @@ At a future date we will also support the e2 project in a similar fashion:
 .. code:: shell
 
     $ lfetool new e2-service my-new-service
+
+
+``tests`` Command
+-----------------
+
+The ``tests`` command supports the following sub-commands:
+
+* ``build``
+
+* ``unit`` and ``show-unit``
+
+* ``integration`` and ``show-integration``
+
+* ``system`` and ``show-system``
+
+* ``all``
+
+
+``tests build``
+,,,,,,,,,,,,,,,
+
+This will build all the eunit tests found in the current directory's (LFE
+project) ``./test`` sub-directory. By convention, LFE unit tests are placed (by
+the project developer) in ``./test/unit``; integration tests are placed in
+``./test/integration``; and system tests are placed in ``./test/system``.
+
+Furthermore, ``lfetool`` supports custom testing modules which may be used by
+the unit tests (e.g., modules for utility functions that are only ever used
+in the test modules). If you wish to create and use testing modules like these,
+simply create modules in ``./test`` that are prefixed with ``testing-``.
+
+The following command builds all of the aforementioned:
+
+.. code:: shell
+
+    $ lfetool tests build
+
+
+``tests unit``
+,,,,,,,,,,,,,,
+
+To run the unit tests for the LFE project in the current working directory,
+execute the following:
+
+.. code:: shell
+
+    $ lfetool tests unit
+
+If you would like to only see the unit test modules defined for the project,
+and not actually run them, execute this command:
+
+.. code:: shell
+
+    $ lfetool tests show-unit
+
+
+``tests integration``
+,,,,,,,,,,,,,,,,,,,,,
+
+To run the integration tests for the LFE project in the current working
+directory, execute the following:
+
+.. code:: shell
+
+    $ lfetool tests integration
+
+If you would like to only see the integration test modules defined for the
+project, and not actually run them, execute this command:
+
+.. code:: shell
+
+    $ lfetool tests show-integration
+
+
+``tests system``
+,,,,,,,,,,,,,,,,
+
+To run the system tests for the LFE project in the current working
+directory, execute the following:
+
+.. code:: shell
+
+    $ lfetool tests system
+
+If you would like to only see the system test modules defined for the
+project, and not actually run them, execute this command:
+
+.. code:: shell
+
+    $ lfetool tests show-system
+
+
+``tests all``
+,,,,,,,,,,,,,
+
+To run the entire test suites the LFE project in the current working directory,
+execute the following:
+
+.. code:: shell
+
+    $ lfetool tests all
 
 
 Creating lfetool Plugins

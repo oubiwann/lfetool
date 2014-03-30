@@ -17,14 +17,6 @@ FINISH = -run init stop -noshell
 # Note that ERL_LIBS is for running this project in development and that
 # ERL_LIB is for installation.
 ERL_LIBS = $(shell find $(DEPS) -maxdepth 1 -exec echo -n '{}:' \;|sed 's/:$$/:./'):$(TEST_OUT_DIR)
-CLEAN_TEST_NAME=sed -e 's/.beam//' -e 's/^.eunit\///'
-QUOTE_TEST=awk '{print "\x27" $$1 "\x27"}'
-STRIP_NEWLINES=tr '\n' ','|sed 's/,$$//'
-UNIT_TESTS=$(shell ls .eunit/unit*|$(CLEAN_TEST_NAME)|$(QUOTE_TEST)|$(STRIP_NEWLINES))
-INTEGRATION_TESTS=$(ls .eunit/integration*|$(CLEAN_TEST_NAME)|$(QUOTE_TEST)|$(STRIP_NEWLINES))
-SYSTEM_TESTS=$(shell ls .eunit/system*|$(CLEAN_TEST_NAME)|$(QUOTE_TEST)|$(STRIP_NEWLINES))
-CASE_OPEN=case eunit:test({inparallel,[
-CASE_CLOSE=]},[verbose]) of ok -> halt(0); _ -> halt(127) end
 
 get-version:
 	@echo
@@ -82,10 +74,7 @@ compile-no-deps: clean-ebin
 	@rebar compile skip_deps=true
 
 compile-tests: clean-eunit
-	@echo "Compiling tests ..."
-	@mkdir -p $(TEST_OUT_DIR)
-	@ERL_LIBS=$(ERL_LIBS) $(LFEC) -o $(TEST_OUT_DIR) $(TEST_DIR)/*/*[_-]tests.lfe
-	@-ERL_LIBS=$(ERL_LIBS) $(LFEC) -o $(OUT_DIR) $(TEST_DIR)/testing[-_]*.lfe
+	@lfetool tests build
 
 shell: compile
 	@clear
@@ -101,31 +90,13 @@ clean: clean-ebin clean-eunit
 	@rebar clean
 
 check-unit-only:
-	@echo
-	@echo "------------------"
-	@echo "Running unit tests ..."
-	@echo "------------------"
-	@echo
-	ERL_LIBS=$(ERL_LIBS) erl -pa .eunit -noshell \
-	-eval "$(CASE_OPEN) $(UNIT_TESTS) $(CASE_CLOSE)"
+	@lfetool tests unit
 
 check-integration-only:
-	@echo
-	@echo "-------------------------"
-	@echo "Running integration tests ..."
-	@echo "-------------------------"
-	@echo
-	@ERL_LIBS=$(ERL_LIBS) erl -pa .eunit -noshell \
-	-eval "$(CASE_OPEN) $(FUNCTIONAL_TESTS) $(CASE_CLOSE)"
+	@lfetool tests integration
 
 check-system-only:
-	@echo
-	@echo "--------------------"
-	@echo "Running system tests ..."
-	@echo "--------------------"
-	@echo
-	@ERL_LIBS=$(ERL_LIBS) erl -pa .eunit -noshell \
-	-eval "$(CASE_OPEN) $(SYSTEM_TESTS) $(CASE_CLOSE)"
+	@lfetool tests system
 
 check-unit-with-deps: get-deps compile compile-tests check-unit-only
 check-unit: compile-no-deps compile-tests check-unit-only
