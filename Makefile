@@ -2,9 +2,11 @@ TEST_PROJ=my-new-service
 
 get-version:
 	@echo "Version info:\n"
-	@echo "\t./bin/create-tool:\t" `./lfetool -v`
+	@echo "\t./bin/create-tool:\t" `grep 'version=' ./bin/create-tool | \
+	head -1|awk -F= '{print $$2}'`
 	@echo "\t./test/tests.sh:\t" `grep expectedversion test/tests.sh|head -1| \
 		awk -F= '{print $$2}'|sed -e 's/"//g'`
+	@echo "\tBuilt lfetool:\t\t" `./lfetool -v`
 	@echo "\tLatest tag:\t\t" `git tag|tail -1`
 	@echo
 
