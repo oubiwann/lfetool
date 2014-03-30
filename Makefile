@@ -40,3 +40,4 @@ check: build
 
 travis-check:
 	@TRAVIS=true bash test/tests.sh
+

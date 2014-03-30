@@ -72,7 +72,7 @@ run () {
             tmp=/tmp/`date "+%Y%d%m%H%M%S_lfetool"`
             echo "#!/usr/bin/env bash" > \$tmp
             echo "" >> \$tmp
-            echo "version=$version" >> \$tmp
+            echo "version=\$version" >> \$tmp
             echo "" >> \$tmp
             uncompress >> \$tmp
             chmod 755 \$tmp

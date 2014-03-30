@@ -9,6 +9,7 @@ Currently, {{SCRIPT}} supports these commands:
  * install
  * update
  * new
+ * tests
 
 The install command accepts the following contexts:
  * lfetool (or no parameter/empty string)
@@ -18,7 +19,7 @@ The install command accepts the following contexts:
  * rebar
  * relx
 
-The new command accpets the following contexts:
+The new command accepts the following contexts:
  * script
  * library
  * service
@@ -27,6 +28,12 @@ The new command accpets the following contexts:
 The yaws context accepts the following commands:
  * default
  * bootstrap
+
+The tests command accepts the following contexts:
+ * build
+ * unit
+ * integration
+ * system
 
 Additionally, instead of passing a command, you may choose to run the script
 with one of the following options:
