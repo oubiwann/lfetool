@@ -73,7 +73,7 @@ compile-no-deps: clean-ebin
 	@echo "Compiling only project code ..."
 	@rebar compile skip_deps=true
 
-compile-tests: clean-eunit
+compile-tests:
 	@lfetool tests build
 
 shell: compile
@@ -99,13 +99,13 @@ check-system-only:
 	@lfetool tests system
 
 check-unit-with-deps: get-deps compile compile-tests check-unit-only
-check-unit: compile-no-deps compile-tests check-unit-only
-check-integration: compile compile-tests check-integration-only
-check-system: compile compile-tests check-system-only
-check-all-with-deps: compile compile-tests check-unit-only \
-	check-integration-only check-system-only
-check-all: get-deps compile-no-deps compile-tests check-unit-only \
-	check-integration-only check-system-only
+check-unit: compile-no-deps check-unit-only
+check-integration: compile check-integration-only
+check-system: compile check-system-only
+check-all-with-deps: compile check-unit-only check-integration-only \
+	check-system-only
+check-all: get-deps compile-no-deps check-unit-only check-integration-only \
+	check-system-only
 
 # XXX all the custom test checkers above have an issue, described here:
 # 	https://github.com/lfe/lfetool/issues/14
