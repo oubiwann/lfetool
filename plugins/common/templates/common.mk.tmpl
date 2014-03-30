@@ -107,9 +107,6 @@ check-all-with-deps: compile check-unit-only check-integration-only \
 check-all: get-deps compile-no-deps check-unit-only check-integration-only \
 	check-system-only
 
-# XXX all the custom test checkers above have an issue, described here:
-# 	https://github.com/lfe/lfetool/issues/14
-# until that gets fixed, use the target below for Travis CI
 check: check-unit-with-deps
 
 push-all:
