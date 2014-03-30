@@ -2,38 +2,32 @@ Script: {{SCRIPT}}, v{{VERSION}}
 
 Usage: {{FULLPATH}} <command> <context> [<arg> | <context command> <arg>] | <options>
 
-Currently, {{SCRIPT}} supports these commands:
+Currently, {{SCRIPT}} supports these commands (with subcommands nested):
  * help
  * version
  * extract
  * install
+   * lfetool (or no parameter/empty string)
+   * lfe
+   * erlang
+   * kerl
+   * rebar
+   * relx
+   * autocomplete
  * update
  * new
+   * script
+   * library
+   * service
+   * yaws
+     * default
+     * bootstrap
  * tests
-
-The install command accepts the following contexts:
- * lfetool (or no parameter/empty string)
- * lfe
- * erlang
- * kerl
- * rebar
- * relx
-
-The new command accepts the following contexts:
- * script
- * library
- * service
- * yaws
-
-The yaws context accepts the following commands:
- * default
- * bootstrap
-
-The tests command accepts the following contexts:
- * build
- * unit
- * integration
- * system
+   * build
+   * unit
+   * integration
+   * system
+   * all
 
 Additionally, instead of passing a command, you may choose to run the script
 with one of the following options:
