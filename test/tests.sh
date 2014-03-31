@@ -65,7 +65,12 @@ testNewLibrary () {
         "`head -1 $libname/Makefile`"
     assertEquals "PROJECT = my-lib" \
         "`head -1 $libname/common.mk`"
-    assertEquals 12 \
+    if [ "$TRAVIS" = "true" ]; then
+        expected="11"
+    else
+        expected="12"
+    fi
+    assertEquals $expected \
         "`find $libname -type f|egrep -v 'deps|.git'|wc -l|tr -d ' '`"
     assertEquals '(defmodule my-lib' \
         "`head -1 $libname/src/my-lib.lfe`"
@@ -90,7 +95,12 @@ testNewService () {
         "`head -1 $svcname/Makefile`"
     assertEquals "PROJECT = my-service" \
         "`head -1 $svcname/common.mk`"
-    assertEquals 17 \
+    if [ "$TRAVIS" = "true" ]; then
+        expected="16"
+    else
+        expected="17"
+    fi
+    assertEquals $expected \
         "`find $svcname -type f|egrep -v 'deps|.git'|wc -l|tr -d ' '`"
     assertEquals '(defmodule my-service-app' \
         "`head -1 $svcname/src/my-service-app.lfe`"
