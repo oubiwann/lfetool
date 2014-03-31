@@ -31,6 +31,21 @@ _get-lfetool-opts-and-commands () {
         tests)
             COMPREPLY=($(compgen -W "${TESTS}" -- $cur))
             ;;
+        # no more tab-completion for these ...
+        # XXX there has *got* to be a nicer way to do this; we want to have no
+        # TAB-completion for *any* of the final commands ...
+        help)
+            COMPREPLY=($(compgen -W "" -- $cur))
+            ;;
+        version)
+            COMPREPLY=($(compgen -W "" -- $cur))
+            ;;
+        extract)
+            COMPREPLY=($(compgen -W "" -- $cur))
+            ;;
+        -*)
+            COMPREPLY=($(compgen -W "" -- $cur))
+            ;;
     esac
     return 0
 }
