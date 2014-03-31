@@ -45,6 +45,24 @@ TEST_OUT_DIR=./.eunit
 CASE_OPEN="case eunit:test({inparallel,["
 CASE_CLOSE="]},[verbose]) of ok -> halt(0); _ -> halt(127) end"
 
+BLACK="\033[0;30;40m"
+RED="\033[0;31;40m"
+GREEN="\033[0;32;40m"
+YELLOW="\033[0;33;40m"
+BLUE="\033[0;34;40m"
+MAGENTA="\033[0;35;40m"
+CYAN="\033[0;36;40m"
+WHITE="\033[0;37;40m"
+BOLD_BLACK="\033[1;30;40m"
+BOLD_RED="\033[1;31;40m"
+BOLD_GREEN="\033[1;32;40m"
+BOLD_YELLOW="\033[1;33;40m"
+BOLD_BLUE="\033[1;34;40m"
+BOLD_MAGENTA="\033[1;35;40m"
+BOLD_CYAN="\033[1;36;40m"
+BOLD_WHITE="\033[1;37;40m"
+END_COLOR="\033[m"
+
 decode () {
     os=`uname`
     case $os in
@@ -270,32 +288,60 @@ get-system-tests () {
     ls .eunit/system*|clean-test-name|quote-test|strip-newlines
 }
 
+parse-test-results () {
+    # color the successes
+    sed "s/ok$/\[\\${BOLD_GREEN}ok\\${END_COLOR}\]/g" | \
+    sed "s/Passed/\\${GREEN}Passed\\${END_COLOR}/" | \
+    # color warnings and the like
+    sed "s/There were no tests to run\./\\${YELLOW}There were no tests of this type to run\.\\${END_COLOR}/" | \
+    sed "s/Skipped/\\${YELLOW}Skipped\\${END_COLOR}/" | \
+    # color failures
+    sed "s/\*failed\*$/\[\\${RED}failed\\${END_COLOR}\]/g" | \
+    sed "s/Failed/\\${RED}Failed\\${END_COLOR}/" | \
+    sed -rn "s/\(\*\*error:.*\}\]\}$\)/\\${BOLD_RED}\1\\${END_COLOR}/" | \
+    # get rid of the redundant module prefixing for each line ...
+    sed "s/  unit-.*-tests:/ /" | \
+    sed "s/  integration-.*-tests:/ /" | \
+    sed "s/  system-.*-tests:/ /" | \
+    sed "s/ (module '.*')/ /" | \
+    # get rid of the eunit/erlang-only '_test' suffix
+    sed "s/_test .../ .../" | \
+    sed "s/_test.../ .../" | \
+    # color the timings
+    sed "s/\(.*\)\(\[[0-9].* s\]\)\(.*\)/\1\\${BOLD_BLACK}\2\\${END_COLOR}\3/" | \
+    sed "s/\(.*\)\(\[done in .* s\]\)\(.*\)/\1\\${BOLD_BLACK}\2\\${END_COLOR}\3/"
+}
+
 build-tests () {
-    echo "Removing old tests ..."
+    echo -e "${YELLOW}Removing old tests ...${END_COLOR}"
     echo "rm -rf $TEST_OUT_DIR"
     mkdir -vp $TEST_OUT_DIR
-    echo "Compiling tests ..."
+    echo -e "${YELLOW}Compiling tests ...${END_COLOR}"
     # compile any custom testing-centric modules needed only for running tests
     PATH=`get-path` ERL_LIBS=`get-erl-libs` \
         lfec -o $TEST_OUT_DIR $TEST_DIR/testing[-_]*.lfe && \
-        echo "Successfully compiled testing support modules." || \
-        echo "Could not compile one or more testing support modules."
+        echo -e "${GREEN}Successfully compiled testing support modules." || \
+        echo -e "${RED}Could not compile one or more testing support modules."
+        echo -ne "$END_COLOR"
     # compile actual test modules (unit, integration, system, etc.)
     PATH=`get-path` ERL_LIBS=`get-erl-libs` \
         lfec -o $TEST_OUT_DIR $TEST_DIR/*/*[_-]tests.lfe && \
-        echo "Successfully compiled test modules." || \
-        echo "Could not compile one or more test modules."
+        echo -e "${GREEN}Successfully compiled test modules." || \
+        echo -e "${RED}Could not compile one or more test modules."
+        echo -ne "$END_COLOR"
 }
 
 only-run-unit-tests () {
-    echo
+    echo -e "$BOLD_BLUE"
     echo "------------------"
     echo "Running unit tests ..."
     echo "------------------"
-    echo
-    PATH=`get-path` ERL_LIBS=`get-erl-libs` \
+    echo -e "$END_COLOR"
+    result=$(PATH=`get-path` ERL_LIBS=`get-erl-libs` \
         erl -pa .eunit -noshell \
-        -eval "$CASE_OPEN `get-unit-tests` $CASE_CLOSE"
+        -eval "$CASE_OPEN `get-unit-tests` $CASE_CLOSE"| \
+        parse-test-results)
+    echo -e "$result"
 }
 
 run-unit-tests () {
@@ -304,14 +350,16 @@ run-unit-tests () {
 }
 
 only-run-integration-tests () {
-    echo
+    echo -e "$BOLD_BLUE"
     echo "-------------------------"
     echo "Running integration tests ..."
     echo "-------------------------"
-    echo
-    PATH=`get-path` ERL_LIBS=`get-erl-libs` \
+    echo -e "$END_COLOR"
+    result=$(PATH=`get-path` ERL_LIBS=`get-erl-libs` \
         erl -pa .eunit -noshell \
-        -eval "$CASE_OPEN `get-integration-tests` $CASE_CLOSE"
+        -eval "$CASE_OPEN `get-integration-tests` $CASE_CLOSE"| \
+        parse-test-results)
+    echo -e "$result"
 }
 
 run-integration-tests () {
@@ -320,14 +368,16 @@ run-integration-tests () {
 }
 
 only-run-system-tests () {
-    echo
+    echo -e "$BOLD_BLUE"
     echo "--------------------"
     echo "Running system tests ..."
     echo "--------------------"
-    echo
-    PATH=`get-path` ERL_LIBS=`get-erl-libs` \
+    echo -e "$END_COLOR"
+    result=$(PATH=`get-path` ERL_LIBS=`get-erl-libs` \
         erl -pa .eunit -noshell \
-        -eval "$CASE_OPEN `get-system-tests` $CASE_CLOSE"
+        -eval "$CASE_OPEN `get-system-tests` $CASE_CLOSE"| \
+        parse-test-results)
+    echo -e "$result"
 }
 
 run-system-tests () {
