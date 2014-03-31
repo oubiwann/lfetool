@@ -291,25 +291,26 @@ get-system-tests () {
 parse-test-results () {
     # color the successes
     sed "s/ok$/\[\\${BOLD_GREEN}ok\\${END_COLOR}\]/g" | \
-    sed "s/Passed/\\${GREEN}Passed\\${END_COLOR}/" | \
+    sed "s/\(Passed: .*\.\)/\\${GREEN}\1\\${END_COLOR}/" | \
     # color warnings and the like
     sed "s/There were no tests to run\./\\${YELLOW}There were no tests of this type to run\.\\${END_COLOR}/" | \
-    sed "s/Skipped/\\${YELLOW}Skipped\\${END_COLOR}/" | \
+    sed "s/\(Skipped: .*\.\)/\\${YELLOW}\1\\${END_COLOR}/" | \
     # color failures
     sed "s/\*failed\*$/\[\\${RED}failed\\${END_COLOR}\]/g" | \
-    sed "s/Failed/\\${RED}Failed\\${END_COLOR}/" | \
-    sed -rn "s/\(\*\*error:.*\}\]\}$\)/\\${BOLD_RED}\1\\${END_COLOR}/" | \
+    sed "s/\(Failed: .*\.\)/\\${RED}\1\\${END_COLOR}/" | \
+    sed "s/\(\*\*error:.*\)/\\${BOLD_RED}\1\\${END_COLOR}/" | \
+    sed "s/\(                     {.*\)/\\${BOLD_RED}\1\\${END_COLOR}/" | \
     # get rid of the redundant module prefixing for each line ...
     sed "s/  unit-.*-tests:/ /" | \
     sed "s/  integration-.*-tests:/ /" | \
     sed "s/  system-.*-tests:/ /" | \
     sed "s/ (module '.*')/ /" | \
     # get rid of the eunit/erlang-only '_test' suffix
-    sed "s/_test .../ .../" | \
-    sed "s/_test.../ .../" | \
+    sed "s/_test .../ ... /" | \
+    sed "s/_test.../ ... /" | \
     # color the timings
     sed "s/\(.*\)\(\[[0-9].* s\]\)\(.*\)/\1\\${BOLD_BLACK}\2\\${END_COLOR}\3/" | \
-    sed "s/\(.*\)\(\[done in .* s\]\)\(.*\)/\1\\${BOLD_BLACK}\2\\${END_COLOR}\3/"
+    sed "s/\(.*\)\(\[done in \(.* s\)\]\)\(.*\)/\1\\${BOLD_BLACK}Total module test time: \3\\${END_COLOR}\4/"
 }
 
 build-tests () {
@@ -386,6 +387,7 @@ run-system-tests () {
 }
 
 run-all-tests () {
+    local failure=0
     build-tests && \
     only-run-unit-tests && \
     only-run-integration-tests && \
