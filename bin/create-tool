@@ -69,7 +69,7 @@ run () {
         -x)
             echo
             echo "Extracting file ..."
-            tmp=/tmp/`date "+%Y%d%m%H%M%S_lfetool"`
+            tmp=/tmp/\`date "+%Y%d%m%H%M%S_lfetool"\`
             echo "#!/usr/bin/env bash" > \$tmp
             echo "" >> \$tmp
             echo "version=\$version" >> \$tmp
