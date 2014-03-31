@@ -202,19 +202,25 @@ install-relx () {
     cd - &> /dev/null
 }
 
-install-autocomplete () {
+_install-autocomplete () {
     local directory="~/.lfetool/"
-    local file="autocomplete"
+    local file="bash-complete"
     local url="https://raw.github.com/lfe/lfetool/master/$file"
     mkdir -p $directory
     download-file $url
     install-file $file $directory
+}
+
+install-autocomplete () {
+    _install-autocomplete
     echo
     echo "The lfetool autocomplete file has been created. To use, simply"
     echo "update your ~/.bashrc, ~/.bash_profile, or ~/.profile to include the"
     echo "following line:"
+    echo
     echo "    source ${directory}${file}"
-    echo "(Alternatively, you can execute that from the command line for"
+    echo
+    echo "(Alternatively, you may execute that from the command line for"
     echo "temporary use.)"
     echo
 }
@@ -228,6 +234,8 @@ update-lfetool () {
     install-lfetool $directory "update"
     echo
     echo "Updated lfetool at $path."
+    _install-autocomplete
+    echo "Updated lfetool autocompletion file at ~/.lfetool/bash-complete."
 }
 
 get-path () {
