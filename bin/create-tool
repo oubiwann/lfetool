@@ -27,6 +27,10 @@ fill-tool-var () {
     mv $temp $dest
 }
 
+add-license () {
+    awk '{printf "# %s\n", $0}' < LICENSE|sed -e 's/[ ]*$//g'
+}
+
 fill-templates () {
     cp $tooltemplate $dest
     fill-lfetool-files
@@ -36,13 +40,18 @@ fill-templates () {
     fill-service-files
     fill-yaws-files
     fill-yaws-bootstrap-files
+    echo "`add-license`" > $temp
+    cat $dest>>$temp
+    mv $temp $dest
 }
 
 compress-tool () {
     data=`gzip --best --stdout $dest|base64`
-    cat << ENDSCRIPT >$temp
-#!/usr/bin/env bash
-
+    echo "#!/usr/bin/env bash" > $temp
+    echo >> $temp
+    echo "`add-license`" >> $temp
+    echo >> $temp
+    cat << ENDSCRIPT >> $temp
 version=$version
 lfetool="$data"
 
