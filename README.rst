@@ -656,10 +656,35 @@ Step 5
   ``./bin/create-tool`` is run.
 
 
+Documentation
+-------------
+
+
+Step 6
+,,,,,,
+
+For every new command, subcommand, etc., which you have added, you will need to
+do the following:
+
+* Update the README;
+
+* Update ``plugins/lfetool/templates/usage.txt.tmpl`` to include the changes.
+
+
+Step 7
+,,,,,,
+
+Discoverability is arguably a form of documentation, so as in the previous step,
+for every new command or suncommand you have added (or old ones you have
+changed), you will need to update the ``autocomplete`` script so that
+tab-completion will work.
+
+
 Testing
 -------
 
-Step 6
+
+Step 8
 ,,,,,,
 
 * Write a unit test in ``test/test.sh`` which checks for the existence of all
@@ -676,7 +701,7 @@ Step 6
     $ make check
 
 
-Step 7
+Step 9
 ,,,,,,
 
 * Build a local copy of ``lfetool`` by running ``make build``.
