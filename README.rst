@@ -676,8 +676,8 @@ Step 7
 
 Discoverability is arguably a form of documentation, so as in the previous step,
 for every new command or suncommand you have added (or old ones you have
-changed), you will need to update the ``autocomplete`` script so that
-tab-completion will work.
+changed), you will need to update the ``bash-complete`` script so that
+tab-completion will present the latest and greatest.
 
 
 Testing
