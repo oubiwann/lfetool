@@ -1,0 +1,39 @@
+OPTS='-h -v -x'
+COMMANDS='help version extract install update new tests'
+NEW='script library service yaws'
+INSTALL='lfetool autocomplete lfe erlang kerl rebar relx'
+YAWS='default bootstrap'
+TESTS='build unit integration system all'
+
+_get-lfetool-opts-and-commands () {
+    local cur prev      # current and previous completion word
+    COMPREPLY=()        # array for possible completions
+    cur=${COMP_WORDS[COMP_CWORD]}
+    prev=${COMP_WORDS[COMP_CWORD-1]}
+    case "$cur" in
+        -*)
+            COMPREPLY=($(compgen -W "${OPTS}" -- $cur))
+            ;;
+        *)
+            COMPREPLY=($(compgen -W "${COMMANDS} ${OPTS}" -- $cur))
+            ;;
+    esac
+    case "$prev" in
+        install)
+            COMPREPLY=($(compgen -W "${INSTALL}" -- $cur))
+            ;;
+        new)
+            COMPREPLY=($(compgen -W "${NEW}" -- $cur))
+            ;;
+        yaws)
+            COMPREPLY=($(compgen -W "${YAWS}" -- $cur))
+            ;;
+        tests)
+            COMPREPLY=($(compgen -W "${TESTS}" -- $cur))
+            ;;
+    esac
+    return 0
+}
+
+complete -F _get-lfetool-opts-and-commands \
+    -o filenames `which lfetool` lfetool ./lfetool
