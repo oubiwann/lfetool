@@ -735,6 +735,10 @@ do-tests () {
     esac
 }
 
+do-repl () {
+    PATH=`get-path` ERL_LIBS=`get-erl-libs` lfe
+}
+
 check-context () {
     local context=$1
     if [ "$context" = "" ]; then
@@ -806,6 +810,9 @@ run () {
             ;;
         tests)
             do-tests
+            ;;
+        repl)
+            do-repl
             ;;
         *)
             unknown-command-error $command
