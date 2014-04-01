@@ -18,6 +18,7 @@ Currently, the script supports these commands:
 * ``update``
 * ``extract``
 * ``new``
+* ``tests``
 
 Usage information for each of these is presented below.
 
