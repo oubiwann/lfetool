@@ -225,8 +225,10 @@ _install-autocomplete () {
     local file="bash-complete"
     local url="https://raw.github.com/lfe/lfetool/master/$file"
     mkdir -p $directory
-    download-file $url
-    install-file $file $directory
+    cd /tmp/ &> /dev/null && \
+    download-file $url && \
+    install-file $file $directory \
+    cd - &> /dev/null
 }
 
 install-autocomplete () {
@@ -249,7 +251,9 @@ update-lfetool () {
       lfetool-not-found-error
     fi
     local directory=`dirname $path`
-    install-lfetool $directory "update"
+    cd /tmp/ &> /dev/null && \
+    install-lfetool $directory "update" \
+    cd - &> /dev/null
     echo
     echo "Updated lfetool at $path."
     _install-autocomplete
