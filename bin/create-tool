@@ -94,7 +94,7 @@ run () {
             ;;
         *)
             uncompress | bash -s -- \$script \$version \$@ \\
-              && exit 0 \
+              && exit 0 \\
               || exit 1
             ;;
     esac
