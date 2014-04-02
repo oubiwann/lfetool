@@ -130,12 +130,16 @@ alias for ``./lfetool install lfetool``.
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 Assuming you have downloaded ``lfetool`` to your local directory, you can use it
-to install the script to a path of your choosing. Simply provide the
-installation directory:
+to install the script either to ``/usr/local/bin`` (default) or to a path of
+your choosing:
 
 .. code:: bash
 
-    $ ./lfetool install /usr/local/bin
+    $ ./lfetool install
+
+.. code:: bash
+
+    $ ./lfetool install ~/bin/
 
 or (for lovers of verbosity):
 
@@ -203,6 +207,9 @@ of easily installing it:
 
     $ lfetool install kerl
 
+.. code:: bash
+
+    $ lfetool install kerl ~/bin/
 
 ``install relx``
 ,,,,,,,,,,,,,,,,
@@ -214,9 +221,14 @@ command to install it:
 
     $ lfetool install relx
 
+.. code:: bash
+
+    $ lfetool install relx ~/bin/
+
 Note that if you don't have a recent version of ``rebar`` installed, this may
-fail. We have provided a ``rebar`` isntall command for your convenience.
-After installing a new version of ``rebar`` the ``relx`` install should work.
+fail. We have provided a ``rebar`` install command for your convenience.
+After installing a new version of ``rebar`` the ``relx`` install command should
+work.
 
 
 ``install rebar``
@@ -228,6 +240,25 @@ used with LFE and LFE projects. Here's how you install it:
 .. code:: bash
 
     $ lfetool install rebar
+
+.. code:: bash
+
+    $ lfetool install rebar ~/bin/
+
+
+``install expm``
+,,,,,,,,,,,,,,,,
+
+We use ``expm`` to upload project info to http://expm.co/. Here's how you
+install it:
+
+.. code:: bash
+
+    $ lfetool install expm
+
+.. code:: bash
+
+    $ lfetool install expm ~/bin/
 
 
 ``update`` Command
