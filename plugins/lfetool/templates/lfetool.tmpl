@@ -455,6 +455,11 @@ run-all-tests () {
     return $status
 }
 
+clean-tests () {
+    echo "Removing EUnit test files ..."
+    rm -v $TEST_OUT_DIR/*.beam
+}
+
 create-dirs () {
     local project=$1
     mkdir -p $project/{src,test/unit,test/integration,test/system}
@@ -734,6 +739,12 @@ do-tests () {
             ;;
         show-system)
             get-system-tests
+            ;;
+        clean)
+            clean-tests
+            ;;
+        *)
+            unknown-context-error $context
             ;;
     esac
 }

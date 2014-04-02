@@ -464,6 +464,8 @@ The ``tests`` command supports the following sub-commands:
 
 * ``all``
 
+* ``clean``
+
 
 ``tests build``
 ,,,,,,,,,,,,,,,
@@ -548,6 +550,16 @@ execute the following:
 .. code:: shell
 
     $ lfetool tests all
+
+
+``tests clean``
+,,,,,,,,,,,,,,,
+
+To remove all the compiled test modules, execute the following:
+
+.. code:: shell
+
+    $ lfetool tests clean
 
 
 ``repl`` Command
