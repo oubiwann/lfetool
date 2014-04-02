@@ -176,6 +176,10 @@ install-lfe () {
     local url="https://github.com/rvirding/lfe.git"
     local repo=lfe
     local file=$repo
+    if [ -x $repo ]; then
+        echo "Destination directory already exists! Aborting ..."
+        exit 1
+    fi
     clone-repo $url
     cd $repo && make compile && \
     ERL_LIBS=`erl -eval 'io:fwrite(code:lib_dir()), halt().' -noshell` \
@@ -724,16 +728,17 @@ create-new () {
 }
 
 do-install () {
-    local context=$1
-    local arg1=$2
-    local arg2=$3
+    local script=$1
+    local context=$2
+    local arg1=$3
+    local arg2=$4
     # the default option is to install lfetool itself
     if [ "$context" == "" ]; then
         context="lfetool"
     fi
     case $context in
         lfetool)
-            install-lfetool $arg1
+            install-lfetool $script $arg1
             ;;
         lfe)
             install-lfe
