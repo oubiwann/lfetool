@@ -58,9 +58,7 @@ $(EXPM): $(BIN_DIR)
 get-deps:
 	@echo "Getting dependencies ..."
 	@rebar get-deps
-	@for DIR in $(wildcard $(DEPS)/*); \
-	do cd $$DIR; echo "Updating $$DIR ..."; \
-	git pull; cd - > /dev/null; done
+	@PATH=$(SCRIPT_PATH) lfetool update deps
 
 clean-ebin:
 	@echo "Cleaning ebin dir ..."

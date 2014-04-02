@@ -293,6 +293,18 @@ update-lfetool () {
     echo "Updated lfetool autocompletion file at ~/.lfetool/bash-complete."
 }
 
+update-deps () {
+    echo "Updating dependencies ..."
+    for DIR in ${DEPS}/*; do
+        cd $DIR
+        echo
+        echo -e "\tUpdating $DIR ..."
+        echo
+        git pull
+        cd - > /dev/null
+    done
+}
+
 get-path () {
     echo ${DEPS}/lfe/bin:$PATH
 }
@@ -711,7 +723,7 @@ create-new () {
     esac
 }
 
-install () {
+do-install () {
     local context=$1
     local arg1=$2
     local arg2=$3
@@ -740,6 +752,24 @@ install () {
             ;;
         expm)
             install-expm $arg1
+            ;;
+        *)
+            unknown-context-error $context
+            ;;
+    esac
+}
+
+do-update () {
+    local context=$1
+    if [ "$context" == "" ]; then
+        context="lfetool"
+    fi
+    case $context in
+        lfetool)
+            update-lfetool
+            ;;
+        deps)
+            update-deps
             ;;
         *)
             unknown-context-error $context
@@ -867,7 +897,7 @@ run () {
             ;;
         install)
             check-context $context
-            install $script $context $arg1 $arg2
+            do-install $script $context $arg1 $arg2
             ;;
         new)
             check-context $context
@@ -876,7 +906,7 @@ run () {
             exit 0
             ;;
         update)
-            update-lfetool
+            do-update $context
             exit 0
             ;;
         tests)
