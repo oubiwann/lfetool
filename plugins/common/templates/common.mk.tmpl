@@ -85,12 +85,12 @@ compile-tests:
 shell: compile
 	@clear
 	@echo "Starting shell ..."
-	@ERL_LIBS=$(ERL_LIBS) $(LFE) -pa $(TEST_OUT_DIR)
+	@lfetool repl
 
 shell-no-deps: compile-no-deps
 	@clear
 	@echo "Starting shell ..."
-	@ERL_LIBS=$(ERL_LIBS) $(LFE) -pa $(TEST_OUT_DIR)
+	@lfetool repl
 
 clean: clean-ebin clean-eunit
 	@rebar clean
