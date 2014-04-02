@@ -709,6 +709,7 @@ install () {
 }
 
 do-tests () {
+    local context=$1
     case $context in
         unit)
             run-unit-tests
@@ -737,8 +738,31 @@ do-tests () {
     esac
 }
 
-do-repl () {
+do-lfe-repl () {
     eval "PATH=$(get-path) ERL_LIBS=$(get-erl-libs) lfe"
+}
+
+do-erlang-repl () {
+    eval "PATH=$(get-path) ERL_LIBS=$(get-erl-libs) erl"
+}
+
+do-repl () {
+    local context=$1
+    # the default option is to run the LFE REPL
+    if [ "$context" == "" ]; then
+        context="lfe"
+    fi
+    case $context in
+        lfe)
+            do-lfe-repl
+            ;;
+        erlang)
+            do-erlang-repl
+            ;;
+        *)
+            unknown-context-error $context
+            ;;
+    esac
 }
 
 check-context () {
@@ -811,7 +835,7 @@ run () {
             exit 0
             ;;
         tests)
-            do-tests
+            do-tests $context
             ;;
         repl)
             # the repl command only functions properly if lfetool is not run
@@ -827,7 +851,7 @@ run () {
                 echo "the script has just been uncompressed. Please re-execute"
                 echo "the same command to start the REPL."
             else
-                do-repl
+                do-repl $context
             fi
             ;;
         *)
