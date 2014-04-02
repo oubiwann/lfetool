@@ -66,7 +66,7 @@ testNewLibrary () {
     assertEquals "PROJECT = my-lib" \
         "`head -1 $libname/common.mk`"
     if [ "$TRAVIS" = "true" ]; then
-        expected="11"
+        expected="9"
     else
         expected="12"
     fi
@@ -96,7 +96,7 @@ testNewService () {
     assertEquals "PROJECT = my-service" \
         "`head -1 $svcname/common.mk`"
     if [ "$TRAVIS" = "true" ]; then
-        expected="16"
+        expected="12"
     else
         expected="17"
     fi
