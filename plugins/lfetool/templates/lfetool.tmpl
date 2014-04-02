@@ -176,16 +176,15 @@ install-lfe () {
     local url="https://github.com/rvirding/lfe.git"
     local repo=lfe
     local file=$repo
-    if [ -x $repo ]; then
-        echo "Destination directory already exists! Aborting ..."
-        exit 1
-    fi
-    clone-repo $url
+    startdir=$(pwd)
+    cd /tmp/ &> /dev/null && \
+    clone-repo $url && \
     cd $repo && make compile && \
     ERL_LIBS=`erl -eval 'io:fwrite(code:lib_dir()), halt().' -noshell` \
         make install && \
+    cd ../ &> /dev/null && \
     rm -rf $repo && \
-    cd - &> /dev/null
+    cd startdir &> /dev/null
 }
 
 install-erlang () {
