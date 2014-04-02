@@ -126,15 +126,7 @@ push-all:
 install: INSTALLDIR=$(shell make get-install-dir)
 install: compile
 	@echo "Installing {{PROJECT}} ..."
-	@if [ "$$ERL_LIB" != "" ]; \
-	then mkdir -p $(INSTALLDIR)/$(EBIN); \
-		mkdir -p $(INSTALLDIR)/$(SRC); \
-		cp -pPR $(EBIN) $(INSTALLDIR); \
-		cp -pPR $(SRC) $(INSTALLDIR); \
-	else \
-		echo "ERROR: No 'ERL_LIB' value is set in the env." \
-		&& exit 1; \
-	fi
+	@PATH=$(SCRIPT_PATH) lfetool install lfe
 
 upload: $(EXPM) get-version
 	@echo "Preparing to upload {{PROJECT}} ..."
