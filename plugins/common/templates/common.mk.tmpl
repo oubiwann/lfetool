@@ -53,8 +53,7 @@ $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
 
 $(EXPM): $(BIN_DIR)
-	curl -o $(EXPM) http://expm.co/__download__/expm
-	chmod +x $(EXPM)
+	@PATH=$(SCRIPT_PATH) lfetool install expm
 
 get-deps:
 	@echo "Getting dependencies ..."

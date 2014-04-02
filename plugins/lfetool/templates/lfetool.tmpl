@@ -159,10 +159,15 @@ install-lfetool () {
     local script-$1
     local directory=$2
     local mode=$3
+    if [ "$directory" = "" ]; then
+        directory=/usr/local/bin
+    fi
     local url="https://raw.github.com/lfe/lfetool/master/lfetool"
     local file=lfetool
-    download-file $url
-    install-file $file $directory
+    cd /tmp/ &> /dev/null && \
+    download-file $url && \
+    install-file $file $directory \
+    cd - &> /dev/null
     eval "$script -x"
 }
 
@@ -192,14 +197,23 @@ install-erlang () {
 
 install-kerl () {
     local directory=$1
+    if [ "$directory" = "" ]; then
+        directory=/usr/local/bin
+    fi
     local url="https://raw.github.com/spawngrid/kerl/master/kerl"
     local file=kerl
-    download-file $url
-    install-file $file $directory
+    cd /tmp/ &> /dev/null && \
+    download-file $url && \
+    install-file $file $directory && \
+    rm $file && \
+    cd - &> /dev/null
 }
 
 install-rebar () {
     local directory=$1
+    if [ "$directory" = "" ]; then
+        directory=/usr/local/bin
+    fi
     local url="https://github.com/rebar/rebar.git"
     local repo=rebar
     local file=$repo
@@ -212,6 +226,9 @@ install-rebar () {
 
 install-relx () {
     local directory=$1
+    if [ "$directory" = "" ]; then
+        directory=/usr/local/bin
+    fi
     local url="https://github.com/erlware/relx.git"
     local repo=relx
     local file=$repo
@@ -219,6 +236,20 @@ install-relx () {
     cd $repo && make && \
     install-file $file $directory && \
     rm -rf $repo && \
+    cd - &> /dev/null
+}
+
+install-expm () {
+    local directory=$1
+    if [ "$directory" = "" ]; then
+        directory=/usr/local/bin
+    fi
+    local url="http://expm.co/__download__/expm"
+    local file=expm
+    cd /tmp/ &> /dev/null && \
+    download-file $url && \
+    install-file $file $directory && \
+    rm $file && \
     cd - &> /dev/null
 }
 
@@ -690,7 +721,7 @@ install () {
     fi
     case $context in
         lfetool)
-            install-lfetool $arg
+            install-lfetool $arg1
             ;;
         lfe)
             install-lfe
@@ -699,13 +730,16 @@ install () {
             install-erlang $arg1 $arg2
             ;;
         kerl)
-            install-kerl
+            install-kerl $arg1
             ;;
         rebar)
-            install-rebar
+            install-rebar $arg1
             ;;
         relx)
-            install-relx
+            install-relx $arg1
+            ;;
+        expm)
+            install-expm $arg1
             ;;
         *)
             unknown-context-error $context
