@@ -261,11 +261,11 @@ update-lfetool () {
 }
 
 get-path () {
-    echo $PATH:./deps/lfe/bin
+    echo ${DEPS}/lfe/bin:$PATH
 }
 
 get-erl-libs () {
-    find $DEPS -maxdepth 1 -exec echo -n '{}:' \;|sed 's/:$/:$TEST_OUT_DIR:./'
+    find $DEPS -maxdepth 1 -exec echo -n '{}:' \;|sed "s#\(.*$\)#\1$TEST_OUT_DIR:.#"
 }
 
 clean-test-name () {
@@ -736,7 +736,7 @@ do-tests () {
 }
 
 do-repl () {
-    PATH=`get-path` ERL_LIBS=`get-erl-libs` lfe
+    eval "PATH=$(get-path) ERL_LIBS=$(get-erl-libs) lfe"
 }
 
 check-context () {
@@ -812,7 +812,21 @@ run () {
             do-tests
             ;;
         repl)
-            do-repl
+            # the repl command only functions properly if lfetool is not run
+            # from the compressed file, but is instead already uncompressed.
+            # Note sure why; perhaps someone with serious Bash skills can
+            # explain what's going on and provide a better way of doing this
+            # than the work around below.
+            if [ "$0" == "bash" ]; then
+                echo
+                eval "$script -x" &> /dev/null && shift 10 && source "$script"
+                echo "In order to run the LFE REPL from this script, it has to"
+                echo "be executed in its uncompressed form. For your convenience,"
+                echo "the script has just been uncompressed. Please re-execute"
+                echo "the same command to start the REPL."
+            else
+                do-repl
+            fi
             ;;
         *)
             unknown-command-error $command
