@@ -10,18 +10,21 @@ lfetool
 Introduction
 ============
 
-Currently, the script supports these commands:
+Currently, the script supports these basic options:
 
-* ``help``
-* ``version``
+* ``help`` or ``-h``
+* ``version`` or ``-v``
+* ``extract`` or ``-x``
+
+And these commands:
+
 * ``install``
 * ``update``
-* ``extract``
 * ``new``
 * ``tests``
 * ``repl``
 
-Usage information for each of these is presented below.
+Usage information for each of these is linked to below in the "Usage" section.
 
 *Note*: This project superscedes its precursor, the `lfe-skel`_ project.
 
@@ -72,9 +75,12 @@ anything further.
 Usage
 =====
 
+Basic Options
+-------------
+
 
 ``help`` Command
--------------------
+,,,,,,,,,,,,,,,,
 
 To display a help message:
 
@@ -90,7 +96,7 @@ Optionally, you may also use a flag:
 
 
 ``version`` Command
--------------------
+,,,,,,,,,,,,,,,,,,,
 
 To get the current installed version of ``lfetool``:
 
@@ -105,207 +111,8 @@ Optionally, you may also use a flag:
     $ lfetool -v
 
 
-``install`` Command
--------------------
-
-The ``install`` command supports the following sub-commands:
-
-* ``lfetool``
-
-* ``lfe``
-
-* ``erlang``
-
-* ``kerl``
-
-* ``rebar``
-
-* ``relx``
-
-You may also call ``./lfetool install`` without any parameters; this is an
-alias for ``./lfetool install lfetool``.
-
-
-``install`` or ``install lfetool``
-,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-
-Assuming you have downloaded ``lfetool`` to your local directory, you can use it
-to install the script either to ``/usr/local/bin`` (default) or to a path of
-your choosing:
-
-.. code:: bash
-
-    $ ./lfetool install
-
-.. code:: bash
-
-    $ ./lfetool install ~/bin/
-
-or (for lovers of verbosity):
-
-.. code:: bash
-
-    $ ./lfetool install lfetool /usr/local/bin
-
-You need to have write permissions to the given directory in order for this
-command to succeed. Note that the installation procedure sets the executable
-bit for the script.
-
-
-``install lfe``
-,,,,,,,,,,,,,,,
-
-If you would like to install LFE system-wide, you may use the following command
-to do so. This does assume that you have ``erl`` in your path.
-
-.. code:: bash
-
-    $ lfetool install lfe
-
-If using ``kerl``, this will install LFE in the lib dir for whichever Erlang
-install was most recently ``activate``ed by ``kerl``.
-
-Installing LFE is really only justified if you will be running ``lfescript``-
-based scripts. In general, we discourage system-wide LFE installations and
-suggest using something like `rebar`_ or `erlang.mk`_ to pull your
-dependencies into a project dir and running LFE from there.
-
-
-``install erlang``
-,,,,,,,,,,,,,,,,,,
-
-This command is merely a convenience wrapper for the ``kerl`` tool and assumes
-that you have ``kerl`` installed and in your ``$PATH``. It takes a single
-parameter, the release name of Erlang:
-
-.. code:: bash
-
-    $ lfetool install erlang R16B03-1
-
-This will install the given release of Erlang at ``/opt/erlang/R16B03-1``.
-You can override the install dir by passing a different one:
-
-.. code:: bash
-
-    $ lfetool install erlang R16B03-1 /usr/local
-
-
-To get a list of available releases, you can use the following:
-
-.. code:: bash
-
-    $ kerl list releases
-
-
-``install kerl``
-,,,,,,,,,,,,,,,,
-
-We depend upon ``kerl`` quite heavily, and as such, we provide a means
-of easily installing it:
-
-.. code:: bash
-
-    $ lfetool install kerl
-
-.. code:: bash
-
-    $ lfetool install kerl ~/bin/
-
-``install relx``
-,,,,,,,,,,,,,,,,
-
-For building releases, we recommend `relx`_. We go so far as to provide a
-command to install it:
-
-.. code:: bash
-
-    $ lfetool install relx
-
-.. code:: bash
-
-    $ lfetool install relx ~/bin/
-
-Note that if you don't have a recent version of ``rebar`` installed, this may
-fail. We have provided a ``rebar`` install command for your convenience.
-After installing a new version of ``rebar`` the ``relx`` install command should
-work.
-
-
-``install rebar``
-,,,,,,,,,,,,,,,,,
-
-``rebar`` is a widely used tool in the Erlang community, and one that can be
-used with LFE and LFE projects. Here's how you install it:
-
-.. code:: bash
-
-    $ lfetool install rebar
-
-.. code:: bash
-
-    $ lfetool install rebar ~/bin/
-
-
-``install expm``
-,,,,,,,,,,,,,,,,
-
-We use ``expm`` to upload project info to http://expm.co/. Here's how you
-install it:
-
-.. code:: bash
-
-    $ lfetool install expm
-
-.. code:: bash
-
-    $ lfetool install expm ~/bin/
-
-
-``update`` Command
-------------------
-
-The ``update`` command supports the following sub-commands:
-
-* ``lfetool``
-
-* ``deps``
-
-
-``update lfetool``
-,,,,,,,,,,,,,,,,,,
-
-If you have a regular install (not a link to the script in a ``git clone`` dir),
-you may want to use this command to get the latest script from github:
-
-.. code:: bash
-
-    $ lfetool update lfetool
-
-The ``update`` command will accept an empty parameter as well, in which case it
-will default to updating ``lfetool``:
-
-.. code:: bash
-
-    $ lfetool update
-
-Note that the update will fail if ``lfetool`` is not on your ``$PATH``.
-
-
-``update deps``
-,,,,,,,,,,,,,,,
-
-``lfetool`` has to ability to update a project's dependencies:
-
-.. code:: bash
-
-    $ lfetool update deps
-
-With this command, ``lfetool`` will enter each directory in ``./deps`` and
-perform a ``git pull``.
-
-
 ``extract`` Command
--------------------
+,,,,,,,,,,,,,,,,,,,
 
 As of version 0.2.3, ``lfetool`` runs as a compressed, self-extracting script.
 This is due to the increasing number files that are embedded in it and is an
@@ -329,336 +136,24 @@ Optionally, you may also use a flag:
 This will replace the wrapper (containing the compressed script) with an
 uncompressed version of the script.
 
+As of version 0.2.7, extraction is now done automatically after download.
 
-``new`` Command
----------------
 
-For the following commands, keep in mind that Lisp functions and modules do not
-use underscores by convention, but rather dashes. When naming your project,
-it is recommended that you do this as well. Also note that it's probably best
-to use just alphanumerica characters, dashes, and nothing else in your project
-names.
+``lfetool`` Commands
+--------------------
 
-The ``new`` command supports the following sub-commands:
+Details on each of the commands listed below and the subcommands they offer
+are linked to individual pages:
 
-* ``script``
+* `Install Command`_
 
-* ``library``
+* `Update Command`_
 
-* ``service``
+* `New Command`_
 
-* ``yaws``
+* `Tests Command`_
 
-
-``new script``
-,,,,,,,,,,,,,,
-
-To create an lfescript, simply run the following:
-
-.. code:: shell
-
-    $ lfetool new script my-script
-
-``new library``
-,,,,,,,,,,,,,,,
-
-To create a "library" project, run the following:
-
-.. code:: shell
-
-    $ lfetool new library my-new-lib
-
-*Note*: upon running this script, not only will your project be set up with a
-skeleton, but also:
-
-* the dependencies for your project will be downloaded to your new project's
-  ``deps`` dir;
-
-* the stubbed unit test will be run and will fail (it's stubbed to fail because
-  of TDD ;-));
-
-* the project will be set up with a newly initialized github repo; and
-
-* the new project files will be added to the repo.
-
-
-``new service``
-,,,,,,,,,,,,,,,,
-
-One may create a "service" project by running the following:
-
-.. code:: shell
-
-    $ lfetool new service my-new-service
-
-This will create an LFE OTP application skeleton for your project, complete with
-unit tests and an initialized git repo.
-
-To run your new server:
-
-.. code:: shell
-
-    $ cd my-new-service
-    $ make shell
-
-And then:
-
-.. code:: cl
-
-    > (: application start 'my-new-service)
-    ok
-    > (: my-new-service_server test-call '"a call message")
-    Call: "a call message"
-    ok
-    > (: my-new-service_server test-cast '"a cast message")
-    ok
-    Cast: "a cast message"
-    >
-
-You may also start the application ahead of time, as is done in the ``run``
-target:
-
-.. code:: cl
-
-    $ make run
-    Erlang R16B (erts-5.10.1) [source] [smp:8:8] [async-threads:10] [hipe] ...
-
-    LFE Shell V5.10.1 (abort with ^G)
-    > (: my-new-service_server test-call '"a call message")
-    Call: "a call message"
-    ok
-    > (: my-new-service_server test-cast '"a cast message")
-    ok
-    Cast: "a cast message"
-    >
-
-Note that the call to start the application wasn't needed, since it was started
-via a command line option in the ``Makefile``.
-
-If you would simply like to run in daemon mode, you may do that as well with the
-supplied ``daemon`` target.
-
-
-``new yaws``
-,,,,,,,,,,,,
-
-The ``yaws`` command builds out a number of skeleton web projects that are
-powered by the YAWS web server.
-
-``yaws`` takes several subcommands:
-
-* ``default`` - creates a basic, multi-module web project using the
-  `exemplar`_ library for generating HTML with S-expressions.
-
-.. XXX under development
-.. * ``simple`` - creates a very simple web project with only one module.
-
-* ``bootstrap`` - creates a `Twitter Bootsrap`_ version of the ``default``
-  project.
-
-.. XXX under development
-.. * ``websocket`` - creates a project that demos YAWS websocket support via a
-     simple chat deno.
-
-.. XXX under development
-   * ``rest`` - creates a RESTful service example, using the classic "coffeeshop"
-     model.
-
-Note that ``new yaws`` is an alias for ``new yaws default``; if a subcommand is not passed, the
-``default`` subcommand is assumed.
-
-Example usage:
-
-.. code:: cl
-
-    $ lfetool new yaws my-web-project
-
-or
-
-.. code:: cl
-
-    $ lfetool new yaws default my-web-project
-
-Another example:
-
-.. code:: cl
-
-    $ lfetool new yaws bootstrap my-web-project
-
-Here is a screenshot of the lfetool demo bootstrap project:
-
-.. image:: resources/images/YAWS-LFE-Bootstrap-Exemplar-screenshot.png
-
-After this, you can view your new project by executing these commands:
-
-.. code:: bash
-
-    $ cd my-web-project
-    $ make dev
-
-and then pointing your web browser at http://localhost:5099/.
-
-
-``new e2service``
-,,,,,,,,,,,,,,,,,
-
-At a future date we will also support the e2 project in a similar fashion:
-
-.. code:: shell
-
-    $ lfetool new e2-service my-new-service
-
-
-``tests`` Command
------------------
-
-The ``tests`` command supports the following sub-commands:
-
-* ``build``
-
-* ``unit`` and ``show-unit``
-
-* ``integration`` and ``show-integration``
-
-* ``system`` and ``show-system``
-
-* ``all``
-
-* ``clean``
-
-
-``tests build``
-,,,,,,,,,,,,,,,
-
-This will build all the eunit tests found in the current directory's (LFE
-project) ``./test`` sub-directory. By convention, LFE unit tests are placed (by
-the project developer) in ``./test/unit``; integration tests are placed in
-``./test/integration``; and system tests are placed in ``./test/system``.
-
-Furthermore, ``lfetool`` supports custom testing modules which may be used by
-the unit tests (e.g., modules for utility functions that are only ever used
-in the test modules). If you wish to create and use testing modules like these,
-simply create modules in ``./test`` that are prefixed with ``testing-``.
-
-The following command builds all of the aforementioned:
-
-.. code:: shell
-
-    $ lfetool tests build
-
-
-``tests unit``
-,,,,,,,,,,,,,,
-
-To run the unit tests for the LFE project in the current working directory,
-execute the following:
-
-.. code:: shell
-
-    $ lfetool tests unit
-
-If you would like to only see the unit test modules defined for the project,
-and not actually run them, execute this command:
-
-.. code:: shell
-
-    $ lfetool tests show-unit
-
-
-``tests integration``
-,,,,,,,,,,,,,,,,,,,,,
-
-To run the integration tests for the LFE project in the current working
-directory, execute the following:
-
-.. code:: shell
-
-    $ lfetool tests integration
-
-If you would like to only see the integration test modules defined for the
-project, and not actually run them, execute this command:
-
-.. code:: shell
-
-    $ lfetool tests show-integration
-
-
-``tests system``
-,,,,,,,,,,,,,,,,
-
-To run the system tests for the LFE project in the current working
-directory, execute the following:
-
-.. code:: shell
-
-    $ lfetool tests system
-
-If you would like to only see the system test modules defined for the
-project, and not actually run them, execute this command:
-
-.. code:: shell
-
-    $ lfetool tests show-system
-
-
-``tests all``
-,,,,,,,,,,,,,
-
-To run the entire test suites the LFE project in the current working directory,
-execute the following:
-
-.. code:: shell
-
-    $ lfetool tests all
-
-
-``tests clean``
-,,,,,,,,,,,,,,,
-
-To remove all the compiled test modules, execute the following:
-
-.. code:: shell
-
-    $ lfetool tests clean
-
-
-``repl`` Command
------------------
-
-The ``tests`` command supports the following sub-commands:
-
-* ``lfe`` or empty string
-
-* ``erlang``
-
-
-``repl lfe``
-,,,,,,,,,,,,,
-
-To start an LFE REPL with all the dependency directories for your project
-supplied in ``ERL_LIBS``, do the following:
-
-.. code:: shell
-
-    $ lfetool repl lfe
-
-The ``repl`` command also accepts a default parameter of the empty string as
-an alias to ``repl lfe``, so this will do the same thing as above:
-
-.. code:: shell
-
-    $ lfetool repl
-
-
-``repl erlang``
-,,,,,,,,,,,,,,,
-
-To start an Erlang REPL with all the dependency directories for your project
-supplied in ``ERL_LIBS``, do the following:
-
-.. code:: shell
-
-    $ lfetool repl erlang
+* `REPL Command`_
 
 
 Creating lfetool Plugins
@@ -683,6 +178,7 @@ provided:
  * `Documentation and Autocompletion`_
  * `Testing the Plugin`_
 
+
 .. Links
 .. -----
 .. _LFE rebar: hhttps://github.com/oubiwann/lfe-sample-rebar-plugin
@@ -697,5 +193,9 @@ provided:
 .. _Integrate the Plugin: doc/dev-guide/02-integrate.rst
 .. _Documentation and Autocompletion: doc/dev-guide/03-docs.rst
 .. _Testing the Plugin: doc/dev-guide/04-tests.rst
-
+.. _Install Command: doc/manual/install.rst
+.. _Update Command: doc/manual/update.rst
+.. _New Command: doc/manual/new.rst
+.. _Tests Command: doc/manual/tests.rst
+.. _REPL Command: doc/manual/repl.rst
 
