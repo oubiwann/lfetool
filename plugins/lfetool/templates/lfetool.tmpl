@@ -156,12 +156,14 @@ install-file () {
 }
 
 install-lfetool () {
-    local directory=$1
-    local mode=$2
+    local script-$1
+    local directory=$2
+    local mode=$3
     local url="https://raw.github.com/lfe/lfetool/master/lfetool"
     local file=lfetool
     download-file $url
     install-file $file $directory
+    eval "$script -x"
 }
 
 install-lfe () {
@@ -796,7 +798,7 @@ run () {
             ;;
         install)
             check-context $context
-            install $context $arg1 $arg2
+            install $script $context $arg1 $arg2
             ;;
         new)
             check-context $context
@@ -819,7 +821,7 @@ run () {
             # than the work around below.
             if [ "$0" == "bash" ]; then
                 echo
-                eval "$script -x" &> /dev/null && shift 10 && source "$script"
+                eval "$script -x" &> /dev/null
                 echo "In order to run the LFE REPL from this script, it has to"
                 echo "be executed in its uncompressed form. For your convenience,"
                 echo "the script has just been uncompressed. Please re-execute"
