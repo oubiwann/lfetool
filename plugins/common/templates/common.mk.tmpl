@@ -18,11 +18,15 @@ FINISH = -run init stop -noshell
 # Note that ERL_LIBS is for running this project in development and that
 # ERL_LIB is for installation.
 ERL_LIBS = $(shell find $(DEPS) -maxdepth 1 -exec echo -n '{}:' \;|sed 's/:$$/:./'):$(TEST_OUT_DIR)
-SCRIPT_PATH=.:$(PATH)
+SCRIPT_PATH=.:./bin:$(PATH)
 
-$(LFETOOL):
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
+
+$(LFETOOL): $(BIN_DIR)
 	curl -o ./lfetool https://raw.github.com/lfe/lfetool/master/lfetool
 	chmod 755 ./lfetool
+	mv ./lfetool ./bin/
 
 get-version:
 	@echo
@@ -39,18 +43,6 @@ get-version:
 	@grep version package.exs |awk '{print $$2}'|sed -e 's/,//g'
 	@echo -n git tags: ''
 	@echo `git tag`
-
-# Note that this make target expects to be used like so:
-#   $ ERL_LIB=some/path make get-install-dir
-#
-# Which would give the following result:
-#   some/path/$project-1.0.0
-#
-get-install-dir:
-	@echo $(ERL_LIB)/$(PROJECT)-$(shell make get-version)
-
-$(BIN_DIR):
-	mkdir -p $(BIN_DIR)
 
 $(EXPM): $(BIN_DIR)
 	@PATH=$(SCRIPT_PATH) lfetool install expm
@@ -120,10 +112,6 @@ push-all:
 	git push --tags
 	git push upstream --tags
 
-# Note that this make target expects to be used like so:
-#    $ ERL_LIB=some/path make install
-#
-install: INSTALLDIR=$(shell make get-install-dir)
 install: compile
 	@echo "Installing {{PROJECT}} ..."
 	@PATH=$(SCRIPT_PATH) lfetool install lfe
