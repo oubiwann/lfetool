@@ -1,3 +1,7 @@
+``lfetool`` Command Manual
+==========================
+
+
 ``update`` Command
 ------------------
 
