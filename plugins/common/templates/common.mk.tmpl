@@ -29,20 +29,7 @@ $(LFETOOL): $(BIN_DIR)
 	mv ./lfetool ./bin/
 
 get-version:
-	@echo
-	@echo "Getting version info ..."
-	@echo
-	@echo -n app.src: ''
-	@erl -eval 'io:format("~p~n", [ \
-		proplists:get_value(vsn,element(3,element(2,hd(element(3, \
-		erl_eval:exprs(element(2, erl_parse:parse_exprs(element(2, \
-		erl_scan:string("Data = " ++ binary_to_list(element(2, \
-		file:read_file("src/$(LIB).app.src"))))))), []))))))])' \
-		$(FINISH)
-	@echo -n package.exs: ''
-	@grep version package.exs |awk '{print $$2}'|sed -e 's/,//g'
-	@echo -n git tags: ''
-	@echo `git tag`
+	@PATH=$(SCRIPT_PATH) lfetool info version
 
 $(EXPM): $(BIN_DIR)
 	@PATH=$(SCRIPT_PATH) lfetool install expm

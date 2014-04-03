@@ -23,6 +23,7 @@ And these commands:
 * ``new``
 * ``tests``
 * ``repl``
+* ``info``
 
 Usage information for each of these is linked to below in the "Usage" section.
 
@@ -155,6 +156,8 @@ are linked to individual pages:
 
 * `REPL Command`_
 
+* `Info Command`_
+
 
 Creating lfetool Plugins
 ========================
@@ -198,4 +201,5 @@ provided:
 .. _New Command: doc/manual/new.rst
 .. _Tests Command: doc/manual/tests.rst
 .. _REPL Command: doc/manual/repl.rst
+.. _Info Command: doc/manual/info.rst
 

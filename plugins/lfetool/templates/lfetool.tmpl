@@ -44,6 +44,7 @@ TEST_DIR=./test
 TEST_OUT_DIR=./.eunit
 CASE_OPEN="case eunit:test({inparallel,["
 CASE_CLOSE="]},[verbose]) of ok -> halt(0); _ -> halt(127) end"
+FINISH="-run init stop -noshell"
 
 BLACK="\033[0;30;40m"
 RED="\033[0;31;40m"
@@ -135,6 +136,10 @@ download-file () {
     curl -O "$url" && echo "Download succeeded." || echo "Download failed."
 }
 
+get-install-dir () {
+    erl -eval 'io:fwrite(code:lib_dir()), halt().' -run init stop -noshell
+}
+
 install-file () {
     local src=$1
     local directory=$2
@@ -180,8 +185,7 @@ install-lfe () {
     cd /tmp/ &> /dev/null && \
     clone-repo $url && \
     cd $repo && make compile && \
-    ERL_LIBS=`erl -eval 'io:fwrite(code:lib_dir()), halt().' -noshell` \
-        make install && \
+    ERL_LIBS=$(get-install-dir) make install && \
     cd ../ &> /dev/null && \
     rm -rf $repo && \
     cd startdir &> /dev/null
@@ -304,7 +308,7 @@ update-deps () {
         echo -e "\tUpdating $DIR ..."
         echo
         git pull
-        cd - > /dev/null
+        cd - &> /dev/null
     done
 }
 
@@ -314,6 +318,25 @@ get-path () {
 
 get-erl-libs () {
     find $DEPS -maxdepth 1 -exec echo -n '{}:' \;|sed "s#\(.*$\)#\1$TEST_OUT_DIR:.#"
+}
+
+get-versions () {
+    echo
+    echo "Getting version info ..."
+    echo
+    APP_SRC=$(ls src/*app.src)
+    PART1='io:format("~p~n", [proplists:get_value(vsn,element(3,element'
+    PART2='(2,hd(element(3,erl_eval:exprs(element(2, erl_parse:parse_exprs'
+    PART3='(element(2,erl_scan:string("Data = " ++ binary_to_list(element'
+    PART4='(2,file:read_file("'
+    PART5='"))))))), []))))))])'
+    COMMAND=${PART1}${PART2}${PART3}${PART4}${APP_SRC}${PART5}
+    echo -n app.src: ''
+    erl -eval erl -eval "$COMMAND" -run init stop -noshell
+    echo -n package.exs: ''
+    grep version package.exs |awk '{print $2}'|sed -e 's/,//g'
+    echo -n git tags: ''
+    echo \"$(git tag|tail -1)\"
 }
 
 clean-test-name () {
@@ -844,6 +867,24 @@ do-repl () {
     esac
 }
 
+do-info () {
+    local context=$1
+    case $context in
+        version)
+            get-versions
+            ;;
+        erllib)
+            get-erl-libs
+            ;;
+        installdir)
+            get-install-dir
+            ;;
+        *)
+            unknown-context-error $context
+            ;;
+    esac
+}
+
 check-context () {
     local context=$1
     if [ "$context" = "" ]; then
@@ -932,6 +973,9 @@ run () {
             else
                 do-repl $context
             fi
+            ;;
+        info)
+            do-info $context
             ;;
         *)
             unknown-command-error $command
