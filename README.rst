@@ -147,15 +147,10 @@ Details on each of the commands listed below and the subcommands they offer
 are linked to individual pages:
 
 * `Install Command`_
-
 * `Update Command`_
-
 * `New Command`_
-
 * `Tests Command`_
-
 * `REPL Command`_
-
 * `Info Command`_
 
 
