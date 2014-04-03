@@ -1,3 +1,7 @@
+``lfetool`` Command Manual
+==========================
+
+
 ``install`` Command
 -------------------
 
