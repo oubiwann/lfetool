@@ -80,8 +80,8 @@ Basic Options
 -------------
 
 
-``help`` Command
-,,,,,,,,,,,,,,,,
+``help`` Option
+,,,,,,,,,,,,,,,
 
 To display a help message:
 
@@ -96,8 +96,8 @@ Optionally, you may also use a flag:
     $ lfetool -h
 
 
-``version`` Command
-,,,,,,,,,,,,,,,,,,,
+``version`` Option
+,,,,,,,,,,,,,,,,,,
 
 To get the current installed version of ``lfetool``:
 
@@ -112,8 +112,8 @@ Optionally, you may also use a flag:
     $ lfetool -v
 
 
-``extract`` Command
-,,,,,,,,,,,,,,,,,,,
+``extract`` Option
+,,,,,,,,,,,,,,,,,,
 
 As of version 0.2.3, ``lfetool`` runs as a compressed, self-extracting script.
 This is due to the increasing number files that are embedded in it and is an
