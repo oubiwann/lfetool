@@ -176,10 +176,10 @@ of plugin you want to create, or starting completely from scratch.
 For those that wish to start from scratch, the following dev guide is
 provided:
 
- * `Create the Plugin`_
- * `Integrate the Plugin`_
- * `Documentation and Autocompletion`_
- * `Testing the Plugin`_
+* `Create the Plugin`_
+* `Integrate the Plugin`_
+* `Documentation and Autocompletion`_
+* `Testing the Plugin`_
 
 
 .. Links
