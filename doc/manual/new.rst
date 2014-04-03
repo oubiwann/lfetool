@@ -159,7 +159,7 @@ Another example:
 
 Here is a screenshot of the lfetool demo bootstrap project:
 
-.. image:: resources/images/YAWS-LFE-Bootstrap-Exemplar-screenshot.png
+.. image:: ../resources/images/YAWS-LFE-Bootstrap-Exemplar-screenshot.png
 
 After this, you can view your new project by executing these commands:
 
