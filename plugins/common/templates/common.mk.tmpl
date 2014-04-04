@@ -3,21 +3,11 @@ LIB = {{PROJECT}}
 DEPS = ./deps
 BIN_DIR = ./bin
 EXPM = $(BIN_DIR)/expm
-LFE_DIR = $(DEPS)/lfe
-LFE_EBIN = $(LFE_DIR)/ebin
-LFE = $(LFE_DIR)/bin/lfe
-LFEC = $(LFE_DIR)/bin/lfec
-LFE_UTILS_DIR = $(DEPS)/lfe-utils
-LFEUNIT_DIR = $(DEPS)/lfeunit
 LFETOOL=/usr/local/bin/lfetool
 SOURCE_DIR = ./src
 OUT_DIR = ./ebin
 TEST_DIR = ./test
 TEST_OUT_DIR = ./.eunit
-FINISH = -run init stop -noshell
-# Note that ERL_LIBS is for running this project in development and that
-# ERL_LIB is for installation.
-ERL_LIBS = $(shell find $(DEPS) -maxdepth 1 -exec echo -n '{}:' \;|sed 's/:$$/:./'):$(TEST_OUT_DIR)
 SCRIPT_PATH=.:./bin:$(PATH)
 
 $(BIN_DIR):
