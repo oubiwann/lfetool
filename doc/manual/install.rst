@@ -13,6 +13,8 @@ The ``install`` command supports the following sub-commands:
 
 * ``erlang``
 
+* ``erjang``
+
 * ``kerl``
 
 * ``rebar``
@@ -92,6 +94,29 @@ To get a list of available releases, you can use the following:
 .. code:: bash
 
     $ kerl list releases
+
+
+``install erjang``
+,,,,,,,,,,,,,,,,,,
+
+This command will install a version of Erlang (called "Erjang") that runs on the
+Java Virtual Machine:
+
+.. code:: bash
+
+    $ lfetool install erjang
+
+By default, it will install the ``erjang`` directory into ``/opt/erlang``,
+however this may be overridden. For instance, the following command will
+result in the directory ``/usr/local/erjang`` being created and housing the
+code for Erjang:
+
+.. code:: bash
+
+    $ lfetool install erjang /usr/local
+
+Note that Erjang will download a fairly recent copy of Erlang/OTP (as of now,
+R16B01) and build the Erjang jar with that download.
 
 
 ``install kerl``
