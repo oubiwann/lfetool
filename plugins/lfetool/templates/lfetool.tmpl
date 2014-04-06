@@ -714,7 +714,7 @@ create-new-yaws () {
             setup-yaws-simple-project $arg
             ;;
         *)
-            unknown-subcommand-error $command $subcommand
+            unknown-subcommand-error "$command $subcommand"
             ;;
     esac
 }
@@ -949,7 +949,6 @@ run () {
             ;;
         new)
             check-context $context
-            check-arg $arg1
             create-new $context $arg1 $arg2
             exit 0
             ;;
