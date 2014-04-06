@@ -44,9 +44,16 @@ supplied in ``ERL_LIBS``, do the following:
 ``repl jerl``
 ,,,,,,,,,,,,,
 
+This REPL requires Erjang to be installed. If you don't have it, you may do so
+with the following:
+
+.. code:: shell
+
+	$ lfetool install erjang
+
 To start an Erjang REPL (running on the JVM), do the following:
 
-... code:: shell
+.. code:: shell
 
 	$ lfetool repl jerl
 
@@ -62,9 +69,16 @@ sequence that you do for the Erlang/LFE REPLs.
 ``repl jlfe``
 ,,,,,,,,,,,,,
 
+This REPL requires Erjang to be installed. If you don't have it, you may do so
+with the following:
+
+.. code:: shell
+
+	$ lfetool install erjang
+
 To start an LFE REPL (running on the JVM), do the following:
 
-... code:: shell
+.. code:: shell
 
 	$ lfetool repl jlfe
 
@@ -75,3 +89,4 @@ searching with ``^R``, etc.
 
 To quit this REPL, use ``^D`` like you do for the Clojure REPL, not the ``^g q``
 sequence that you do for the Erlang/LFE REPLs.
+
