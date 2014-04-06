@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-version=0.2.9
+version=0.3.0
 tooltemplate="plugins/lfetool/templates/lfetool.tmpl"
 compresstemplate="plugins/lfetool/templates/compressed.tmpl"
 temp="lfetool-temp"
