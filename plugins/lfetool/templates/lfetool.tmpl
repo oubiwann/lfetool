@@ -149,19 +149,20 @@ install-file () {
         directory=/usr/local/bin
     fi
     chmod 755 $src
+
     if [ "$mode" = "" ]; then
         echo
         success="Installed $src to $directory."
         failure="Failed to install $src."
     else
-        success="Updated $directory."
+        success="Updated ${directory}/${src}."
         failure="Update failed."
     fi
     mv $src $directory && echo $success || echo $failure
 }
 
 install-lfetool () {
-    local script-$1
+    local script=$1
     local directory=$2
     local mode=$3
     if [ "$directory" = "" ]; then
@@ -171,9 +172,9 @@ install-lfetool () {
     local file=lfetool
     cd /tmp/ &> /dev/null && \
     download-file $url && \
-    install-file $file $directory \
+    install-file $file $directory $mode && \
     cd - &> /dev/null
-    eval "$script -x"
+    eval "${directory}/${file} -x"
 }
 
 install-lfe () {
@@ -286,13 +287,14 @@ install-autocomplete () {
 }
 
 update-lfetool () {
+    local script=$1
     local path=`which lfetool`
     if [ "$path" = "" ]; then
       lfetool-not-found-error
     fi
-    local directory=`dirname $path`
+    local directory=$(dirname $path)
     cd /tmp/ &> /dev/null && \
-    install-lfetool $directory "update" \
+    install-lfetool $script $directory "update" && \
     cd - &> /dev/null
     echo
     echo "Updated lfetool at $path."
@@ -787,13 +789,14 @@ do-install () {
 }
 
 do-update () {
-    local context=$1
+    local script=$1
+    local context=$2
     if [ "$context" == "" ]; then
         context="lfetool"
     fi
     case $context in
         lfetool)
-            update-lfetool
+            update-lfetool $script
             ;;
         deps)
             update-deps
@@ -951,7 +954,7 @@ run () {
             exit 0
             ;;
         update)
-            do-update $context
+            do-update $script $context
             exit 0
             ;;
         tests)
