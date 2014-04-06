@@ -1,11 +1,12 @@
 OPTS='-h -v -x'
-COMMANDS='help version extract install update new tests info'
+COMMANDS='help version extract install update new tests info repl'
 NEW='script library service yaws'
 INSTALL='lfetool autocomplete lfe erlang kerl rebar relx expm erjang'
 YAWS='default bootstrap'
 TESTS='build unit integration system all'
 UPDATE='lfetool deps'
 INFO='version erllib installdir'
+REPL='lfe erlang jlfe jerl'
 
 _get-lfetool-opts-and-commands () {
     local cur prev      # current and previous completion word
@@ -38,6 +39,9 @@ _get-lfetool-opts-and-commands () {
             ;;
         info)
             COMPREPLY=($(compgen-V "${INFO}"--$cur))
+            ;;
+        repl)
+            COMPREPLY=($(compgen-V "${REPL}"--$cur))
             ;;
         # no more tab-completion for these ...
         # XXX there has *got* to be a nicer way to do this; we want to have no
