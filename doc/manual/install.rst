@@ -115,6 +115,10 @@ code for Erjang:
 
     $ lfetool install erjang /usr/local
 
+If you do not use the ``lfetool``-standard location for your Erjang install,
+you will need to make sure that your install directory is in your ``$PATH``
+so that lfetool can find ``jerl``.
+
 Note that Erjang will download a fairly recent copy of Erlang/OTP (as of now,
 R16B01) and build the Erjang jar with that download.
 
