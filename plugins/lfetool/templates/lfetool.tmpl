@@ -133,7 +133,10 @@ clone-repo () {
 
 download-file () {
     url=$1
-    curl -O "$url" && echo "Download succeeded." || echo "Download failed."
+    echo "Downloading $url ..."
+    curl -O "$url" &> /dev/null && \
+    echo "Download succeeded." || \
+    echo "Download failed."
 }
 
 get-install-dir () {
@@ -310,11 +313,14 @@ update-lfetool () {
       lfetool-not-found-error
     fi
     local directory=$(dirname $path)
+    echo -n "Current version: "
+    eval "lfetool -v"
     cd /tmp/ &> /dev/null && \
     install-lfetool $script $directory "update" && \
     cd - &> /dev/null
+    echo -n "New version: "
+    eval "lfetool -v"
     echo
-    echo "Updated lfetool at $path."
     _install-autocomplete
     echo "Updated lfetool autocompletion file at ~/.lfetool/bash-complete."
 }
