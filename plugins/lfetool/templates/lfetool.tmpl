@@ -128,7 +128,7 @@ lfetool-not-found-error () {
 }
 
 clone-repo () {
-    git clone $url
+    git clone --depth 1 $url
 }
 
 download-file () {
@@ -258,6 +258,24 @@ install-expm () {
     install-file $file $directory && \
     rm $file && \
     cd - &> /dev/null
+}
+
+install-erjang () {
+    local directory=$1
+    if [ "$directory" = "" ]; then
+        directory=/opt/erlang
+    fi
+    mkdir -p $directory
+    local url=https://github.com/trifork/erjang.git
+    local repo=erjang
+    local file=$repo
+    local startdir=$(pwd)
+    cd /tmp/ &> /dev/null && \
+    clone-repo $url && \
+    cd $repo && ant alljar && \
+    cd ../ &> /dev/null && \
+    mv -v $repo $directory && \
+    cd $startdir &> /dev/null
 }
 
 _install-autocomplete () {
@@ -780,6 +798,9 @@ do-install () {
             ;;
         expm)
             install-expm $arg1
+            ;;
+        erjang)
+            install-erjang $arg1
             ;;
         *)
             unknown-context-error $context
