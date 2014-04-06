@@ -18,9 +18,10 @@ build: get-version build-no-version
 	@echo "Finished."
 
 push-all:
-	git push --all
+	@echo "Pushing code to github ..."
+	git push origin --all
 	git push upstream --all
-	git push --tags
+	git push origin --tags
 	git push upstream --tags
 
 test-proj:
