@@ -55,6 +55,9 @@ your system. This provides the REPL with ``readline`` support: arrow-key command
 navigation, shell command history as well as hisory saved to disk, command
 searching with ``^R``, etc.
 
+To quit this REPL, use ``^D`` like you do for the Clojure REPL, not the ``^g q``
+sequence that you do for the Erlang/LFE REPLs.
+
 
 ``repl jlfe``
 ,,,,,,,,,,,,,
@@ -69,3 +72,6 @@ Running the ``jlfe`` REPL requires the ``rlwrap`` utility to be installed on
 your system. This provides the REPL with ``readline`` support: arrow-key command
 navigation, shell command history as well as hisory saved to disk, command
 searching with ``^R``, etc.
+
+To quit this REPL, use ``^D`` like you do for the Clojure REPL, not the ``^g q``
+sequence that you do for the Erlang/LFE REPLs.
