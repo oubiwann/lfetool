@@ -215,7 +215,6 @@ install-kerl () {
     cd /tmp/ &> /dev/null && \
     download-file $url && \
     install-file $file $directory && \
-    rm $file && \
     cd - &> /dev/null
 }
 
@@ -230,7 +229,6 @@ install-rebar () {
     clone-repo $url
     cd $repo && make && \
     install-file $file $directory && \
-    rm -rf $repo && \
     cd - &> /dev/null
 }
 
@@ -245,7 +243,6 @@ install-relx () {
     clone-repo $url
     cd $repo && make && \
     install-file $file $directory && \
-    rm -rf $repo && \
     cd - &> /dev/null
 }
 
@@ -259,7 +256,6 @@ install-expm () {
     cd /tmp/ &> /dev/null && \
     download-file $url && \
     install-file $file $directory && \
-    rm $file && \
     cd - &> /dev/null
 }
 
