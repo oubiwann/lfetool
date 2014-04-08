@@ -43,7 +43,9 @@ DEPS=./deps
 TEST_DIR=./test
 TEST_OUT_DIR=./.eunit
 CASE_OPEN="case eunit:test({inparallel,["
+CASE_OPEN="case eunit:test(["
 CASE_CLOSE="]},[verbose]) of ok -> halt(0); _ -> halt(127) end"
+CASE_CLOSE="],[verbose]) of ok -> halt(0); _ -> halt(127) end"
 FINISH="-run init stop -noshell"
 
 BLACK="\033[0;30;40m"
@@ -432,9 +434,12 @@ colorize-test-results () {
     # color warnings and the like
     sed "s/There were no tests to run\./\\${YELLOW}There were no tests of this type to run\.\\${END_COLOR}/" | \
     sed "s/\(Skipped: .*\.\)/\\${YELLOW}\1\\${END_COLOR}/" | \
+    sed "s/\(One or more tests were cancelled\.\)/\\${MAGENTA}\1\\${END_COLOR}/" | \
+    sed "s/\(\*unexpected termination of test process\*\)/\\${MAGENTA}\1\\${END_COLOR}/" | \
     # color failures
     sed "s/\*failed\*$/\[\\${RED}failed\\${END_COLOR}\]/g" | \
     sed "s/\(Failed: .*\.\)/\\${RED}\1\\${END_COLOR}/" | \
+    sed "s/\(Error in process .*\)/\\${RED}\1\\${END_COLOR}/" | \
     sed "s/\(\*\*error:.*\)/\\${BOLD_RED}\1\\${END_COLOR}/" | \
     sed "s/\(                     \)\({.*\)/\\${BOLD_RED}          \2\\${END_COLOR}/" | \
     # color the timings
