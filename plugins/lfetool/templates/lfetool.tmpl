@@ -363,7 +363,7 @@ get-versions () {
 }
 
 clean-test-name () {
-    sed -e 's/.beam//' -e 's/^.eunit\///'
+    egrep -v '.*\.erl$'|sed -e 's/.beam//' -e 's/^.eunit\///'
 }
 
 quote-test () {
@@ -396,9 +396,11 @@ clean-test-results () {
     sed "s/  integration-.*-tests:/ /" | \
     sed "s/  system-.*-tests:/ /" | \
     sed "s/ (module '.*')/ /" | \
-    # get rid of the eunit/erlang-only '_test' suffix
-    sed "s/_test \.\.\./ ... /" | \
-    sed "s/_test\.\.\./ ... /"
+    # get rid of the eunit/erlang-only '_test' and '_test_' suffixes
+    sed "s/_test\.\.\./ ... /" | \
+    sed "s/_test_\.\.\./ ... /" | \
+    # make sure there's a space before the elipses
+    sed "s/\(.*[^ ]\)\.\.\./\1 ... /"
 }
 
 format-test-result-line () {
