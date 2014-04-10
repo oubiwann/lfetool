@@ -875,41 +875,44 @@ do-tests () {
 }
 
 do-lfe-repl () {
-    eval "PATH=$(get-path) ERL_LIBS=$(get-erl-libs) lfe"
+    command="PATH=$(get-path) ERL_LIBS=$(get-erl-libs) lfe $@"
+    #echo "$command"
+    eval "$command"
 }
 
 do-erlang-repl () {
-    eval "PATH=$(get-path) ERL_LIBS=$(get-erl-libs) erl"
+    eval "PATH=$(get-path) ERL_LIBS=$(get-erl-libs) erl $@"
 }
 
 do-jerl-repl () {
     readline="rlwrap --command=jerl --prompt-colour=YELLOW --histsize=100000 --remember"
-    eval "PATH=$(get-path) ERL_LIBS=$(get-erl-libs) $readline jerl"
+    eval "PATH=$(get-path) ERL_LIBS=$(get-erl-libs) $readline jerl $@"
 }
 
 do-jlfe-repl () {
     readline="rlwrap --command=jerl --prompt-colour=YELLOW --histsize=100000 --remember"
-    eval "PATH=$(get-path) ERL_LIBS=$(get-erl-libs) $readline jerl -noshell -s lfe_shell +pc unicode"
+    eval "PATH=$(get-path) ERL_LIBS=$(get-erl-libs) $readline jerl -noshell -s lfe_shell $@"
 }
 
 do-repl () {
     local context=$1
+    shift 1
     # the default option is to run the LFE REPL
     if [ "$context" == "" ]; then
         context="lfe"
     fi
     case $context in
         lfe)
-            do-lfe-repl
+            do-lfe-repl "$@"
             ;;
         erlang)
-            do-erlang-repl
+            do-erlang-repl "$@"
             ;;
         jerl)
-            do-jerl-repl
+            do-jerl-repl "$@"
             ;;
         jlfe)
-            do-jlfe-repl
+            do-jlfe-repl "$@"
             ;;
         *)
             unknown-context-error $context
@@ -1021,7 +1024,11 @@ run () {
                 echo "the script has just been uncompressed. Please re-execute"
                 echo "the same command to start the REPL."
             else
-                do-repl $context
+                # at this point in the script, $@ contains $command, $context
+                # and any remaining args; anything else we should pass on to
+                # Erlang/the JVM
+                shift 2
+                do-repl $context "$@"
             fi
             ;;
         info)
