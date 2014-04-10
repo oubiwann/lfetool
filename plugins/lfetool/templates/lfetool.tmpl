@@ -1025,8 +1025,8 @@ run () {
                 echo "the same command to start the REPL."
             else
                 # at this point in the script, $@ contains $command, $context
-                # and any remaining args; anything else we should pass on to
-                # Erlang/the JVM
+                # and any remaining args; only the remaining args should we pass
+                # on to Erlang/the JVM
                 shift 2
                 do-repl $context "$@"
             fi
