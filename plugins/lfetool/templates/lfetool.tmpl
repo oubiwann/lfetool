@@ -890,7 +890,7 @@ do-jerl-repl () {
 }
 
 do-jlfe-repl () {
-    readline="rlwrap --command=jerl --prompt-colour=YELLOW --histsize=100000 --remember"
+    readline="rlwrap --command=jlfe --prompt-colour=YELLOW --histsize=100000 --remember"
     eval "PATH=$(get-path) ERL_LIBS=$(get-erl-libs) $readline jerl -noshell -s lfe_shell $@"
 }
 
