@@ -35,13 +35,13 @@ _get-lfetool-opts-and-commands () {
             COMPREPLY=($(compgen -W "${TESTS}" -- $cur))
             ;;
         update)
-            COMPREPLY=($(compgen-V "${UPDATE}"--$cur))
+            COMPREPLY=($(compgen -W "${UPDATE}"--$cur))
             ;;
         info)
-            COMPREPLY=($(compgen-V "${INFO}"--$cur))
+            COMPREPLY=($(compgen -W "${INFO}"--$cur))
             ;;
         repl)
-            COMPREPLY=($(compgen-V "${REPL}"--$cur))
+            COMPREPLY=($(compgen -W "${REPL}"--$cur))
             ;;
         # no more tab-completion for these ...
         # XXX there has *got* to be a nicer way to do this; we want to have no
