@@ -185,3 +185,10 @@ install it:
 .. code:: bash
 
     $ lfetool install expm ~/bin/
+
+
+.. Links
+.. -----
+.. _rebar: https://github.com/rebar/rebar
+.. _erlang.mk: https://github.com/extend/erlang.mk
+.. _relx: https://github.com/erlware/relx
