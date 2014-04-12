@@ -7,7 +7,9 @@
 
 The ``info`` command supports the following sub-commands:
 
-* ``erllib``
+* ``erllibs``
+
+* ``path``
 
 * ``installdir``
 
@@ -24,6 +26,24 @@ directly, so this command is provided as a convenience:
 .. code:: shell
 
     $ lfetool info erllibs
+
+
+``info path``
+,,,,,,,,,,,,,
+
+``lfetool`` uses the environment variable ``PATH`` to provide access to
+any needed binaries. It also adds some default directories:
+
+* ``${DEPS}/lfe/bin``
+
+* ``/opt/erlang/erjang``
+
+Due to the fact that obtaining the ``lfetool`` PATH settings can be useful for
+debugging or running commands manually, this is provided as a convenience:
+
+.. code:: shell
+
+    $ lfetool info path
 
 
 ``info installdir``
