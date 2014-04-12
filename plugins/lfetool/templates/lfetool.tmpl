@@ -926,11 +926,14 @@ do-info () {
         version)
             get-versions
             ;;
-        erllib)
+        erllibs)
             get-erl-libs
             ;;
         installdir)
             get-install-dir
+            ;;
+        path)
+            get-path
             ;;
         *)
             unknown-context-error $context
