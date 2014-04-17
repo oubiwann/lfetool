@@ -7,15 +7,15 @@
 
 The ``tests`` command supports the following sub-commands:
 
-* ``build``
+* ``build`` amd ``jbuild``
 
-* ``unit`` and ``show-unit``
+* ``unit``, ``junit``, and ``show-unit``
 
-* ``integration`` and ``show-integration``
+* ``integration``, ``jintegration``, and ``show-integration``
 
-* ``system`` and ``show-system``
+* ``system``, ``jsystem``, and ``show-system``
 
-* ``all``
+* ``all`` and ``jall``
 
 * ``clean``
 

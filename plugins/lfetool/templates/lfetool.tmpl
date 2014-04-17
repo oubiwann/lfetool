@@ -856,6 +856,21 @@ do-tests () {
         build)
             build-tests
             ;;
+        junit)
+            run-unit-jerl-tests
+            ;;
+        jintegration)
+            run-integration-jerl-tests
+            ;;
+        jsystem)
+            run-system-jerl-tests
+            ;;
+        jall)
+            run-all-jerl-tests
+            ;;
+        jbuild)
+            build-jerl-tests
+            ;;
         show-unit)
             get-unit-tests
             ;;
