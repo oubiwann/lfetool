@@ -455,12 +455,10 @@ get_versions () {
     echo "Getting version info ..."
     echo
     APP_SRC=`ls src/*app.src`
-    PART1='io:format("~p~n", [proplists:get_value(vsn,element(3,element'
-    PART2='(2,hd(element(3,erl_eval:exprs(element(2, erl_parse:parse_exprs'
-    PART3='(element(2,erl_scan:string("Data = " ++ binary_to_list(element'
-    PART4='(2,file:read_file("'
-    PART5='"))))))), []))))))])'
-    COMMAND=${PART1}${PART2}${PART3}${PART4}${APP_SRC}${PART5}
+    PART1='{ok,[App]}=file:consult("'
+    PART2='"),V=proplists:get_value(vsn,element(3,App)),'
+    PART3='io:format("~p~n",[V])'
+    COMMAND=${PART1}${APP_SRC}${PART2}${PART3}
     echon app.src: ''
     erl -eval "$COMMAND" -run init stop -noshell
     echon package.exs: ''
