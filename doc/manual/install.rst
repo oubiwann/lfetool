@@ -28,23 +28,19 @@ alias for ``./lfetool install lfetool``.
 ``install`` or ``install lfetool``
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
-Assuming you have downloaded ``lfetool`` to your local directory, you can use it
-to install the script either to ``/usr/local/bin`` (default) or to a path of
-your choosing:
+Assuming you have downloaded ``lfetool`` to your local directory, you can
+use it to install the script either to ``/usr/local/bin`` (default) or to a
+path of your choosing:
 
 .. code:: bash
 
     $ ./lfetool install
 
-.. code:: bash
-
-    $ ./lfetool install ~/bin/
-
-or (for lovers of verbosity):
+or, for a custom directory:
 
 .. code:: bash
 
-    $ ./lfetool install lfetool /usr/local/bin
+    $ ./lfetool install lfetool ~/bin/
 
 You need to have write permissions to the given directory in order for this
 command to succeed. Note that the installation procedure sets the executable
@@ -54,8 +50,8 @@ bit for the script.
 ``install lfe``
 ,,,,,,,,,,,,,,,
 
-If you would like to install LFE system-wide, you may use the following command
-to do so. This does assume that you have ``erl`` in your path.
+If you would like to install LFE system-wide, you may use the following
+command to do so. This does assume that you have ``erl`` in your path.
 
 .. code:: bash
 
@@ -73,9 +69,9 @@ dependencies into a project dir and running LFE from there.
 ``install erlang``
 ,,,,,,,,,,,,,,,,,,
 
-This command is merely a convenience wrapper for the ``kerl`` tool and assumes
-that you have ``kerl`` installed and in your ``$PATH``. It takes a single
-parameter, the release name of Erlang:
+This command is merely a convenience wrapper for the ``kerl`` tool and
+assumes that you have ``kerl`` installed and in your ``$PATH``. It takes a
+single parameter, the release name of Erlang:
 
 .. code:: bash
 
