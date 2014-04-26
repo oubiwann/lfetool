@@ -41,6 +41,36 @@ yawsbootstrapfontwoff="{{YAWSBOOTSTRAPFONTWOFF}}"
 
 unalias ls 2>/dev/null
 
+# General Constants
+DEPS=./deps
+TEST_DIR=./test
+TEST_OUT_DIR=./.eunit
+# unit tests with meck don't seem to play well with parallel tests enabled
+#CASE_OPEN="case eunit:test({inparallel,["
+#CASE_CLOSE="]},[verbose]) of ok -> halt(0); _ -> halt(127) end"
+CASE_OPEN="case eunit:test(["
+CASE_CLOSE="],[verbose]) of ok -> halt(0); _ -> halt(127) end"
+
+# Terminal Colors
+BLACK="\033[0;30;40m"
+RED="\033[0;31;40m"
+GREEN="\033[0;32;40m"
+YELLOW="\033[0;33;40m"
+BLUE="\033[0;34;40m"
+MAGENTA="\033[0;35;40m"
+CYAN="\033[0;36;40m"
+WHITE="\033[0;37;40m"
+BOLD_BLACK="\033[1;30;40m"
+BOLD_RED="\033[1;31;40m"
+BOLD_GREEN="\033[1;32;40m"
+BOLD_YELLOW="\033[1;33;40m"
+BOLD_BLUE="\033[1;34;40m"
+BOLD_MAGENTA="\033[1;35;40m"
+BOLD_CYAN="\033[1;36;40m"
+BOLD_WHITE="\033[1;37;40m"
+END_COLOR="\033[m"
+
+# OS Type
 OS_TYPE=Unix
 case `uname -s` in
     CYGWIN_NT*)
@@ -59,7 +89,7 @@ case `uname -s` in
         OS_TYPE=LINUX
         ;;
     Darwin)
-        OS_TYPE=Darwin  ## Apple OS X
+        OS_TYPE=Darwin  # Apple OS X
         ;;
     AIX)
         OS_TYPE=AIX
@@ -75,8 +105,7 @@ case `uname -s` in
         ;;
 esac
 
-system_type()
-{
+system_type () {
     case $(uname -s) in
         AIX)   print AIX ;;
         HP-UX) print HP-UX ;;
@@ -102,8 +131,7 @@ if [ $OS_TYPE = SOLARIS ]; then
 fi
 
 # echon -- echo with no trailing newline
-echon()
-{
+echon () {
     if [ $OS_TYPE = Cygwin ] || [ $OS_TYPE = LINUX ]; then
         echo -n "$*"
     elif [ -x /usr/ucb/echo ] ; then
@@ -117,8 +145,7 @@ echon()
     fi
 }
 
-echoe()
-{
+echoe () {
     case $OS_TYPE in
         LINUX|Cygwin)
             echo -e "$*"
@@ -128,33 +155,6 @@ echoe()
             ;;
     esac
 }
-
-DEPS=./deps
-TEST_DIR=./test
-TEST_OUT_DIR=./.eunit
-CASE_OPEN="case eunit:test({inparallel,["
-CASE_OPEN="case eunit:test(["
-CASE_CLOSE="]},[verbose]) of ok -> halt(0); _ -> halt(127) end"
-CASE_CLOSE="],[verbose]) of ok -> halt(0); _ -> halt(127) end"
-FINISH="-run init stop -noshell"
-
-BLACK="\033[0;30;40m"
-RED="\033[0;31;40m"
-GREEN="\033[0;32;40m"
-YELLOW="\033[0;33;40m"
-BLUE="\033[0;34;40m"
-MAGENTA="\033[0;35;40m"
-CYAN="\033[0;36;40m"
-WHITE="\033[0;37;40m"
-BOLD_BLACK="\033[1;30;40m"
-BOLD_RED="\033[1;31;40m"
-BOLD_GREEN="\033[1;32;40m"
-BOLD_YELLOW="\033[1;33;40m"
-BOLD_BLUE="\033[1;34;40m"
-BOLD_MAGENTA="\033[1;35;40m"
-BOLD_CYAN="\033[1;36;40m"
-BOLD_WHITE="\033[1;37;40m"
-END_COLOR="\033[m"
 
 decode () {
     case $OS_TYPE in
