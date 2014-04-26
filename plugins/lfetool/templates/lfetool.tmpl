@@ -597,7 +597,6 @@ build_tests () {
 
 only_run_unit_tests () {
     status=0
-
     echoe "$BOLD_BLUE"
     echo "------------------"
     echo "Running unit tests ..."
@@ -611,7 +610,6 @@ only_run_unit_tests () {
     status=`echo "$result" | tail -1`
     parsed=`get_parsed "$result"`
     echoe "$parsed"
-
     return $status
 }
 
@@ -622,7 +620,6 @@ run_unit_tests () {
 
 only_run_integration_tests () {
     status=0
-
     echoe "$BOLD_BLUE"
     echo "-------------------------"
     echo "Running integration tests ..."
@@ -636,7 +633,6 @@ only_run_integration_tests () {
     status=`echo "$result" | tail -1`
     parsed=`get_parsed "$result"`
     echoe "$parsed"
-
     return $status
 }
 
@@ -647,7 +643,6 @@ run_integration_tests () {
 
 only_run_system_tests () {
     status=0
-
     echoe "$BOLD_BLUE"
     echo "--------------------"
     echo "Running system tests ..."
@@ -661,7 +656,6 @@ only_run_system_tests () {
     status=`echo "$result" | tail -1`
     parsed=`get_parsed "$result"`
     echoe "$parsed"
-
     return $status
 }
 
@@ -672,12 +666,10 @@ run_system_tests () {
 
 run_all_tests () {
     status=0
-
     build_tests
     only_run_unit_tests || status=$?
     only_run_integration_tests || status=$?
     only_run_system_tests || status=$?
-
     return $status
 }
 
@@ -688,7 +680,6 @@ clean_tests () {
 
 create_dirs () {
     project=$1
-
     mkdir -p $project/src
     mkdir -p $project/test/unit
     mkdir $project/test/integration $project/test/system
@@ -713,8 +704,8 @@ add_git_files () {
 create_file () {
     data=$1
     filename=$2
-    mypattern=$3  ## optional argument
-    myproject=$4  ## optional argument
+    mypattern=$3  # optional argument
+    myproject=$4  # optional argument
     if [ x"$mypattern" = x ]; then
         mypattern="{{IGNORE}}"
         myproject="{{IGNORE}}"
@@ -815,9 +806,7 @@ setup_script_project () {
 
 setup_library_project () {
     project=$1
-
     echo "Setting up starter library project $project ..."
-
     create_dirs          $project
     create_project_files $project
     create_library_files $project
@@ -826,9 +815,7 @@ setup_library_project () {
 
 setup_service_project () {
     project=$1
-
     echo "Setting up starter OTP service project $project ..."
-
     create_dirs          $project
     create_project_files $project
     create_service_files $project
@@ -844,9 +831,7 @@ setup_e2_service_project () {
 
 setup_yaws_project () {
     project=$1
-
     echo "Setting up default starter YAWS project $project ..."
-
     create_dirs          $project
     create_yaws_dirs     $project
     create_project_files $project
@@ -856,9 +841,7 @@ setup_yaws_project () {
 
 setup_yaws_bootstrap_project () {
     project=$1
-
     echo "Setting up Bootstrap starter YAWS project $project ..."
-
     create_dirs                 $project
     create_yaws_dirs            $project
     create_yaws_bootstrap_dirs  $project
@@ -892,7 +875,6 @@ create_new () {
     context=$1
     arg1=$2
     arg2=$3
-
     case $context in
         script)
             setup_script_project $arg1
@@ -926,7 +908,6 @@ do_install () {
     context=$2
     arg1=$3
     arg2=$4
-
     # the default option is to install lfetool itself
     if [ x"$context" = x ]; then
         context="lfetool"
@@ -965,7 +946,6 @@ do_install () {
 do_update () {
     script=$1
     context=$2
-
     if [ x"$context" = x ]; then
         context="lfetool"
     fi
@@ -984,7 +964,6 @@ do_update () {
 
 do_tests () {
     context=$1
-
     case $context in
         unit)
             run_unit_tests
@@ -1056,7 +1035,6 @@ do_jlfe_repl () {
 do_repl () {
     context=$1
     shift 1
-
     # the default option is to run the LFE REPL
     if [ x"$context" = x ]; then
         context="lfe"
@@ -1082,7 +1060,6 @@ do_repl () {
 
 do_info () {
     context=$1
-
     case $context in
         version)
             get_versions
@@ -1189,7 +1166,7 @@ run () {
         repl)
             # the repl command only functions properly if lfetool is not run
             # from the compressed file, but is instead already uncompressed.
-            # Note sure why; perhaps someone with serious Bash skills can
+            # Not sure why; perhaps someone with serious Bash skills can
             # explain what's going on and provide a better way of doing this
             # than the work around below.
             if [ "$0" == "bash" ]; then
