@@ -413,11 +413,11 @@ install_autocomplete () {
 
 update_lfetool () {
     script=$1
-    path=`which lfetool`
-    if [ x"$path" = x ]; then
+    lfetoolpath=`which lfetool`
+    if [ x"$lfetoolpath" = x ]; then
         lfetool_not_found_error
     fi
-    directory=`dirname $path`
+    directory=`dirname $lfetoolpath`
     echon "Current version: "
     lfetool -v
     cd /tmp > /dev/null 2>&1 && \
