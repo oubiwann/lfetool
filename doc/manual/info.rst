@@ -7,6 +7,8 @@
 
 The ``info`` command supports the following sub-commands:
 
+* ``bindir``
+
 * ``erllibs``
 
 * ``path``
@@ -14,6 +16,17 @@ The ``info`` command supports the following sub-commands:
 * ``installdir``
 
 * ``version``
+
+
+``info bindir``
+,,,,,,,,,,,,,,,
+
+This command returns the ``bin`` directory for the installed/active version
+of Erlang:
+
+.. code:: shell
+
+    $ lfetool info bindir
 
 
 ``info erllibs``
@@ -38,8 +51,9 @@ any needed binaries. It also adds some default directories:
 
 * ``/opt/erlang/erjang``
 
-Due to the fact that obtaining the ``lfetool`` PATH settings can be useful for
-debugging or running commands manually, this is provided as a convenience:
+Due to the fact that obtaining the ``lfetool`` PATH settings can be useful
+for debugging or running commands manually, this is provided as a
+convenience:
 
 .. code:: shell
 
@@ -49,9 +63,8 @@ debugging or running commands manually, this is provided as a convenience:
 ``info installdir``
 ,,,,,,,,,,,,,,,,,,,
 
-``lfetool install lfe`` finds the ``lib`` directory for the installed/active
-version of Erlang running and installs LFE there. This command returns the
-install dir for informational purposes:
+This command returns the ``lib`` directory for the installed/active version
+of Erlang:
 
 .. code:: shell
 

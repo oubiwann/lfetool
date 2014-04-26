@@ -167,6 +167,9 @@ used with LFE and LFE projects. Here's how you install it:
 
     $ lfetool install rebar
 
+By default, it is installed into the ``bin`` dir of the currently active
+version of Erlang.
+
 .. code:: bash
 
     $ lfetool install rebar ~/bin/

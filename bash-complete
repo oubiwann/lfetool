@@ -5,7 +5,7 @@ INSTALL='lfetool autocomplete lfe erlang kerl rebar relx expm erjang'
 YAWS='default bootstrap'
 TESTS='build unit integration system all'
 UPDATE='lfetool deps'
-INFO='version erllibs path installdir'
+INFO='version erllibs path installdir bindir'
 REPL='lfe erlang jlfe jerl'
 
 _get-lfetool-opts-and-commands () {
