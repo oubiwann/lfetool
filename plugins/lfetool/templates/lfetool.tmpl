@@ -265,23 +265,20 @@ install_lfetool () {
     if [ x"$directory" = x ]; then
         directory=/usr/local/bin
     fi
-
     if [ x"$mode" = x ]; then
         cp $script $directory
         if [ $? -ne 0 ]; then
             echo cp $script $directory failed.
             exit 1
         fi
-
         chmod 755 $directory/`basename $script`
-
         echo
         echo "Installed lfetool to $directory."
     elif [ $mode = update ]; then
-        url="https://raw.github.com/lfe/lfetool/master/lfetool"
+        url="https://raw.githubusercontent.com/lfe/lfetool/master/lfetool"
         file=lfetool
         cd /tmp/ > /dev/null 2>&1 && \
-        download_file $url && \
+        download_file $url #&& \
         install_file $file $directory $mode && \
         cd - > /dev/null 2>&1
         eval "${directory}/${file} -x"
@@ -420,9 +417,7 @@ update_lfetool () {
     directory=`dirname $lfetoolpath`
     echon "Current version: "
     lfetool -v
-    cd /tmp > /dev/null 2>&1 && \
-    install_lfetool $script $directory update && \
-    cd - > /dev/null 2>&1
+    install_lfetool $script $directory update
     echon "New version: "
     lfetool -v
     echo
