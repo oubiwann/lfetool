@@ -526,15 +526,18 @@ format_test_result_line () {
 
     case $line in
         *failed*)
-            len=`expr $padlen - \`echo "$line" | wc -m\` + 5`
+            preadjustedlen=`echo "$line" | wc -m | tr -d ' '`
+            len=`$expr_cmd $padlen - $preadjustedlen + 5`
             ;;
         *)
-            len=`expr $padlen - \`echo "$line" | wc -m\` + 3`
+            preadjustedlen=`echo "$line" | wc -m | tr -d ' '`
+            len=`$expr_cmd $padlen - $preadjustedlen + 3`
             ;;
     esac
     if [ "$len" -gt 0 ]; then
-        #dots=`printf '%*.*s ' 0 $len "$pad"`
-        dots=`$expr_cmd substr "$pad" 1 $len`
+        dots=`printf '%*.*s ' 0 $len "$pad"`
+        # the following doesn't work on Mac OS X; BSD expr is used, not GNU
+        #dots=`$expr_cmd substr "$pad" 1 $len`
     fi
     echo "$line" | sed "s/\.\.\. /$dots/"
 }
