@@ -42,7 +42,7 @@ example:
 
 .. code:: bash
 
-    $ curl -o ./lfetool https://raw.github.com/lfe/lfetool/master/lfetool
+    $ curl -L -o ./lfetool https://raw.github.com/lfe/lfetool/master/lfetool
     $ bash lfetool install /usr/local/bin
 
 Depending upon how the permissions for your chossen path are setup, you may
