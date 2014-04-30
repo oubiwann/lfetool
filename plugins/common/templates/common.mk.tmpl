@@ -15,7 +15,7 @@ $(BIN_DIR):
 
 $(LFETOOL): $(BIN_DIR)
 	@[ -f $(LFETOOL) ] || \
-	curl -o ./lfetool https://raw.github.com/lfe/lfetool/master/lfetool && \
+	curl -L -o ./lfetool https://raw.github.com/lfe/lfetool/master/lfetool && \
 	chmod 755 ./lfetool && \
 	mv ./lfetool $(BIN_DIR)
 
