@@ -55,6 +55,14 @@ script in the future, you should also change the ownership:
 
     $ chown $USER /usr/local/bin/lfetool
 
+To run ``lfetool`` more quickly, you can pre-extract the executable:
+
+.. code:: bash
+
+    $ lfetool -x
+    
+This will be done for you eventually if you execute the ``lfetool repl`` command.
+
 
 Bleeding Edge
 -------------
