@@ -43,10 +43,10 @@ example:
 .. code:: bash
 
     $ curl -L -o ./lfetool https://raw.github.com/lfe/lfetool/master/lfetool
-    $ bash lfetool install /usr/local/bin
+    $ bash lfetool install
 
-Depending upon how the permissions for your chossen path are setup, you may
-need to use ``sudo``.
+This will install lfetool to ``/usr/local/bin``. Depending upon how the
+permissions for your chossen path are setup, you may need to use ``sudo``.
 
 If you installed with ``sudo`` but would like to be able to self-update the
 script in the future, you should also change the ownership:
