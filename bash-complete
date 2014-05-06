@@ -1,6 +1,6 @@
 OPTS='-h -v -x'
 COMMANDS='help version extract install update new tests info repl'
-NEW='script library service yaws'
+NEW='script library service yaws presentation'
 INSTALL='lfetool autocomplete lfe erlang kerl rebar relx expm erjang'
 YAWS='default bootstrap'
 TESTS='build unit integration system all'

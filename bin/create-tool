@@ -80,14 +80,14 @@ add_license () {
 
 fill_templates () {
     cp $tooltemplate $dest
-    fill_lfetool_files # fill-tool-var plugins/lfetool/templates/usage.txt.tmpl {{USAGE}}
-
+    fill_lfetool_files
     fill_common_files
     fill_script
     fill_library_files
     fill_service_files
     fill_yaws_files
     fill_yaws_bootstrap_files
+    fill_presentation_files
     add_license > $temp
     cat $dest >> $temp
     mv $temp $dest

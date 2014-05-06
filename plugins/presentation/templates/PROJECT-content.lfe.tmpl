@@ -1,0 +1,11 @@
+(defmodule {{PROJECT}}-content
+  (export all))
+
+(include-lib "deps/reveal-js/include/macros.lfe")
+
+(defun build-slide-deck (arg-data)
+  (deck
+    ({{PROJECT}}-slides:introduction arg-data)
+    ({{PROJECT}}-slides:chapter-1 arg-data)
+    ({{PROJECT}}-slides:chapter-2 arg-data)
+    ({{PROJECT}}-slides:chapter-3 arg-data)))

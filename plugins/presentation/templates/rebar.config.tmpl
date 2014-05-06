@@ -1,0 +1,21 @@
+{erl_opts, [debug_info, {src_dirs, ["test/unit",
+                                    "test/integration",
+                                    "test/system"]}]}.
+{lfe_first_files, []}.
+{deps_dir, ["deps"]}.
+{eunit_compile_opts, [
+   {src_dirs, ["test/unit",
+               "test/integration",
+               "test/system",
+               "src"]}
+  ]}.
+{deps, [
+   {lfe, ".*", {git, "git://github.com/rvirding/lfe.git", "develop"}},
+   {'lfe-utils', ".*", {git, "https://github.com/lfe/lfe-utils.git",
+      "master"}},
+   {lfeunit, ".*", {git, "git://github.com/lfe/lfeunit.git", "master"}},
+   {exemplar, ".*", {git, "git://github.com/lfe/exemplar.git", "master"}},
+   {yaws, ".*", {git, "git://github.com/klacke/yaws.git", "master"}},
+   {'reveal-js', ".*", {git, "https://github.com/lfe/lfe-reveal-js.git",
+      "master"}}
+  ]}.

@@ -38,6 +38,11 @@ yawsbootstrapfonteot="{{YAWSBOOTSTRAPFONTEOT}}"
 yawsbootstrapfontsvg="{{YAWSBOOTSTRAPFONTSVG}}"
 yawsbootstrapfontttf="{{YAWSBOOTSTRAPFONTTTF}}"
 yawsbootstrapfontwoff="{{YAWSBOOTSTRAPFONTWOFF}}"
+presrebar="{{PRESREBAR}}"
+presyawsconf="{{PRESYAWSCONF}}"
+presmodule="{{PRESMODULE}}"
+prescontentmodule="{{PRESCONTENTMODULE}}"
+presslidesmodule="{{PRESSLIDESMODULE}}"
 
 unalias ls 2>/dev/null
 
@@ -228,7 +233,7 @@ clone_repo () {
 download_file () {
     url=$1
     echo "Downloading $url ..."
-    curl -O "$url" > /dev/null 2>&1 && \
+    curl -L -O "$url" > /dev/null 2>&1 && \
     echo "Download succeeded." || \
     echo "Download failed."
 }
@@ -703,7 +708,7 @@ create_yaws_dirs () {
 create_yaws_bootstrap_dirs () {
     project=$1
     mkdir -p $project/www/css
-    mkdir $project/www/images  $project/www/js  $project/www/icons  $project/www/fonts
+    mkdir $project/www/images $project/www/js $project/www/icons $project/www/fonts
 }
 
 add_git_files () {
@@ -725,46 +730,46 @@ create_file () {
 
 create_project_files () {
     project=$1
-    create_file "$gitignore"   $project/.gitignore
+    create_file "$gitignore" $project/.gitignore
     create_file "$rebarconfig" $project/rebar.config
-    create_file "$commonmk"    $project/common.mk   {{PROJECT}} $project
-    create_file "$travisci"    $project/.travis.yml {{PROJECT}} $project
-    create_file "$readme"      $project/README.rst  {{PROJECT}} $project
-    create_file "$package"     $project/package.exs {{PROJECT}} $project
+    create_file "$commonmk" $project/common.mk {{PROJECT}} $project
+    create_file "$travisci" $project/.travis.yml {{PROJECT}} $project
+    create_file "$readme" $project/README.rst {{PROJECT}} $project
+    create_file "$package" $project/package.exs {{PROJECT}} $project
 }
 
 create_library_files () {
     project=$1
-    create_file "$libmakefile" $project/Makefile             {{PROJECT}} $project
-    create_file "$libappsrc"   $project/src/$project.app.src {{PROJECT}} $project
+    create_file "$libmakefile" $project/Makefile {{PROJECT}} $project
+    create_file "$libappsrc" $project/src/$project.app.src {{PROJECT}} $project
     create_file "$libtestmodule" \
-        $project/test/unit/unit-${project}-tests.lfe     {{PROJECT}} $project
+        $project/test/unit/unit-${project}-tests.lfe {{PROJECT}} $project
     create_file "$libmodule"   $project/src/$project.lfe {{PROJECT}} $project
 }
 
 create_service_files () {
     project=$1
-    create_file "$otpmk"       $project/otp.mk               {{PROJECT}} $project
-    create_file "$svcmakefile" $project/Makefile             {{PROJECT}} $project
-    create_file "$svcappsrc"   $project/src/$project.app.src {{PROJECT}} $project
+    create_file "$otpmk" $project/otp.mk {{PROJECT}} $project
+    create_file "$svcmakefile" $project/Makefile {{PROJECT}} $project
+    create_file "$svcappsrc" $project/src/$project.app.src {{PROJECT}} $project
     create_file "$svctestmodule" \
         $project/test/unit/unit-${project}-tests.lfe {{PROJECT}} $project
     create_file "$svcapp" \
-        $project/src/${project}-app.lfe    {{PROJECT}} $project
+        $project/src/${project}-app.lfe {{PROJECT}} $project
     create_file "$svcserver" \
         $project/src/${project}-server.lfe {{PROJECT}} $project
     create_file "$svcsup" \
-        $project/src/${project}-sup.lfe    {{PROJECT}} $project
+        $project/src/${project}-sup.lfe {{PROJECT}} $project
 }
 
 create_yaws_files () {
     project=$1
-    create_file "$yawsmk"       $project/yaws.mk              {{PROJECT}} $project
-    create_file "$yawsmakefile" $project/Makefile             {{PROJECT}} $project
-    create_file "$yawsrebar"    $project/rebar.config
-    create_file "$yawsconf"     $project/etc/yaws.conf        {{PROJECT}} $project
-    create_file "$svcappsrc"    $project/src/$project.app.src {{PROJECT}} $project
-    create_file "$yawsmodule"   $project/src/${project}.lfe   {{PROJECT}} $project
+    create_file "$yawsmk" $project/yaws.mk {{PROJECT}} $project
+    create_file "$yawsmakefile" $project/Makefile {{PROJECT}} $project
+    create_file "$yawsrebar" $project/rebar.config
+    create_file "$yawsconf" $project/etc/yaws.conf {{PROJECT}} $project
+    create_file "$svcappsrc" $project/src/$project.app.src {{PROJECT}} $project
+    create_file "$yawsmodule" $project/src/${project}.lfe {{PROJECT}} $project
     create_file "$yawsroutesmodule" \
         $project/src/${project}-routes.lfe  {{PROJECT}} $project
     create_file "$yawscontentmodule" \
@@ -802,6 +807,46 @@ create_yaws_bootstrap_files () {
         $project/www/fonts/glyphicons-halflings-regular.woff
 }
 
+create_presentation_files () {
+    project=$1
+    create_file "$presrebar" $project/rebar.config
+    create_file "$presyawsconf" $project/etc/yaws.conf {{PROJECT}} $project
+    create_file "$presmodule" $project/src/${project}.lfe {{PROJECT}} $project
+    create_file "$prescontentmodule" \
+        $project/src/${project}-content.lfe {{PROJECT}} $project
+    create_file "$presslidesmodule" \
+        $project/src/${project}-slides.lfe {{PROJECT}} $project
+
+    # get a stable copy of Reveal.js
+    version="2.6.2"
+    file="${version}.zip"
+    dir="reveal.js-${version}"
+    url="https://github.com/hakimel/reveal.js/archive/$file"
+    cd $project/www > /dev/null 2>&1 && \
+    download_file $url && \
+    unzip $file > /dev/null 2>&1 && \
+    mv $dir/css $dir/js $dir/lib $dir/plugin . && \
+    rm -rf $file $dir && \
+    cd - > /dev/null 2>&1
+}
+
+post_create_presentation () {
+    project=$1
+    cd $project && add_git_files && mkdir -p deps && \
+        make get-deps > /dev/null 2>&1 && \
+    cd - > /dev/null 2>&1 && \
+    cd $project/deps/reveal-js > /dev/null 2>&1 && ln -s ../../deps . && \
+    cd - > /dev/null 2>&1 && \
+    cd $project && \
+    cp -v deps/reveal-js/resources/public/js/config.js www/js/ && \
+    cp -vr \
+        deps/reveal-js/resources/public/images \
+        deps/reveal-js/resources/public/icons \
+        www/ && \
+    make check-all-with-deps && \
+    cd - > /dev/null 2>&1
+}
+
 post_create () {
     project=$1
     cd $project && add_git_files && mkdir -p deps && make check-all-with-deps
@@ -816,19 +861,19 @@ setup_script_project () {
 setup_library_project () {
     project=$1
     echo "Setting up starter library project $project ..."
-    create_dirs          $project
+    create_dirs $project
     create_project_files $project
     create_library_files $project
-    post_create          $project
+    post_create $project
 }
 
 setup_service_project () {
     project=$1
     echo "Setting up starter OTP service project $project ..."
-    create_dirs          $project
+    create_dirs $project
     create_project_files $project
     create_service_files $project
-    post_create          $project
+    post_create $project
 }
 
 setup_e2_service_project () {
@@ -841,23 +886,34 @@ setup_e2_service_project () {
 setup_yaws_project () {
     project=$1
     echo "Setting up default starter YAWS project $project ..."
-    create_dirs          $project
-    create_yaws_dirs     $project
+    create_dirs $project
+    create_yaws_dirs $project
     create_project_files $project
-    create_yaws_files    $project
-    post_create          $project
+    create_yaws_files $project
+    post_create $project
 }
 
 setup_yaws_bootstrap_project () {
     project=$1
     echo "Setting up Bootstrap starter YAWS project $project ..."
-    create_dirs                 $project
-    create_yaws_dirs            $project
-    create_yaws_bootstrap_dirs  $project
-    create_project_files        $project
-    create_yaws_files           $project
+    create_dirs $project
+    create_yaws_dirs $project
+    create_yaws_bootstrap_dirs $project
+    create_project_files $project
+    create_yaws_files $project
     create_yaws_bootstrap_files $project
-    post_create                 $project
+    post_create $project
+}
+
+setup_presentation_project () {
+    project=$1
+    echo "Setting up presentation starter project $project ..."
+    create_dirs $project
+    create_yaws_dirs $project
+    create_project_files $project
+    create_yaws_files $project
+    create_presentation_files $project
+    post_create_presentation $project
 }
 
 create_new_yaws () {
@@ -878,6 +934,11 @@ create_new_yaws () {
             unknown_subcommand_error "$command $subcommand"
             ;;
     esac
+}
+
+create_new_presentation () {
+    arg=$1
+    setup_presentation_project $arg
 }
 
 create_new () {
@@ -905,6 +966,16 @@ create_new () {
                 arg1="default"
             fi
             create_new_yaws $context $arg1 $arg2
+            ;;
+        presentation)
+            # create a yaws project
+            create_new_presentation $arg1
+            # now add the presentation-specific code to it
+            # overwrite rebar.config
+            # download Reveal.js into www
+            # create a PROJ-yaws.lfe with out/1 defined
+            # create a content module which calls the chapters
+            # create a slides module which defines the chapters
             ;;
         *)
             unknown_context_error $context

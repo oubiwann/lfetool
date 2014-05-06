@@ -171,6 +171,35 @@ After this, you can view your new project by executing these commands:
 and then pointing your web browser at http://localhost:5099/.
 
 
+``new presentation``
+,,,,,,,,,,,,,,,,,,,,
+
+One may create a "presentation" project (slide deck) by running the
+following:
+
+.. code:: shell
+
+    $ lfetool new presentation my-slide-deck
+
+This command will create a new project with the following deps:
+
+* yaws
+* lfe-reveal-js
+
+Once the project has been build, do the following to try it out:
+
+.. code:: shell
+
+    $ cd my-slide-deck
+    $ make dev
+
+And then load up <a href="http://localhost:5099">localhost:5099</a> in your
+browser.
+
+
+``lfetool`` only supports the Reveal.js presentation library.
+
+
 ``new e2service``
 ,,,,,,,,,,,,,,,,,
 
