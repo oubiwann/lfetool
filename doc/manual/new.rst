@@ -193,8 +193,7 @@ Once the project has been built, do the following to try it out:
     $ cd my-slide-deck
     $ make dev
 
-And then load up <a href="http://localhost:5099">localhost:5099</a> in your
-browser.
+And then load up `localhost:5099`_ in your browser.
 
 
 ``lfetool`` only supports the Reveal.js presentation library.
@@ -208,3 +207,6 @@ At a future date we will also support the e2 project in a similar fashion:
 .. code:: shell
 
     $ lfetool new e2-service my-new-service
+
+.. Links
+.. _localhost:5099: http://localhost:5099
