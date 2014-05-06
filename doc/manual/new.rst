@@ -186,7 +186,7 @@ This command will create a new project with the following deps:
 * yaws
 * lfe-reveal-js
 
-Once the project has been build, do the following to try it out:
+Once the project has been built, do the following to try it out:
 
 .. code:: shell
 
