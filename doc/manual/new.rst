@@ -208,5 +208,8 @@ At a future date we will also support the e2 project in a similar fashion:
 
     $ lfetool new e2-service my-new-service
 
+
 .. Links
+.. -----
+
 .. _localhost:5099: http://localhost:5099
