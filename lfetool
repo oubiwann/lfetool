@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 #set -x
 
 # Copyright 2013-2014, "Duncan McGreggor" <duncan@cogitat.io>
@@ -43,7 +43,7 @@ run () {
             echo
             echo "Extracting file ..."
             tmp=/tmp/`date "+%Y%d%m%H%M%S_lfetool"`
-            echo "#! /bin/sh" > $tmp
+            echo "#! /bin/bash" > $tmp
             echo "" >> $tmp
             echo "version=$version" >> $tmp
             echo "" >> $tmp
