@@ -79,10 +79,10 @@ And then:
 
     > (: application start 'my-new-service)
     ok
-    > (: my-new-service_server test-call '"a call message")
+    > (: my-new-service-server test-call '"a call message")
     Call: "a call message"
     ok
-    > (: my-new-service_server test-cast '"a cast message")
+    > (: my-new-service-server test-cast '"a cast message")
     ok
     Cast: "a cast message"
     >
@@ -96,10 +96,10 @@ target:
     Erlang R16B (erts-5.10.1) [source] [smp:8:8] [async-threads:10] [hipe] ...
 
     LFE Shell V5.10.1 (abort with ^G)
-    > (: my-new-service_server test-call '"a call message")
+    > (: my-new-service-server test-call '"a call message")
     Call: "a call message"
     ok
-    > (: my-new-service_server test-cast '"a cast message")
+    > (: my-new-service-server test-cast '"a cast message")
     ok
     Cast: "a cast message"
     >

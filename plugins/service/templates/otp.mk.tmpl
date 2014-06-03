@@ -1,22 +1,26 @@
 include common.mk
 
+HOSTNAME = $(shell hostname -s)
+ERL_LIBS = $(shell lfetool info erllibs)
+LFE      = $(DEPS)/lfe/bin/lfe
+
+
 dev:
 	@echo "Running OTP app in the foreground ..."
-	@ERL_LIBS=$(ERL_LIBS) $(LFE) -eval "application:start('{{PROJECT}}')" \
-	-noshell
+	@ERL_LIBS=$(ERL_LIBS) $(LFE) -eval "application:start('{{PROJECT}}')"
 
 run: dev
 
 prod:
 	@echo "Running OTP app in the background ..."
 	@ERL_LIBS=$(ERL_LIBS) $(LFE) -eval "application:start('{{PROJECT}}')" \
-	-name {{PROJECT}}@$${HOSTNAME} -setcookie `cat ~/.erlang.cookie` \
+	-sname {{PROJECT}}@${HOSTNAME} -setcookie `cat ~/.erlang.cookie` \
 	-noshell -detached
 
 daemon: prod
 
 stop:
 	@ERL_LIBS=$(ERL_LIBS) $(LFE) \
-	-eval "rpc:call('{{PROJECT}}@$${HOSTNAME}', init, stop, [])" \
-	-name controller@$${HOSTNAME} -setcookie `cat ~/.erlang.cookie` \
+	-eval "rpc:call('{{PROJECT}}@${HOSTNAME}', init, stop, [])" \
+	-sname controller@${HOSTNAME} -setcookie `cat ~/.erlang.cookie` \
 	-noshell -s erlang halt
