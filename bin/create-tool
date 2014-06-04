@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 #set -x
 
 version=0.3.4
@@ -94,7 +94,7 @@ fill_templates () {
 }
 
 compress_tool () {
-    echo "#! /bin/sh" > $temp
+    echo "#! /bin/bash" > $temp
     echo "#set -x"    >> $temp
     echo              >> $temp
     add_license       >> $temp
@@ -138,7 +138,7 @@ run () {
             echo
             echo "Extracting file ..."
             tmp=/tmp/\`date "+%Y%d%m%H%M%S_lfetool"\`
-            echo "#! /bin/sh" > \$tmp
+            echo "#! /bin/bash" > \$tmp
             echo "" >> \$tmp
             echo "version=\$version" >> \$tmp
             echo "" >> \$tmp
