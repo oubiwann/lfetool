@@ -92,7 +92,7 @@ testNewService () {
         cd $svcname && make check &> /dev/null
     cd - &> /dev/null
     assertEquals "include resources/make/otp.mk" \
-        "`head -1 $svcname/Makefile`"
+        "`head -2 $svcname/Makefile|tail -1`"
     assertEquals "PROJECT = my-service" \
         "`head -1 $svcname/resources/make/common.mk`"
     if [ "$TRAVIS" = "true" ]; then
@@ -132,7 +132,7 @@ testNewYAWS () {
     assertEquals $expected \
         "`find $yawsname -type f|egrep -v 'deps|.git'|wc -l|tr -d ' '`"
     assertEquals "include resources/make/yaws.mk" \
-        "`head -1 $yawsname/Makefile`"
+        "`head -2 $yawsname/Makefile|tail -1`"
     assertEquals "PROJECT = my-yaws" \
         "`head -1 $yawsname/resources/make/common.mk`"
     assertEquals '(defmodule my-yaws' \
