@@ -694,6 +694,7 @@ clean_tests () {
 
 create_dirs () {
     project=$1
+    mkdir -p $project/resources/make
     mkdir -p $project/src
     mkdir -p $project/test/unit
     mkdir $project/test/integration $project/test/system
@@ -732,7 +733,7 @@ create_project_files () {
     project=$1
     create_file "$gitignore" $project/.gitignore
     create_file "$rebarconfig" $project/rebar.config
-    create_file "$commonmk" $project/common.mk {{PROJECT}} $project
+    create_file "$commonmk" $project/resources/make/common.mk {{PROJECT}} $project
     create_file "$travisci" $project/.travis.yml {{PROJECT}} $project
     create_file "$readme" $project/README.rst {{PROJECT}} $project
     create_file "$package" $project/package.exs {{PROJECT}} $project
@@ -749,7 +750,7 @@ create_library_files () {
 
 create_service_files () {
     project=$1
-    create_file "$otpmk" $project/otp.mk {{PROJECT}} $project
+    create_file "$otpmk" $project/resources/make/otp.mk {{PROJECT}} $project
     create_file "$svcmakefile" $project/Makefile {{PROJECT}} $project
     create_file "$svcappsrc" $project/src/$project.app.src {{PROJECT}} $project
     create_file "$svctestmodule" \
@@ -764,7 +765,7 @@ create_service_files () {
 
 create_yaws_files () {
     project=$1
-    create_file "$yawsmk" $project/yaws.mk {{PROJECT}} $project
+    create_file "$yawsmk" $project/resources/make/yaws.mk {{PROJECT}} $project
     create_file "$yawsmakefile" $project/Makefile {{PROJECT}} $project
     create_file "$yawsrebar" $project/rebar.config
     create_file "$yawsconf" $project/etc/yaws.conf {{PROJECT}} $project
