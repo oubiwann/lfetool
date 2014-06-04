@@ -61,10 +61,10 @@ testNewLibrary () {
     ../lfetool new library $libname &> /dev/null && \
         cd $libname && make check &> /dev/null
     cd - &> /dev/null
-    assertEquals "include common.mk" \
+    assertEquals "include resources/make/common.mk" \
         "`head -1 $libname/Makefile`"
     assertEquals "PROJECT = my-lib" \
-        "`head -1 $libname/common.mk`"
+        "`head -1 $libname/resources/make/common.mk`"
     if [ "$TRAVIS" = "true" ]; then
         expected="9"
     else
@@ -91,10 +91,10 @@ testNewService () {
     ../lfetool new service $svcname &> /dev/null && \
         cd $svcname && make check &> /dev/null
     cd - &> /dev/null
-    assertEquals "include otp.mk" \
+    assertEquals "include resources/make/otp.mk" \
         "`head -1 $svcname/Makefile`"
     assertEquals "PROJECT = my-service" \
-        "`head -1 $svcname/common.mk`"
+        "`head -1 $svcname/resources/make/common.mk`"
     if [ "$TRAVIS" = "true" ]; then
         expected="12"
     else
@@ -131,10 +131,10 @@ testNewYAWS () {
     fi
     assertEquals $expected \
         "`find $yawsname -type f|egrep -v 'deps|.git'|wc -l|tr -d ' '`"
-    assertEquals "include yaws.mk" \
+    assertEquals "include resources/make/yaws.mk" \
         "`head -1 $yawsname/Makefile`"
     assertEquals "PROJECT = my-yaws" \
-        "`head -1 $yawsname/common.mk`"
+        "`head -1 $yawsname/resources/make/common.mk`"
     assertEquals '(defmodule my-yaws' \
         "`head -1 $yawsname/src/my-yaws.lfe`"
     assertEquals '(defmodule my-yaws-routes' \
