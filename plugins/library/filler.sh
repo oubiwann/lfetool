@@ -15,4 +15,8 @@ fill_library_files () {
     template="plugins/common/templates/PROJECT.lfe.tmpl"
     pattern="{{LIBMODULE}}"
     fill_tool_var $template $pattern
+    # utility module
+    template="plugins/common/templates/PROJECT-util.lfe.tmpl"
+    pattern="{{LIBUTILMODULE}}"
+    fill_tool_var $template $pattern
 }

@@ -1,0 +1,9 @@
+(defmodule {{PROJECT}}-util
+  (export all))
+
+(defun get-{{PROJECT}}-version ()
+  (lfe-utils:get-app-src-version "src/{{PROJECT}}.app.src"))
+
+(defun get-version ()
+  (++ (lfe-utils:get-version)
+      `(#({{PROJECT}} ,(get-{{PROJECT}}-version)))))

@@ -13,6 +13,7 @@ scriptfile="{{SCRIPTFILE}}"
 libappsrc="{{LIBAPPSRC}}"
 libtestmodule="{{LIBTESTMODULE}}"
 libmodule="{{LIBMODULE}}"
+libutilmodule="{{LIBUTILMODULE}}"
 svcappsrc="{{SVCAPPSRC}}"
 svctestmodule="{{SVCTESTMODULE}}"
 svcapp="{{SVCAPP}}"
@@ -745,7 +746,9 @@ create_library_files () {
     create_file "$libappsrc" $project/src/$project.app.src {{PROJECT}} $project
     create_file "$libtestmodule" \
         $project/test/unit/unit-${project}-tests.lfe {{PROJECT}} $project
-    create_file "$libmodule"   $project/src/$project.lfe {{PROJECT}} $project
+    create_file "$libmodule" $project/src/$project.lfe {{PROJECT}} $project
+    create_file "$libutilmodule" \
+        $project/src/$project-util.lfe {{PROJECT}} $project
 }
 
 create_service_files () {
@@ -761,6 +764,8 @@ create_service_files () {
         $project/src/${project}-server.lfe {{PROJECT}} $project
     create_file "$svcsup" \
         $project/src/${project}-sup.lfe {{PROJECT}} $project
+    create_file "$libutilmodule" \
+        $project/src/$project-util.lfe {{PROJECT}} $project
 }
 
 create_yaws_files () {
@@ -779,6 +784,8 @@ create_yaws_files () {
         $project/src/${project}-util.lfe    {{PROJECT}} $project
     create_file "$libtestmodule" \
         $project/test/unit/unit-${project}-tests.lfe {{PROJECT}} $project
+    create_file "$libutilmodule" \
+        $project/src/$project-util.lfe {{PROJECT}} $project
 }
 
 create_yaws_bootstrap_files () {
