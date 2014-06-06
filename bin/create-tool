@@ -93,25 +93,32 @@ fill_templates () {
     mv $temp $dest
 }
 
+add_warning () {
+    echo "# This is the compressed version of the lfetool script."
+    echo "# This file is generated -- please to not edit directly."
+}
+
 compress_tool () {
     echo "#! /bin/bash" > $temp
-    echo "#set -x"    >> $temp
-    echo              >> $temp
-    add_license       >> $temp
-    echo              >> $temp
+    echo "#set -x" >> $temp
+    echo >> $temp
+    add_warning >> $temp
+    echo >> $temp
+    add_license >> $temp
+    echo >> $temp
 
     echo version=$version >> $temp
 
-    printf "lfetool="   >> $temp
+    printf "lfetool=" >> $temp
     if [ $OS_TYPE = Darwin ]; then
         gzip --best --stdout $dest | base64 -b 0 >> $temp
     else
         gzip --best --stdout $dest | base64 -w 0 >> $temp
     fi
-    #printf "\"\n"         >> $temp
+    #printf "\"\n" >> $temp
 
-    echo              >> $temp
-    echo              >> $temp
+    echo >> $temp
+    echo >> $temp
 
     cat << ENDSCRIPT  >> $temp
 decode () {
@@ -130,6 +137,13 @@ uncompress () {
     echo \$lfetool | decode | gzip -d --stdout
 }
 
+add_warning () {
+    echo "# This file is generated -- please to not edit directly."
+    echo "# Instead, edit the following file and then re-generate"
+    echo "# by running 'make build':"
+    echo "#   plugins/lfetool/templates/lfetool.tmpl"
+}
+
 run () {
     script=\$0
     command=\$1
@@ -139,6 +153,8 @@ run () {
             echo "Extracting file ..."
             tmp=/tmp/\`date "+%Y%d%m%H%M%S_lfetool"\`
             echo "#! /bin/bash" > \$tmp
+            echo "" >> \$tmp
+	    add_warning >> \$tmp
             echo "" >> \$tmp
             echo "version=\$version" >> \$tmp
             echo "" >> \$tmp
