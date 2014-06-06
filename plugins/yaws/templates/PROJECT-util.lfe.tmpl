@@ -3,6 +3,13 @@
 
 (include-lib "deps/yaws/include/yaws_api.hrl")
 
+(defun get-{{PROJECT}}-version ()
+  (lfe-utils:get-app-src-version "src/{{PROJECT}}.app.src"))
+
+(defun get-version ()
+  (++ (lfe-utils:get-version)
+      `(#({{PROJECT}} ,(get-{{PROJECT}}-version)))))
+
 (defun parse-path (arg-data)
   "Get pathinfo. This is used as the key to refer to specific preferences.
 
