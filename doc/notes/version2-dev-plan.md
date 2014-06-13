@@ -4,7 +4,7 @@ I've been wrestling with the cumbersome nature of lfetool being a fairly large
 shell script for a while now. The conversation below pushed me over the edge,
 falling into the abyss of Version 2:
 
-
+```
 [08:35:16]  <mheise>	 oubiwann-fn: did anyone start work on addressing the bashisms yet btw?  i'll have a little free time next week, if nobody's done the work yet i can give it a crack
 [08:35:44]  <oubiwann-fn>	 mheise: not yet..
 [08:35:58]  <oubiwann-fn>	 and I fear the latest changes may be working at cross-purposes
@@ -43,6 +43,7 @@ falling into the abyss of Version 2:
 [08:52:18]  <oubiwann-fn>	 I'll paste these notes there and reference them in a new ticket
 [08:52:25]  <oubiwann-fn>	 and create a new branch for this :-)
 [08:53:43]  <mheise>	 cool!
+```
 
 ## Notes from Ticket for Version 2 Development
 
