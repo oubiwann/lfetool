@@ -1,3 +1,7 @@
+# Development Notes
+
+**Version 2 of lfetool**
+
 ## Conversation on IRC
 
 I've been wrestling with the cumbersome nature of lfetool being a fairly large
