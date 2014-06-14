@@ -1,2 +1,7 @@
 *.sublime-*
 deps/*
+.eunit/
+.rebar/
+*_test_dir/
+ebin/
+*.dump
