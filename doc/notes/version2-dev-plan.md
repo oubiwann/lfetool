@@ -119,7 +119,7 @@ The plan here is to:
 
 ## Notes for Bootstrapping
 
-### Current Implicit Boostrapping
+### Current Implicit Bootstrapping
 
 LFE projects are created with the understanding that ``lfetool`` is
 installed and available. If, however, we were to make lfetool a project that
