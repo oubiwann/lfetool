@@ -1,5 +1,14 @@
 (defmodule lfetool
   (export all))
 
-(defun my-adder (x y)
-  (+ x (+ y 1)))
+(defun eval (cmd-string)
+  (apply
+    #'dispatch/1
+    `(,(parse cmd-string))))
+
+(defun parse (cmd-string)
+  `#(ok ,(string:tokens cmd-string " ")))
+
+(defun dispatch
+  (((tuple 'ok cmd-tokens))
+    `#(ok ,cmd-tokens)))
