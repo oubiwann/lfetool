@@ -143,8 +143,8 @@ We should be able to unify these. Perhaps something along these lines:
      * generates files
      * accepts/requires parameter(s)
      * formats:
-       ``<command> <plugin-name> <param>``
-       ``<command> <plugin-name> <plugin-sub-type> <param>``
+       * ``<command> <plugin-name> <param>``
+       * ``<command> <plugin-name> <plugin-sub-type> <param>``
 
 ## Designing a Plugin System in LFE/OTP
 
