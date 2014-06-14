@@ -62,3 +62,100 @@ Work on this will be done in the ``develop`` branch: https://github.com/lfe/lfet
 The IRC conversation which inspired this ticket is saved here: https://github.com/lfe/lfetool/blob/develop/doc/notes/version2-dev-plan.md
 
 The ticket for tracking Version 2 development (and all related tasks/sub-tickets) is here: https://github.com/lfe/lfetool/issues/46
+
+## Plugin Commands
+
+Format:
+
+```bash
+  $ lfetool <command> <plugin> [<sub1> [<sub2> ...]] [<arg1 [args2 [arg3 ...]]]
+```
+
+### Current commands with no plugins
+
+#### No sub-commands
+
+```bash
+  extract
+  help
+  version
+```
+
+#### One sub-command
+
+```bash
+  info bindir
+  info erllibs
+  info installdir
+  info path
+  info version
+  install autocomplete
+  install erjang
+  install expm
+  install kerl
+  install lfe
+  install lfetool
+  install rebar
+  install relx
+  repl erlang
+  repl lfe
+  repl jerl
+  repl jlfe
+  tests all
+  tests build
+  tests integration
+  tests system
+  tests unit
+  update deps
+  update lfetool
+```
+
+### Current commands with plugins
+
+#### No sub-plugins
+
+```bash
+  new library <name>
+  new presentation <name>
+  new script <name>
+  new service <name>
+  new yaws <name>
+```
+
+#### One sub-plugins
+
+```bash
+  new yaws bootstrap <name>
+  new yaws default <name>
+```
+
+### Analysis
+
+We should be able to unify these. Perhaps something along these lines:
+
+* two kinds of plugin:
+  1. command plugin
+     * executes a command
+     * formats:
+       * <command>
+       * <command> <plugin-name>
+  1. skeleton plugin
+     * generates files
+     * accepts/requires parameter(s)
+     * formats:
+       <command> <plugin-name> <param>
+       <command> <plugin-name> <plugin-sub-type> <param>
+
+## Designing a Plugin System in LFE/OTP
+
+One possibility:
+
+* put source files in ./plugins/<name> directories
+* have a custom make target that compiles them to ./ebin
+* register each plugin with the commands it supports
+  * scan the plugins directory
+  * extract plugin name from directory/module - get-name
+  * extract the help text from each plugin module - get-help
+  * extract the supported commands from each plugin - get-commands
+  * extract the supported sub-commands for each command - get-subcommands
+* define an OTP behaviour for these plugins
