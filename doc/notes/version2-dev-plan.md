@@ -1,12 +1,27 @@
 # Development Notes
 
-*Version 2 of lfetool*
+* Thoughts, notes, and plans for creating version 2 of lfetool*
 
-## Conversation on IRC
+## Kickoff
 
-I've been wrestling with the cumbersome nature of lfetool being a fairly large
-shell script for a while now. The conversation below pushed me over the edge,
-falling into the abyss of Version 2:
+### Summary
+
+From the beginning of lfetool, I've considered migrating the code from bash
+to LFE. The work always seemed too much without enough benefit.
+
+Below is the IRC conversation that got this whole thing started, and it
+hints at the motivation for migrating to LFE. To more clearly state these:
+ * it will be easier to test
+ * it will be easier to do plugin introspection
+ * it will be easier for devs to create their own plugins
+ * it will be easier for devs to contribute to lfetool
+ * it will be easier to check for regressions in code changes
+
+### Conversation on IRC
+
+I've been wrestling with the cumbersome nature of lfetool being a fairly
+large shell script for a while now. The conversation below pushed me over
+the edge, falling into the abyss of Version 2:
 
 ```
 [08:35:16] <mheise>      oubiwann-fn: did anyone start work on addressing the bashisms yet btw?
@@ -77,7 +92,12 @@ The IRC conversation which inspired this ticket is saved here: https://github.co
 
 The ticket for tracking Version 2 development (and all related tasks/sub-tickets) is here: https://github.com/lfe/lfetool/issues/46
 
-## Plugin Commands
+## Notes for Building a Parser
+
+### Plugin Commands
+
+In order to build a parser that mimics the current behaviour, we should fully
+*describe* the current behaviour.
 
 Format:
 
@@ -85,9 +105,9 @@ Format:
   $ lfetool <command> <plugin> [<sub1> [<sub2> ...]] [<arg1 [args2 [arg3 ...]]]
 ```
 
-### Current commands with no plugins
+#### Current commands with no plugins
 
-#### No sub-commands
+##### No sub-commands
 
 ```bash
   extract
@@ -95,7 +115,7 @@ Format:
   version
 ```
 
-#### One sub-command
+##### One sub-command
 
 ```bash
   info bindir
@@ -124,9 +144,9 @@ Format:
   update lfetool
 ```
 
-### Current commands with plugins
+#### Current commands with plugins
 
-#### No sub-plugins
+##### No sub-plugins
 
 ```bash
   new library <name>
@@ -136,14 +156,14 @@ Format:
   new yaws <name>
 ```
 
-#### One sub-plugins
+##### One sub-plugins
 
 ```bash
   new yaws bootstrap <name>
   new yaws default <name>
 ```
 
-### Analysis
+#### Analysis
 
 We should be able to unify these. Perhaps something along these lines:
 
@@ -160,7 +180,16 @@ We should be able to unify these. Perhaps something along these lines:
        * ``<command> <plugin-name> <param>``
        * ``<command> <plugin-name> <plugin-sub-type> <param>``
 
-## Designing a Plugin System in LFE/OTP
+### Parser Functionality
+
+TBD
+
+## Notes for Building a Plugin System
+
+Plugin systems are usually stateful code introspection machines with some
+smarts built around dispatching.
+
+A plugin system for lfetool should use Erlang/OTP idioms.
 
 ### First thoughts
 
