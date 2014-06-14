@@ -5,9 +5,9 @@ shell script for a while now. The conversation below pushed me over the edge,
 falling into the abyss of Version 2:
 
 ```
-[08:35:16] <mheise>    oubiwann-fn: did anyone start work on addressing the bashisms yet btw?
-                       i'll have a little free time next week, if nobody's done the work yet
-                       i can give it a crack
+[08:35:16] <mheise>      oubiwann-fn: did anyone start work on addressing the bashisms yet btw?
+                         i'll have a little free time next week, if nobody's done the work yet
+                         i can give it a crack
 [08:35:44] <oubiwann-fn> mheise: not yet..
 [08:35:58] <oubiwann-fn> and I fear the latest changes may be working at cross-purposes
 [08:36:39] <mheise>      how so?
