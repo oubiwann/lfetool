@@ -148,7 +148,7 @@ We should be able to unify these. Perhaps something along these lines:
 
 ## Designing a Plugin System in LFE/OTP
 
-One possibility:
+### First thoughts
 
 * put source files in ./plugins/<name> directories
 * have a custom make target that compiles them to ./ebin
@@ -160,7 +160,7 @@ One possibility:
   * extract the supported sub-commands for each command - get-subcommands
 * define an OTP behaviour for these plugins
 
-## Notes from an email to the LFE mail list
+### Notes from an email to the LFE mail list
 
 I've been making progress prototyping the new lfetool. I've got a very basic
 system in place that exercises the following flow:
