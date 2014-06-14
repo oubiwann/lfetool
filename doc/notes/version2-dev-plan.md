@@ -74,7 +74,7 @@ the edge, falling into the abyss of Version 2:
 [08:53:43] <mheise>      cool!
 ```
 
-## Notes from Ticket for Version 2 Development
+### Notes from Ticket for Version 2 Development
 
 In a conversation on IRC, I managed to talk myself (pretty easily/quickly, tbh) into a Version 2 implementation of ``lfetool``. It will follow more closely the ``lein`` tool which inspired it in the first place:
  * there will be a shell script named ``lfetool`` which will
