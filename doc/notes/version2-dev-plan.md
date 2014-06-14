@@ -33,7 +33,7 @@ falling into the abyss of Version 2:
 [08:41:47] <mheise>      <Duncan "Billy Mays" McGregor> and so much more
 [08:41:49] <mheise>      heh
 [08:41:57] <oubiwann-fn> hahaha
-[08:42:31] <oubiwann-fn> hrm, so it looks like lfe isn't just a bootstrapper
+[08:42:31] <oubiwann-fn> hrm, so it looks like lein isn't just a bootstrapper
 [08:43:53] <oubiwann-fn> it does do bootstrapping, but it sticks around and wraps calls to lein
 [08:46:50] <oubiwann-fn> lein provides a compatibility layer for different OSes/shells
 [08:47:03] <oubiwann-fn> that seems like the right level of responsibility to a tool like this
