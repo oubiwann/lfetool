@@ -1,6 +1,6 @@
 # Development Notes
 
-* Thoughts, notes, and plans for creating version 2 of lfetool*
+*Thoughts, notes, and plans for creating version 2 of lfetool*
 
 ## Kickoff
 
