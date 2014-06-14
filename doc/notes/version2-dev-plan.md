@@ -92,6 +92,85 @@ The IRC conversation which inspired this ticket is saved here: https://github.co
 
 The ticket for tracking Version 2 development (and all related tasks/sub-tickets) is here: https://github.com/lfe/lfetool/issues/46
 
+## Notes for New Architecture
+
+The initial plan is to:
+
+1. have a fairly small (relatively) ``lfetool`` shell script which
+1. calls to ``lfe`` which
+1. gets passed parameters which represent commands, subcommands, options,
+   etc., and
+1. these are mapped to modules/functions which, in turn, get called
+
+This needs to be explored with:
+
+* a basic shell script and
+* some sample modules
+
+In addition to this flow, another one needs to be supported: bootstrapping.
+The plan here is to:
+
+1. check for a local lfetool install
+1. if it doesn't exist, clone to ``~/.lfetool/lib`` (note that the
+   directory ``./lfetool`` itself will be used for configuration files, user
+   overrides, etc.)
+1. run all commands with ``ERL_LIBS=~/.lfetool/lib:$ERL_LIBS`` to pick up
+   lfetool modules
+
+## Notes for Bootstrapping
+
+### Current Implicit Boostrapping
+
+LFE projects are created with the understanding that ``lfetool`` is
+installed and available. If, however, we were to make lfetool a project that
+had dependencies such as ``erl`` and LFE (and other deps in a
+``rebar.config``), we have to consider things more carefully.
+
+Here is a list of ``lfetool`` commands that can be executed without Erlang
+installed:
+ * ``lfetool install lfetool``
+ * ``lfetool install expm``
+ * ``lfetool install kerl``
+ * ``lfetool install erlang``
+ * ``lfetool install erjang``
+
+The following need at least Erlang (since they install into a directory
+obtained by making ``erl`` calls):
+ * ``lfetool install rebar``
+ * ``lfetool install relx``
+ * ``lfetool info *``
+
+The following require ``lfetool`` to be installed:
+ * ``lfetool update *``
+ * ``lfetool repl *``
+
+The following require LFE:
+ * ``lfetool new *``
+ * ``lfetool tests *``
+
+### Bootstrapping Other Projects
+
+ * What about installing Erlang itself (via kerl)?
+ * What about rebar?
+
+### Potential Plan for Version 2
+
+Bootstrapping for lfetool version 2 might look like this:
+
+* download lfetool shell script (e.g., from github)
+* execute ``lfetool bootstrap``; this would do the following
+  1. run ``lfetool install lfetool`` (optionally provide install path to
+     ``bootstrap`` command)
+  1. create the ``~/.lfetool/`` directory, if it doesn't exist
+  1. download github.com/lfe/lfetool repo to ``~/.lfetool/lib``
+  1. compile lfetool code in ``~/.lfetool/lib/src`` to ``~/.lfetool/ebin``
+  1. compile lfetool plugins in ``~/.lfetool/lib/plugins``to
+     ``~/.lfetool/ebin``
+  1. compile user plugins in ``~/.lfetool/plugins/`` to
+     ``~/.lfetool/ebin``
+
+At this point, everything will be availale for use.
+
 ## Notes for Building a Parser
 
 ### Plugin Commands
