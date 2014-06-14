@@ -159,3 +159,59 @@ One possibility:
   * extract the supported commands from each plugin - get-commands
   * extract the supported sub-commands for each command - get-subcommands
 * define an OTP behaviour for these plugins
+
+## Notes from an email to the LFE mail list
+
+I've been making progress prototyping the new lfetool. I've got a very basic
+system in place that exercises the following flow:
+
+```
+  command from system shell -> eval fn -> parse fn -> dispatch fn
+```
+
+where the "dispatch function" will make a call to a function in the plugin
+module, as identified during the parse phase.
+
+Next I'm going to experiment with the dispatching, with an eye towards making
+it as easy as possible for new plugins to be created by contributors. lfetool
+will search for plugins in a standard dir (part of the lfetool source), but
+will also search in ~/.lfetool/plugins so that users can create their own
+plugins without submitting them for inclusion in lfetool proper, if they so
+choose.
+
+This has, however, brought up a bit of an interesting problem to solve, with
+regard to the lfetool "architecture", and it hinges upon making things as
+simple as possible for plugin developers. As we all know, when one attempts
+to make things simple for users, software gets *very* complicated ;-)
+
+Sought simplicity:
+ * users should be able to create a plugin module and any associated
+   template files in one location
+ * users should be able to have commands for their plugins accessible via
+   lfetool
+   * for example, I create a plugin that adds support for generating Garrett
+     Smith's e2 service
+   * lfetool new should have a new subcommand called e2 (or whatever I name
+     it)
+ * the bash auto-complete should be easily/automatically updated with this
+   addition
+ * lfetool help should automatically list all official plugins as well as
+   ones added by users
+ * lfetool should support getting help/docs for individual plugins
+ * lfetool code should be able to introspect each plugin and get plugin
+   name, version info, supported commands, help, etc.
+
+Subsequent complexity:
+ * the lfetool project should create and document a behaviour for plugin
+   modules
+ * in order for all the introspection to work, lfetool will need to be
+   "aware" of all plugins and all commands which they support
+ * as such, I'm planning on creating a process which does the following:
+   - gets a list of all plugins, official and user-created
+   - builds a data structure for each plugin (possibly storing in ETS)
+   - listens for a message, which will dispatch to a plugin function
+ * this same infrastructure will also be able to auto-generate shell auto-
+   complete files
+
+Let me know if there are better ways to do this sort of thing using more
+standard Erlang/OTP idioms ...
