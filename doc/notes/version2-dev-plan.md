@@ -137,14 +137,14 @@ We should be able to unify these. Perhaps something along these lines:
   1. command plugin
      * executes a command
      * formats:
-       * <command>
-       * <command> <plugin-name>
+       * ``<command>``
+       * ``<command> <plugin-name>``
   1. skeleton plugin
      * generates files
      * accepts/requires parameter(s)
      * formats:
-       <command> <plugin-name> <param>
-       <command> <plugin-name> <plugin-sub-type> <param>
+       ``<command> <plugin-name> <param>``
+       ``<command> <plugin-name> <plugin-sub-type> <param>``
 
 ## Designing a Plugin System in LFE/OTP
 
