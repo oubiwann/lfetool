@@ -3,7 +3,6 @@ LIB = $(PROJECT)
 DEPS = ./deps
 BIN_DIR = ./bin
 EXPM = $(BIN_DIR)/expm
-
 SOURCE_DIR = ./src
 OUT_DIR = ./ebin
 TEST_DIR = ./test
@@ -11,6 +10,7 @@ TEST_OUT_DIR = ./.eunit
 SCRIPT_PATH=$(DEPS)/lfe/bin:.:./bin:"$(PATH)":/usr/local/bin
 ERL_LIBS=$(shell $(LFETOOL) info erllibs)
 EMPTY =
+
 ifeq ($(shell which lfetool),$EMPTY)
 	LFETOOL=$(BIN_DIR)/lfetool
 else
