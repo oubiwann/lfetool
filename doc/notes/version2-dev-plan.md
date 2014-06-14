@@ -1,6 +1,6 @@
 # Development Notes
 
-**Version 2 of lfetool**
+*Version 2 of lfetool*
 
 ## Conversation on IRC
 
