@@ -1,5 +1,5 @@
 language: erlang
-script: "make travis-check"
+script: "make check-travis"
 notifications:
   irc: "irc.freenode.org#cogitat"
   recipients:
