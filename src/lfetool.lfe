@@ -7,7 +7,9 @@
     `(,(parse cmd-string))))
 
 (defun parse (cmd-string)
-  `#(ok ,(string:tokens cmd-string " ")))
+  `#(ok ,(string:tokens
+           cmd-string
+           (lfetool-const:cmd-sep))))
 
 (defun dispatch
   (((tuple 'ok cmd-tokens))
