@@ -1,7 +1,7 @@
 #!/bin/bash
 #set -x
 
-version=0.3.5
+version=1.0.0
 tooltemplate="plugins/lfetool/templates/lfetool.tmpl"
 compresstemplate="plugins/lfetool/templates/compressed.tmpl"
 temp="lfetool-temp"
