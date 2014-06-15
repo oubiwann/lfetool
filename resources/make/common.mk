@@ -35,6 +35,10 @@ $(LFETOOL): $(BIN_DIR)
 
 get-version:
 	@PATH=$(SCRIPT_PATH) lfetool info version
+	@echo "Erlang/OTP, LFE, & library versions:"
+	@ERL_LIBS=$(ERL_LIBS) PATH=$(SCRIPT_PATH) erl \
+	-eval "io:format(\"~p~n\",['lfetool-util':'get-version'()])." \
+	-noshell -s erlang halt
 
 $(EXPM): $(BIN_DIR)
 	@[ -f $(EXPM) ] || \
