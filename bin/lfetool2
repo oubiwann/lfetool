@@ -1,7 +1,7 @@
 #!/bin/sh
 
 erl -pa ./ebin \
-    -eval "case lfetool:eval(\"$@\") of
+    -eval "case lfetool:eval(\"$*\") of
              {ok, Result} ->
                io:format(\"~p~n\", [Result]),
                halt(0);
