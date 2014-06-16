@@ -11,7 +11,7 @@
   (get-short-help))
 
 (defun new (script-name)
-  (tuple 'ok "here's the script"))
+  (tuple 'ok "pretending to create new script ..."))
 
 (defun get-parent-commands ()
   (tuple
