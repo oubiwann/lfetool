@@ -23,6 +23,6 @@
 (defun dispatch
   (((tuple 'ok (list 'new plugin arg)))
     (let ((module (get-plugin-module plugin)))
-      (call module 'new arg)))
+      (lfe_io:format "~p~n" (list (call module 'new arg)))))
   (((tuple 'ok cmd-tokens))
     `#(ok ,cmd-tokens)))
