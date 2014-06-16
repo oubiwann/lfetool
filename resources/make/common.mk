@@ -8,7 +8,7 @@ OUT_DIR = ./ebin
 TEST_DIR = ./test
 TEST_OUT_DIR = ./.eunit
 SCRIPT_PATH=$(DEPS)/lfe/bin:.:./bin:"$(PATH)":/usr/local/bin
-ERL_LIBS=$(shell $(LFETOOL) info erllibs)
+ERL_LIBS=$(shell $(LFETOOL) info erllibs):~/.lfetool/ebin
 EMPTY =
 
 ifeq ($(shell which lfetool),$EMPTY)
@@ -70,12 +70,12 @@ compile-tests:
 shell: compile
 	@which clear >/dev/null 2>&1 && clear || printf "\033c"
 	@echo "Starting shell ..."
-	@PATH=$(SCRIPT_PATH) lfetool repl
+	@PATH=$(SCRIPT_PATH) ERL_LIBS=$(ERL_LIBS) lfetool repl
 
 shell-no-deps: compile-no-deps
 	@which clear >/dev/null 2>&1 && clear || printf "\033c"
 	@echo "Starting shell ..."
-	@PATH=$(SCRIPT_PATH) lfetool repl
+	@PATH=$(SCRIPT_PATH) ERL_LIBS=$(ERL_LIBS) lfetool repl lfe -pa ~/.lfetool/ebin
 
 clean: clean-ebin clean-eunit
 	@which rebar.cmd >/dev/null 2>&1 && rebar.cmd clean || rebar clean
