@@ -8,11 +8,19 @@
 (include-lib "deps/lfeunit/include/lfeunit-macros.lfe")
 
 (deftest eval
-  (is-equal #(ok ("this" "is" "my" "command"))
+  (is-equal #(ok (this is my command))
             (lfetool:eval "this is my command")))
 
+(deftest get-plugin-module
+  (is-equal 'lfetool-plugin-script
+            (lfetool:get-plugin-module 'script)))
+
+(deftest tokenize
+  (is-equal '("this" "is" "my" "command")
+            (lfetool:tokenize "this is my command")))
+
 (deftest parse
-  (is-equal #(ok ("this" "is" "my" "command"))
+  (is-equal #(ok (this is my command))
             (lfetool:parse "this is my command")))
 
 (deftest dispatch
@@ -20,5 +28,5 @@
             (lfetool:dispatch #(ok ("this" "is" "my" "command")))))
 
 (deftest parse-dispatch
-  (is-equal #(ok ("this" "is" "my" "command"))
+  (is-equal #(ok (this is my command))
             (lfetool:dispatch (lfetool:parse "this is my command"))))
