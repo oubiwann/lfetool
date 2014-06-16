@@ -1,6 +1,7 @@
 #!/bin/sh
 
-erl -pa ./ebin \
+ERL_LIBS=$(lfetool info erllibs):~/.lfetool:. \
+erl \
     -eval "case lfetool:eval(\"$*\") of
              {ok, Result} ->
                io:format(\"~p~n\", [Result]),
