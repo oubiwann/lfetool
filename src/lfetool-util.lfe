@@ -32,9 +32,12 @@
     (lfe-utils:expand-home-dir
       (lfetool-const:plugin-ebin))))
 
-(defun compile-plugins (out-dir)
-  (setup-dirs)
-  (lfe-utils:compile
-    (get-plugins)
-    (lfe-utils:get-deps)
-    out-dir))
+(defun compile-plugins
+  (('show-output)
+    (io:format "~p~n" (list (compile-plugins))))
+  ((out-dir)
+    (setup-dirs)
+    (lfe-utils:compile
+      (get-plugins)
+      (lfe-utils:get-deps)
+      out-dir)))
