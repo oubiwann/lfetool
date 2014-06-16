@@ -10,12 +10,12 @@
 (defun get-long-help ()
   (get-short-help))
 
-(defun new ()
-  )
+(defun new (script-name)
+  (tuple 'ok "here's the script"))
 
 (defun get-parent-commands ()
   (tuple
-    'new #'new/0))
+    'new #'new/1))
 
 (defun get-child-commands ()
   )
