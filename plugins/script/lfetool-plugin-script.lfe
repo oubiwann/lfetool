@@ -11,9 +11,11 @@
   (get-short-help))
 
 (defun new (script-name)
-  (tuple 'ok "successful call"
-         'msg "pretending to create new script ..."
-         'script-name script-name))
+  `#(ok
+     #(msg "pretending to create new script ...")
+     #(script-name ,script-name)
+     #(location ,(lfetool-util:get-basedir))
+     #(cwd ,(lfetool-util:get-cwd))))
 
 (defun get-parent-commands ()
   (tuple
