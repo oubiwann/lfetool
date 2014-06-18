@@ -9,3 +9,4 @@
 (defun plugin-usr () '"~/.lfetool/plugins")
 (defun plugin-usr-src () (++ (plugin-usr) "/*/*.lfe"))
 (defun plugin-ebin () '"~/.lfetool/ebin")
+(defun proj-patt () (binary "{{PROJECT}}"))
