@@ -34,10 +34,58 @@
 
 (defun compile-plugins
   (('show-output)
-    (io:format "~p~n" (list (compile-plugins))))
+    (lfe_io:format "~p~n" (list (compile-plugins))))
   ((out-dir)
     (setup-dirs)
     (lfe-utils:compile
       (get-plugins)
       (lfe-utils:get-deps)
       out-dir)))
+
+(defun get-cwd ()
+  "The current workding directory in this case is the directory that the user
+  executed lfetool *from*. Shortly after it starts up, the lfetool script
+  switches from this dir to the actual directory where the lfetool code/library
+  lives. To preserve the original cwd, it is passed as a parameter to erl
+  during start up. That value is accessed with this function."
+  (caar
+    (element 2 (init:get_argument 'cwd))))
+
+(defun get-basedir ()
+  "The base directory is the lfetool source dir that was cloned during the
+  boostrapping process. The lfetool script actually changes from the 'real'
+  cwd to the lfetool bassedir when it executes.
+
+  The cwd from the user's perspective is preserved by the lfetool script: it
+  passes it as a parameter to erl. See get-cwd for more details."
+  (element 2 (file:get_cwd)))
+
+(defun get-template-file (plugin-name file-name)
+  (++ (get-cwd)
+      "/plugins/" plugin-name
+      "/templates/" file-name))
+
+(defun load-template (plugin-name file-name)
+  (element 2
+    (file:read_file
+      (get-template-file plugin-name file-name))))
+
+(defun render-template (plugin-name file-name pattern)
+  (binary:replace
+    (load-template plugin-name file-name)
+    (lfetool-const:proj-patt)
+    (list_to_binary pattern)
+    '(global)))
+
+(defun write-rendered-template (plugin-name file-name pattern)
+  "If no destination directory is provided, '<execution dir>/src' is assumed."
+  (write-rendered-template
+    plugin-name
+    file-name
+    pattern
+    (++ (get-cwd) "/src")))
+
+(defun write-rendered-template (plugin-name file-name pattern dest-dir)
+  (file:write_file
+    (++ dest-dir "/" (filename:basename file-name))
+    (render-template plugin-name file-name pattern)))
