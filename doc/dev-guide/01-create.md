@@ -1,5 +1,27 @@
-Create the Plugin
------------------
+# Create the Plugin
+
+
+You may create a plugin in one of two ways:
+
+1. for inclusion in lfetool, the project, or
+1. as a user-plugin to be used locally only.
+
+
+## Official Plugin
+
+$ git clone
+$ cd lfetool
+$ mkdir -p plugins/myscript/templates
+$ cd plugins/myscript/
+$ vi lfetool-plugin-myscript.lfe
+$ vi templates/SCRIPT.lfe
+
+## User Plugin
+
+$ mkdir -p ~/.lfetool/plugins/myscript/templates
+$ cd ~/.lfetool/plugins/myscript/
+$ vi lfetool-plugin-myscript.lfe
+$ vi templates/SCRIPT.lfe
 
 Step 1
 ,,,,,,
