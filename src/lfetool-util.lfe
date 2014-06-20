@@ -59,3 +59,19 @@
   The cwd from the user's perspective is preserved by the lfetool script: it
   passes it as a parameter to erl. See get-cwd for more details."
   (element 2 (file:get_cwd)))
+
+(defun check-loaded-modules (substring)
+  (lists:map
+    (lambda (x)
+      (case (re:run (atom_to_list (element 1 x)) (++ ".*" substring ".*"))
+        ((tuple 'match _) x)
+        (_ 'false)))
+    (code:all_loaded)))
+
+(defun filtered-loaded-modules (substring)
+  (lists:filter
+    (lambda (x) (=/= x 'false))
+    (check-loaded-modules substring)))
+
+(defun get-lfetool-modules ()
+  (filtered-loaded-modules "lfetool"))
