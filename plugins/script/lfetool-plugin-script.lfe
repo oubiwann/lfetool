@@ -2,10 +2,10 @@
   (export all))
 
 (defun get-name ()
-  "script")
+  'script)
 
 (defun get-short-help ()
-  "")
+  "Create a script that will be executed from the CLI by lfescript.")
 
 (defun get-long-help ()
   (get-short-help))
@@ -17,9 +17,15 @@
      #(location ,(lfetool-util:get-basedir))
      #(cwd ,(lfetool-util:get-cwd))))
 
-(defun get-parent-commands ()
-  (tuple
-    'new #'new/1))
+(defun commands ()
+  "A list of atoms that represent the top-level commands supported by this
+  plugin. For instance, if (lfetool-plugin-foo:commands) returns
+  '(new info), then this plugin should handle the following uses form the CLI:
+
+  $ lfetool new foo
+  $ lfetool info foo
+  "
+  '(new))
 
 (defun get-child-commands ()
   )
