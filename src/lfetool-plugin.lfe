@@ -1,4 +1,4 @@
-(defmodule lfetool-template
+(defmodule lfetool-plugin
   (export all))
 
 (defun get-plugins-src ()
@@ -18,7 +18,7 @@
   (('show-output)
     (lfe_io:format "~p~n" (list (compile-plugins))))
   ((out-dir)
-    (setup-dirs)
+    (lfetool-util:setup-dirs)
     (lfe-utils:compile
       (get-plugins-src)
       (lfe-utils:get-deps)
@@ -39,10 +39,13 @@
     (get-plugin-beams)))
 
 (defun get-loaded-plugins ()
-  (filtered-loaded-modules "lfetool-plugin"))
+  (lfetool-util:filtered-loaded-modules "lfetool-plugin"))
 
 (defun get-loaded-plugin-modules ()
   (lists:map
     (lambda (x) (element 1 x))
     (get-loaded-plugins)))
 
+(defun command? (module command)
+  "Check to see if a given command is supported by a plugin."
+  (lists:member command (call module 'commands)))
