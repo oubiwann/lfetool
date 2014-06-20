@@ -24,7 +24,7 @@
     plugin-name
     file-name
     pattern
-    (++ (get-cwd) "/src")))
+    (++ (lfetool-util:get-cwd) "/src")))
 
 (defun write-rendered-template (plugin-name file-name pattern dest-dir)
   (file:write_file
