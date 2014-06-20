@@ -12,4 +12,6 @@
 (defun plugin-ebin () (++ (lfetool-home) "/ebin"))
 (defun plugin-beams () (++ (plugin-ebin) "/*.beam"))
 
+(defun plugin-module-prefix () '"lfetool-plugin-")
+
 (defun proj-patt () (binary "{{PROJECT}}"))
