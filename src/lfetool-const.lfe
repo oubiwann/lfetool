@@ -10,5 +10,6 @@
 (defun plugin-usr () (++ (lfetool-home) "/plugins"))
 (defun plugin-usr-src () (++ (plugin-usr) "/*/*.lfe"))
 (defun plugin-ebin () (++ (lfetool-home) "/ebin"))
+(defun plugin-beams () (++ (plugin-ebin) "/*.beam"))
 
 (defun proj-patt () (binary "{{PROJECT}}"))
