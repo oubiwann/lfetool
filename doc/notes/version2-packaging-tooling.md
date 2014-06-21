@@ -278,4 +278,5 @@ changing underneath their users).
 [16:27:42]  <oubiwann-hackday>   yup
 [16:27:56]  <oubiwann-hackday>   right, in which case the "bootstrap" is curl + tar
 [16:27:59]  <oubiwann-hackday>   which is nice
+[16:41:15] <@rvirding>	 you could even build the tarball directly from github
 ```
