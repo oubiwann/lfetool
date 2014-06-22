@@ -8,6 +8,7 @@ BASE_DIR=$(dirname $BIN_DIR)
 cd $BASE_DIR && ERL_LIBS=$(lfetool info erllibs):~/.lfetool:. \
 erl \
     -cwd "$CWD" \
+    -s lfetool \
     -eval "case lfetool:eval(\"$*\") of
              {ok, Result} ->
                io:format(\"~p~n\", [Result]),
