@@ -28,7 +28,7 @@
   (caar
     (element 2 (init:get_argument 'cwd))))
 
-(defun get-basedir ()
+(defun get-execdir ()
   "The base directory is the lfetool source dir that was cloned during the
   boostrapping process. The lfetool script actually changes from the 'real'
   cwd to the lfetool bassedir when it executes.

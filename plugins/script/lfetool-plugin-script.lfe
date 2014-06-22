@@ -14,7 +14,7 @@
   `#(ok
      #(msg "pretending to create new script ...")
      #(script-name ,script-name)
-     #(location ,(lfetool-util:get-basedir))
+     #(exec-dir ,(lfetool-util:get-execdir))
      #(cwd ,(lfetool-util:get-cwd))))
 
 (defun commands ()

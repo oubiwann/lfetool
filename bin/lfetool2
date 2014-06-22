@@ -3,9 +3,9 @@
 CWD=$(pwd)
 SCRIPT_PATH=$(readlink $0)
 BIN_DIR=$(dirname $SCRIPT_PATH)
-BASE_DIR=$(dirname $BIN_DIR)
+EXEC_DIR=$(dirname $BIN_DIR)
 
-cd $BASE_DIR && ERL_LIBS=$(lfetool info erllibs):~/.lfetool:. \
+cd $EXEC_DIR && ERL_LIBS=$(lfetool info erllibs):~/.lfetool:. \
 erl \
     -cwd "$CWD" \
     -s lfetool \
