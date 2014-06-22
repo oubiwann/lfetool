@@ -38,6 +38,8 @@
     (lfe_io:format "Error: ~p~n" (list error-data))))
 
 (defun command-dispatch
+  (((list))
+   (non-plugin-dispatch 'usage))
   (((list command))
     (non-plugin-dispatch command))
   (((= (cons command _) args))
@@ -55,12 +57,18 @@
     ('version
       (lfe_io:format "~p~n" (list (lfetool-util:get-version))))
     (_
-      (io:format "Error: unknown command/plugin: ~p~n" (list command)))
-    ))
+      (io:format "Error: unknown command/plugin: ~p~n" (list command)))))
 
 (defun plugin-dispatch
   (((list 'new plugin project-name))
-    (call-new plugin project-name))
+   (try
+    (call-new plugin project-name)
+    (catch
+      ((tuple 'error error stacktrace)
+       (lfe_io:format "Error: ~p~nStack trace:~n~p~n"
+                      (list error stacktrace))))))
+  ((args)
+    (lfe_io:format "Error: unknown command(s): ~p~n" (list args)))
   )
 
 (defun call-new (plugin project-name)

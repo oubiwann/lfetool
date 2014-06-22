@@ -19,6 +19,14 @@
             (lfetool-const:plugin-ebin))
           "/ignore"))))
 
+(defun get-cwd-arg ()
+  "Return a default, if 'cwd' wasn't set as a flag when calling 'erl'."
+  (let ((arg (init:get_argument 'cwd)))
+    (case arg
+      ('error
+        #(default (("."))))
+      (_ arg))))
+
 (defun get-cwd ()
   "The current workding directory in this case is the directory that the user
   executed lfetool *from*. Shortly after it starts up, the lfetool script
@@ -26,7 +34,7 @@
   lives. To preserve the original cwd, it is passed as a parameter to erl
   during start up. That value is accessed with this function."
   (caar
-    (element 2 (init:get_argument 'cwd))))
+    (element 2 (get-cwd-arg))))
 
 (defun get-execdir ()
   "The base directory is the lfetool source dir that was cloned during the
