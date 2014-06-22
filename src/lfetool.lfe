@@ -46,18 +46,14 @@
     (plugin-dispatch args)))
 
 (defun non-plugin-dispatch (command)
-  ;; XXX write an actual implementation!
-  (case command
-    ('help
-      (io:format "(show some cool help here ... )~n"))
-    ('usage
-      (io:format "(show usage here ... )~n"))
-    ('commands
-      (io:format "(show list of commands here ... )~n"))
-    ('version
-      (lfe_io:format "~p~n" (list (lfetool-util:get-version))))
-    (_
-      (io:format "Error: unknown command/plugin: ~p~n" (list command)))))
+ (try
+  (call-cmd command)
+  (catch
+    ((tuple 'error error stacktrace)
+     (lfe_io:format (++ "Command call error: ~p"
+                        " (unknown command)~n"
+                        "Stack trace:~n~p~n")
+                    (list error stacktrace))))))
 
 (defun plugin-dispatch
   (((list 'new plugin project-name))
@@ -65,11 +61,16 @@
     (call-new plugin project-name)
     (catch
       ((tuple 'error error stacktrace)
-       (lfe_io:format "Error: ~p~nStack trace:~n~p~n"
+       (lfe_io:format (++ "Plugin call error: ~p"
+                          " (unknown plugin or plugin function)~n"
+                          "Stack trace:~n~p~n")
                       (list error stacktrace))))))
   ((args)
     (lfe_io:format "Error: unknown command(s): ~p~n" (list args)))
   )
+
+(defun call-cmd (command)
+  (lfe_io:format "~p~n" (list (call 'lfetool-cmd command))))
 
 (defun call-new (plugin project-name)
   (let ((module (lfetool-plugin:get-plugin-module plugin)))
