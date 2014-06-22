@@ -4,11 +4,11 @@
 (defun get-name ()
   'script)
 
-(defun get-short-help ()
-  "Create a script that will be executed from the CLI by lfescript.")
+(defun get-description ()
+  '"Create a script that will be executed from the CLI by lfescript.")
 
-(defun get-long-help ()
-  (get-short-help))
+(defun get-help ()
+  '"<no help provided>")
 
 (defun new (script-name)
   `#(ok
