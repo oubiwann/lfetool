@@ -62,7 +62,7 @@ To run ``lfetool`` more quickly, you can pre-extract the executable:
 .. code:: bash
 
     $ lfetool -x
-    
+
 This will be done for you eventually if you execute the ``lfetool repl`` command.
 
 
@@ -85,6 +85,20 @@ anything further.
 
 Usage
 =====
+
+Starting
+--------
+
+By default, ``lfetool`` calls a ``start/0`` function when it executes. If you
+need to start `lfetool`` in a custom manner, be sure to pass ``-s lfetool``
+to ensure loading of plugins and creation of lfetool user directories.
+
+Debug Mode
+----------
+
+``lfetool`` offers a debug mode that presents additional information in the
+event of errors. To enable debug mode, be sure to pass ``-debug`` to ``erl``
+or ``lfe`` (whichever you use) when starting/executing ``lfetool``.
 
 
 ``lfetool`` Options
