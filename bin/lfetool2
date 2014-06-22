@@ -1,7 +1,16 @@
 #!/bin/sh
 
+# readlink -f doesn't work on Mac OS X, so this hack is needed
+function absfile {
+  abspath="$(cd "$(dirname "$0")"; pwd)"
+  echo $abspath/$(basename $0)
+}
+
 CWD=$(pwd)
 SCRIPT_PATH=$(readlink $0)
+if [ -z $SCRIPT_PATH ]; then
+    SCRIPT_PATH=$(absfile $0)
+fi
 BIN_DIR=$(dirname $SCRIPT_PATH)
 EXEC_DIR=$(dirname $BIN_DIR)
 
