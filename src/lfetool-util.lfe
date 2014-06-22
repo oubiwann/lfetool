@@ -63,3 +63,9 @@
 
 (defun display (arg)
   (lfe_io:format "~p~n" (list arg)))
+
+(defun display (msg args)
+  (lfe_io:format msg (list args)))
+
+(defun display (msg arg1 arg2)
+  (lfe_io:format msg (list arg1 arg2)))

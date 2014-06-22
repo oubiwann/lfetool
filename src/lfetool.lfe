@@ -35,7 +35,7 @@
   (((tuple 'ok parsed-args))
     (command-dispatch parsed-args))
   (((tuple 'error error-data))
-    (lfe_io:format "Error: ~p~n" (list error-data))))
+    (lfetool-err:display error-data)))
 
 (defun command-dispatch
   (((list))
@@ -46,32 +46,29 @@
     (plugin-dispatch args)))
 
 (defun non-plugin-dispatch (command)
- (try
-  (call-cmd command)
-  (catch
-    ((tuple 'error error stacktrace)
-     (lfe_io:format (++ "Command call error: ~p"
-                        " (unknown command)~n"
-                        "Stack trace:~n~p~n")
-                    (list error stacktrace))))))
+  ;; XXX check to see if the command is a known command, in which case, throw
+  ;; a "missing plugin" error
+  (try
+    (call-cmd command)
+    (catch
+      ((= (tuple 'error _ _) error-data)
+        (lfetool-err:display
+          "Command call" "unknown command" error-data)))))
 
 (defun plugin-dispatch
   (((list 'new plugin project-name))
    (try
     (call-new plugin project-name)
     (catch
-      ((tuple 'error error stacktrace)
-       (lfe_io:format (++ "Plugin call error: ~p"
-                          " (unknown plugin or plugin function)~n"
-                          "Stack trace:~n~p~n")
-                      (list error stacktrace))))))
+    ((= (tuple 'error _ _) error-data)
+     (lfetool-err:display
+       "Plugin call" "unknown plugin or plugin function" error-data)))))
   ((args)
-    (lfe_io:format "Error: unknown command(s): ~p~n" (list args)))
-  )
+    (lfetool-err:display "unknown command and/or plugin: " args)))
 
 (defun call-cmd (command)
-  (lfe_io:format "~p~n" (list (call 'lfetool-cmd command))))
+  (lfetool-util:display (call 'lfetool-cmd command)))
 
 (defun call-new (plugin project-name)
   (let ((module (lfetool-plugin:get-plugin-module plugin)))
-    (lfe_io:format "~p~n" (list (call module 'new project-name)))))
+    (lfetool-util:display (call module 'new project-name))))
