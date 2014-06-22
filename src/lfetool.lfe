@@ -52,6 +52,8 @@
     (call-cmd command)
     (catch
       ((= (tuple 'error _ _) error-data)
+        ;; XXX this should only be returned if debugging is enabled; otherwise
+        ;; it should look like the rest of the error messages
         (lfetool-err:display
           "Command call" "unknown command" error-data)))))
 
@@ -61,11 +63,18 @@
     (call-new plugin project-name)
     (catch
     ((= (tuple 'error _ _) error-data)
+     ;; XXX this should only be returned if debugging is enabled; otherwise
+     ;; it should look like the rest of the error messages
      (lfetool-err:display
        "Plugin call" "unknown plugin or plugin function" error-data)))))
-  ((args)
-    (lfetool-err:display
-      "unknown command and/or plugin: " args)))
+  (((= (cons command rest) args))
+    (cond
+      ((lfetool-inspect:not-command? command)
+       (lfetool-err:display
+          "unknown plugin command: " (list command)))
+      ('true
+        (lfetool-err:display
+          "unknown plugin or wrong arg count: " rest)))))
 
 (defun call-cmd (command)
   (lfetool-util:display (call 'lfetool-cmd command)))
