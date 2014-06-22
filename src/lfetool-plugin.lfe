@@ -23,7 +23,6 @@
   (('show-output)
     (lfe_io:format "~p~n" (list (compile-plugins))))
   ((out-dir)
-    (lfetool-util:setup-dirs)
     (lfe-utils:compile
       (get-plugins-src)
       (lfe-utils:get-deps)
@@ -51,15 +50,3 @@
   (lists:map
     (lambda (x) (element 1 x))
     (get-loaded-plugins)))
-
-(defun command? (module command)
-  "Check to see if a given command is supported by a plugin."
-  (lists:member command (call module 'commands)))
-
-(defun all-commands ()
-  (lists:usort
-    (lists:merge
-      (lists:map
-        (lambda (x)
-          (call x 'commands))
-        (get-loaded-plugin-modules)))))
