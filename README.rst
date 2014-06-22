@@ -12,10 +12,11 @@ Introduction
 
 Currently, the script supports these basic options:
 
-* ``help`` or ``-h``
-* ``version`` or ``-v``
 * ``commands``
+* ``help`` or ``-h``
 * ``usage``
+* ``version`` or ``-v``
+
 
 And these commands:
 

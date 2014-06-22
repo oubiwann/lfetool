@@ -54,6 +54,10 @@ To get the current installed version of ``lfetool``:
 
     $ lfetool version
 
+This returns not only the version of ``lfetool``, but also version for key
+components of the LFE stack. This information should be included when
+reporting any LFE-related bug in any LFE project.
+
 Optionally, you may also use a flag:
 
 .. code:: bash
