@@ -49,7 +49,7 @@
     ('help
       (io:format "(show some cool help here ... )~n"))
     (_
-      (io:format "Error: unknown command/plugin~n"))
+      (io:format "Error: unknown command/plugin: ~p~n" (list command)))
     ))
 
 (defun plugin-dispatch
