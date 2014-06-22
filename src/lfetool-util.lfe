@@ -60,3 +60,6 @@
 
 (defun get-loaded-lfetool-modules ()
   (filtered-loaded-modules "lfetool"))
+
+(defun display (arg)
+  (lfe_io:format "~p~n" (list arg)))
