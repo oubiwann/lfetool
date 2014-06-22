@@ -14,7 +14,8 @@ Currently, the script supports these basic options:
 
 * ``help`` or ``-h``
 * ``version`` or ``-v``
-* ``extract`` or ``-x``
+* ``commands``
+* ``usage``
 
 And these commands:
 
