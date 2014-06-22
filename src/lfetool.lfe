@@ -64,7 +64,8 @@
      (lfetool-err:display
        "Plugin call" "unknown plugin or plugin function" error-data)))))
   ((args)
-    (lfetool-err:display "unknown command and/or plugin: " args)))
+    (lfetool-err:display
+      "unknown command and/or plugin: " args)))
 
 (defun call-cmd (command)
   (lfetool-util:display (call 'lfetool-cmd command)))
