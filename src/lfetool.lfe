@@ -46,8 +46,6 @@
     (plugin-dispatch args)))
 
 (defun non-plugin-dispatch (command)
-  ;; XXX check to see if the command is a known command, in which case, throw
-  ;; a "missing plugin" error
   (try
     (call-cmd command)
     (catch
