@@ -17,7 +17,7 @@
      #(exec-dir ,(lfetool-util:get-execdir))
      #(cwd ,(lfetool-util:get-cwd))))
 
-(defun commands ()
+(defun get-commands ()
   "A list of atoms that represent the top-level commands supported by this
   plugin. For instance, if (lfetool-plugin-foo:commands) returns
   '(new info), then this plugin should handle the following uses form the CLI:
