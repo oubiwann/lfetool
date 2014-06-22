@@ -1,9 +1,9 @@
 #!/bin/sh
 
 # readlink -f doesn't work on Mac OS X, so this hack is needed
-function absfile {
-  abspath="$(cd "$(dirname "$0")"; pwd)"
-  echo $abspath/$(basename $0)
+absfile () {
+    abspath="$(cd "$(dirname "$0")"; pwd)"
+    echo $abspath/$(basename $0)
 }
 
 CWD=$(pwd)
@@ -14,14 +14,36 @@ fi
 BIN_DIR=$(dirname $SCRIPT_PATH)
 EXEC_DIR=$(dirname $BIN_DIR)
 
-cd $EXEC_DIR && ERL_LIBS=$(lfetool info erllibs):~/.lfetool:. \
-erl \
-    -cwd "$CWD" \
-    -s lfetool \
-    -eval "case lfetool:eval(\"$*\") of
-             {ok, Result} ->
-               io:format(\"~p~n\", [Result]),
-               halt(0);
-             _ -> halt(127)
-           end" \
-    -noshell
+lfetooleval () {
+    cd $EXEC_DIR && ERL_LIBS=$(lfetool info erllibs):~/.lfetool:. \
+    erl \
+        -cwd "$CWD" \
+        -s lfetool \
+        -eval "case lfetool:eval(\"$*\") of
+                 {ok, Result} ->
+                   io:format(\"~p~n\", [Result]),
+                   halt(0);
+                 _ -> halt(127)
+               end" \
+        -noshell
+}
+
+run () {
+    command=$1
+    shift 1
+    case $command in
+        # offer backwards compatibility for flags
+        -h)
+            command=help
+            ;;
+        -v)
+            command=version
+            ;;
+        -x)
+            command=extract
+            ;;
+    esac
+    lfetooleval "$command $*"
+}
+
+run "$*"

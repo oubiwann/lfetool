@@ -48,6 +48,12 @@
   (case command
     ('help
       (io:format "(show some cool help here ... )~n"))
+    ('usage
+      (io:format "(show usage here ... )~n"))
+    ('commands
+      (io:format "(show list of commands here ... )~n"))
+    ('version
+      (lfe_io:format "~p~n" (list (lfetool-util:get-version))))
     (_
       (io:format "Error: unknown command/plugin: ~p~n" (list command)))
     ))
