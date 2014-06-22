@@ -1,6 +1,13 @@
 (defmodule lfetool
   (export all))
 
+(defun init ()
+  (lfetool-plugin:load-plugins)
+  (lfetool-util:setup-dirs))
+
+(defun start ()
+  (init))
+
 (defun eval (cmd-string)
   (apply
     #'dispatch/1
@@ -17,17 +24,8 @@
             (list_to_atom x))
            (tokenize cmd-string))))
 
-(defun old-dispatch
-  (((tuple 'ok (list 'new plugin arg)))
-  ;; Match any 'new' command from the command line.
-    (let ((module (lfetool-plugin:get-plugin-module plugin)))
-      (lfe_io:format "~p~n" (list (call module 'new arg)))))
-  (((tuple 'ok cmd-tokens))
-  ;; Handle the case when there is no particular match.
-    `#(ok ,cmd-tokens)))
-
 (defun dispatch (data)
-  (lfetool-plugin:load-plugins)
+  (init)
   (-dispatch data))
 
 (defun -dispatch
