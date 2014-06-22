@@ -1,5 +1,40 @@
+;;;; This module serves a dual purpose:
+;;;;   * providing functions useful for working with lfetool plugins, and
+;;;;   * defining a behaviour -- 'lfetool-plugin' -- to be used by plugin
+;;;;     implementations.
+;;;;
 (defmodule lfetool-plugin
   (export all))
+
+;;; The following defines the lfetool-plugin behaviour. It should be used
+;;; by all lfetool plugins.
+;;;
+;;; Example usage for ~/.lfetool/plugins/my-thing/lfetool-plugin-my-thing.lfe:
+;;;
+;;;  (defmodule lfetool-plugin-my-thing
+;;;    (behaviour lfetool-plugin)
+;;;    (export all))
+;;;
+;;; Note that LFE currently doesn't add any checks for missing functions when
+;;; compiling modules implementing behaviours. For now, writing lfetool plugins
+;;; using standard a behaviour accomplishes two things: 1) practicing good
+;;; programming etiquitte, and 2) future-proofing for when the LFE compiler does
+;;; support it.
+;;;
+;;; The authors of lfetool accomplish one primary thing by providing the
+;;; behaviour and encouraging developers to use it: codification of plugin
+;;; development.
+;;;
+(defun behaviour_info
+  (('callbacks)
+    '(
+      #(get-name 0)
+      #(get-description 0)
+      #(get-help 0)
+      #(new 1)
+      #(get-commands 0)))
+  ((_)
+   'undefined))
 
 (defun get-plugin-module (name)
   (lfe-utils:atom-cat

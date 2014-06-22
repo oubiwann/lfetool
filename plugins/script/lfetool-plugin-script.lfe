@@ -1,4 +1,5 @@
 (defmodule lfetool-plugin-script
+  (behaviour lfetool-plugin)
   (export all))
 
 (defun get-name ()
