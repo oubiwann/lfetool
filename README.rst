@@ -110,7 +110,7 @@ sure to do one of the following:
 ``lfetool`` Options
 -------------------
 
-``lfetool`` offer several command-line options/flags. The details are presented
+``lfetool`` offers several command-line options/flags. The details are presented
 on the "options" manual page:
 
 * `Options`_
