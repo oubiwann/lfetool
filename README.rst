@@ -16,6 +16,7 @@ Currently, the script supports these basic options:
 * ``help`` or ``-h``
 * ``usage``
 * ``version`` or ``-v``
+* ``-d``
 
 
 And these commands:
@@ -97,8 +98,13 @@ Debug Mode
 ----------
 
 ``lfetool`` offers a debug mode that presents additional information in the
-event of errors. To enable debug mode, be sure to pass ``-debug`` to ``erl``
-or ``lfe`` (whichever you use) when starting/executing ``lfetool``.
+event of errors (as well as info during startup). To enable debug mode, be
+sure to do one of the following:
+
+1. invoke ``lfetool`` with the ``-d`` flag, or
+
+1. pass ``-debug`` to ``erl`` or ``lfe`` (whichever you use) when
+   starting/executing ``lfetool``.
 
 
 ``lfetool`` Options
