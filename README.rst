@@ -101,8 +101,9 @@ Debug Mode
 event of errors (as well as info during startup). To enable debug mode, be
 sure to do one of the following:
 
-1. invoke ``lfetool`` with the ``-d`` flag, or
-1. pass ``-debug`` to ``erl`` or ``lfe`` (whichever you use) when
+#. invoke ``lfetool`` with the ``-d`` flag, or
+
+#. pass ``-debug`` to ``erl`` or ``lfe`` (whichever you use) when
    starting/executing ``lfetool``.
 
 
