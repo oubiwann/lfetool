@@ -5,7 +5,7 @@
   (lfetool-plugin:get-loaded-plugin-modules))
 
 (defun commands ()
-  '"show list of commands here ... ")
+  '"show list of commands + plugins here ... ")
 
 (defun extract ()
   '"This version of lfetool isn't compressed.")
