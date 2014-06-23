@@ -95,3 +95,9 @@
                     (lfetool-const:plugin-module-prefix)
                     '(#(return list))))))
     (get-loaded-plugin-modules)))
+
+(defun plugin? (plugin-name)
+  (lists:member plugin-name (get-loaded-plugin-names)))
+
+(defun not-plugin? (plugin-name)
+  (not (plugin? plugin-name)))
