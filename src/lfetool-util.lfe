@@ -100,3 +100,11 @@
   (display-str "\nArgs Info:")
   (display (init:get_arguments))
   (display-str "\n*** END DEBUG ***\n"))
+
+(defun join-list (elements)
+  (string:join
+    (lists:map
+      (lambda (x)
+        (atom_to_list x))
+      elements)
+    " "))
