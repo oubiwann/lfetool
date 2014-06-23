@@ -22,3 +22,11 @@
         (lambda (x)
           (call x 'get-commands))
         (lfetool-plugin:get-loaded-plugin-modules)))))
+
+(defun plugin? (plugin-name)
+  (lists:member
+    plugin-name
+    (lfetool-plugin:get-loaded-plugin-names)))
+
+(defun not-plugin? (plugin-name)
+  (not (plugin? plugin-name)))
