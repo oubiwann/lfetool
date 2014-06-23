@@ -17,6 +17,7 @@ EXEC_DIR=$(dirname $BIN_DIR)
 lfetooleval () {
     if [ "$1" == "debug" ]; then
         DEBUG="-debug true"
+        shift 1
     else
         DEBUG=""
     fi
@@ -52,7 +53,7 @@ run () {
             command=debug
             ;;
     esac
-    lfetooleval $command "$*"
+    lfetooleval $command "$@"
 }
 
 run "$@"
