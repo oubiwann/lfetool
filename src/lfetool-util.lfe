@@ -69,3 +69,18 @@
 
 (defun display (msg arg1 arg2)
   (lfe_io:format msg (list arg1 arg2)))
+
+(defun get-debug-arg ()
+  (let ((arg (init:get_argument 'debug)))
+    (case arg
+      ('error
+        #(default ((false))))
+      (_ arg))))
+
+(defun get-debug ()
+  (caar
+    (element 2 (get-debug-arg))))
+
+(defun debug? ()
+  (if (== (get-debug) "true") 'true
+      'false))

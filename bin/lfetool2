@@ -15,10 +15,16 @@ BIN_DIR=$(dirname $SCRIPT_PATH)
 EXEC_DIR=$(dirname $BIN_DIR)
 
 lfetooleval () {
+    if [ "$1" == "debug" ]; then
+        DEBUG="-debug true"
+    else
+        DEBUG=""
+    fi
     cd $EXEC_DIR && ERL_LIBS=$(lfetool info erllibs):~/.lfetool:. \
     erl \
         -cwd "$CWD" \
         -s lfetool \
+        $DEBUG \
         -eval "case lfetool:eval(\"$*\") of
                  {ok, Result} ->
                    io:format(\"~p~n\", [Result]),
@@ -42,8 +48,11 @@ run () {
         -x)
             command=extract
             ;;
+        -d)
+            command=debug
+            ;;
     esac
-    lfetooleval "$command $*"
+    lfetooleval $command "$*"
 }
 
-run "$*"
+run "$@"
