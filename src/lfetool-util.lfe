@@ -61,6 +61,9 @@
 (defun get-loaded-lfetool-modules ()
   (filtered-loaded-modules "lfetool"))
 
+(defun display-str (arg)
+  (lfe_io:format "~s~n" (list arg)))
+
 (defun display (arg)
   (lfe_io:format "~p~n" (list arg)))
 
@@ -84,3 +87,16 @@
 (defun debug? ()
   (if (== (get-debug) "true") 'true
       'false))
+
+(defun display-stats ()
+  (display-str "\n*** BEGIN DEBUG ***")
+  (display-str "\nVersion Info:")
+  (display (get-version))
+  (display-str "\nCode Path Info:")
+  (display (code:get_path))
+  (display-str "\nSystem Environment Info:")
+  (display-str (++ "ERL_LIBS: " (os:getenv "ERL_LIBS")))
+  (display-str (++ "PATH :" (os:getenv "PATH")))
+  (display-str "\nArgs Info:")
+  (display (init:get_arguments))
+  (display-str "\n*** END DEBUG ***\n"))

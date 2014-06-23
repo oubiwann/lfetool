@@ -3,7 +3,8 @@
 
 (defun init ()
   (lfetool-plugin:load-plugins)
-  (lfetool-util:setup-dirs))
+  (lfetool-util:setup-dirs)
+  (if (lfetool-util:debug?) (lfetool-util:display-stats)))
 
 (defun start ()
   (init))
