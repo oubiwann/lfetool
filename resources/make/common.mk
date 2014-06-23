@@ -70,19 +70,20 @@ compile-tests:
 shell: compile
 	@which clear >/dev/null 2>&1 && clear || printf "\033c"
 	@echo "Starting shell ..."
-	@PATH=$(SCRIPT_PATH) ERL_LIBS=$(ERL_LIBS) lfetool repl
+	@PATH=$(SCRIPT_PATH) ERL_LIBS=$(ERL_LIBS) \
+	lfetool repl -s lfetool
 
 shell-no-deps: compile-no-deps
 	@which clear >/dev/null 2>&1 && clear || printf "\033c"
 	@echo "Starting shell ..."
 	@PATH=$(SCRIPT_PATH) ERL_LIBS=$(ERL_LIBS) \
-	lfetool repl lfe -pa ~/.lfetool/ebin
+	lfetool repl lfe -pa ~/.lfetool/ebin -s lfetool
 
 shell-debug: compile-no-deps
 	@which clear >/dev/null 2>&1 && clear || printf "\033c"
 	@echo "Starting shell ..."
 	@PATH=$(SCRIPT_PATH) ERL_LIBS=$(ERL_LIBS) \
-	lfetool repl lfe -pa ~/.lfetool/ebin -debug true
+	lfetool repl lfe -pa ~/.lfetool/ebin -s lfetool -debug true
 
 clean: clean-ebin clean-eunit
 	@which rebar.cmd >/dev/null 2>&1 && rebar.cmd clean || rebar clean
