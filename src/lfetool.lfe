@@ -25,7 +25,6 @@
            (tokenize cmd-string))))
 
 (defun dispatch (data)
-  (init)
   (-dispatch data))
 
 (defun -dispatch
