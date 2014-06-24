@@ -1,4 +1,6 @@
-# Create the Plugin
+# Plugin Development Guide
+
+## Create the Plugin
 
 
 You may create a plugin in one of two ways:
@@ -7,7 +9,7 @@ You may create a plugin in one of two ways:
 1. as a user-plugin to be used locally only.
 
 
-## Official Plugin
+### Official Plugin
 
 $ git clone
 $ cd lfetool
@@ -16,12 +18,14 @@ $ cd plugins/myscript/
 $ vi lfetool-plugin-myscript.lfe
 $ vi templates/SCRIPT.lfe
 
-## User Plugin
+### User Plugin
 
 $ mkdir -p ~/.lfetool/plugins/myscript/templates
 $ cd ~/.lfetool/plugins/myscript/
 $ vi lfetool-plugin-myscript.lfe
 $ vi templates/SCRIPT.lfe
+
+### Old Docs
 
 Step 1
 ,,,,,,
@@ -84,3 +88,82 @@ Step 3
   files for your new project type.
 
 * Create any other functions necessary in support of your new dispatch function.
+
+Tell ``lfetool`` about the Plugin
+---------------------------------
+
+
+Step 4
+,,,,,,
+
+Each ``filler.sh`` file created in ``plugins/*/``  (**Step 2**) will be be
+sourced by ``./bin/create-tool``. As such, once you have created the
+``filler.sh`` file for your plugin, you need to add it to the ``run``
+function in ``./bin/create-tool``.
+
+
+Step 5
+,,,,,,
+
+* For every file you have added to your plugin's template directory (which will
+  be created by ``lfetool`` when it runs your plugin's commands), you will need
+  to add a new variable at the top of
+  ``plugins/lfetools/templates/lfetool.tmpl`` with a unique string of the form
+  ``{{NAME}}`` which will later be substituted with actual content when
+  ``./bin/create-tool`` is run.
+
+Documentation
+-------------
+
+
+Step 6
+,,,,,,
+
+For every new command, subcommand, etc., which you have added, you will need to
+do the following:
+
+* Update the README;
+
+* Update ``plugins/lfetool/templates/usage.txt.tmpl`` to include the changes.
+
+
+Step 7
+,,,,,,
+
+Discoverability is arguably a form of documentation, so as in the previous step,
+for every new command or suncommand you have added (or old ones you have
+changed), you will need to update the ``bash-complete`` script so that
+tab-completion will present the latest and greatest.
+
+Testing
+-------
+
+
+Step 8
+,,,,,,
+
+* Write a unit test in ``test/test.sh`` which checks for the existence of all
+  the files you have created and examines at least some of the file contents to
+  make sure they got created as expected.
+
+* Your unit test functions will need to be in headless camel case (e.g.,
+  ``testMyNewCommand``).
+
+* Run the test suite:
+
+.. code:: bash
+
+    $ make check
+
+
+Step 9
+,,,,,,
+
+* Build a local copy of ``lfetool`` by running ``make build``.
+
+* Run your new command, e.g.: ``lfetool new my-new-proj-type awesome-proj-name``
+
+* Check that all the expected files are created, that any new ``make`` targets
+  work as expected.
+
+* Submit a pull request!
