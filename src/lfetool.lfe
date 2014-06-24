@@ -121,8 +121,8 @@
                 plugin "' with wrong number of args: ("
                 (lfetool-util:join-list args) ")"))
         (lfetool-util:display-str
-          (++ "\nWrong number of args for command '" command
-              "' called on plugin '" plugin "': ("
+          (++ "\nBad/missing pattern match or wrong number of args for "
+              "command '" command "' called on plugin '" plugin "': ("
               (lfetool-util:join-list args) ")\n\n"
               "Help for '" plugin "' plugin:\n\n"
               (call module 'get-help))))))
