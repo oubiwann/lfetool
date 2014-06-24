@@ -15,6 +15,7 @@
 (defun plugin-module-prefix () '"lfetool-plugin-")
 
 (defun proj-patt () (binary "{{PROJECT}}"))
+(defun null-patt () (binary ""))
 
 (defun non-plugin-commands () '(commands extract help usage version))
 (defun plugin-commands () '(new))
