@@ -9,7 +9,8 @@
   '"Create a script that will be executed from the CLI by lfescript.")
 
 (defun get-help ()
-  '"<no help provided>")
+  (++ "Create a script with default content populated with functions for "
+      "calculating factorials of integers and displaying usage."))
 
 (defun new (script-name)
   (let* ((script-name (atom_to_list script-name))
@@ -24,11 +25,12 @@
     (file:change_mode full-path #8r755)
     (lfetool-util:display-str (++ "Created script '" full-path "'."))))
 
-  ; `#(ok
-  ;    #(msg "pretending to create new script ...")
-  ;    #(script-name ,script-name)
-  ;    #(exec-dir ,(lfetool-util:get-execdir))
-  ;    #(cwd ,(lfetool-util:get-cwd))))
+(defun tester (arg)
+  `#(ok
+     #(msg "Running the 'tester' function with one arg ...")
+     #(arg ,arg)
+     #(exec-dir ,(lfetool-util:get-execdir))
+     #(cwd ,(lfetool-util:get-cwd))))
 
 (defun get-commands ()
   "A list of atoms that represent the top-level commands supported by this
@@ -40,9 +42,4 @@
   "
   '(new))
 
-(defun get-child-commands ()
-  )
-
-(defun get-arg-template ()
-  )
 
