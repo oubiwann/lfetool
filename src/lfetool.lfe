@@ -1,9 +1,15 @@
 (defmodule lfetool
   (export all))
 
+(include-file "include/plugin-data.lfe")
+
 (defun init ()
   (lfetool-plugin:load-plugins)
   (lfetool-util:setup-dirs)
+  ;; Start up the plugin registry
+  (let* ((state (make-plugins))
+         (pid (spawn_link 'lfetool-registry 'start (list state))))
+    (register (lfetool-const:plugin-registry-name) pid))
   (if (lfetool-util:debug?) (lfetool-util:display-stats)))
 
 (defun start ()

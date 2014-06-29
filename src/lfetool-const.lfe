@@ -19,3 +19,7 @@
 
 (defun non-plugin-commands () '(commands extract help usage version))
 (defun plugin-commands () '(new))
+(defun command-help-sep () '" - ")
+(defun command-help-wid () 72)
+
+(defun plugin-registry-name () 'plugin-registry)
