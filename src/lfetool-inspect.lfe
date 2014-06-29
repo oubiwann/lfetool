@@ -30,3 +30,7 @@
 
 (defun not-plugin? (plugin-name)
   (not (plugin? plugin-name)))
+
+(defun implements-behaviour? (plugin-name behaviour)
+  (== behaviour
+      (lfetool-plugin:get-plugin-behaviour plugin-name)))
