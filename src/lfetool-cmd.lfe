@@ -18,6 +18,3 @@
 
 (defun version ()
   (lfetool-util:get-version))
-
-(defun get-commands ()
-  '(commands extract help usage version))
