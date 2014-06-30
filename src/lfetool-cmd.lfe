@@ -5,16 +5,17 @@
   (lfetool-plugin:get-loaded-plugin-modules))
 
 (defun commands ()
-  '"show list of commands + plugins here ... ")
+  (lfetool-cmd-help:display-help))
 
 (defun extract ()
-  '"This version of lfetool isn't compressed.")
+  (io:format "~n~s~n~n"
+             (list "This version of lfetool isn't compressed.")))
 
 (defun help ()
-  '"show some cool help here ... ")
+  (lfetool-help:display-help))
 
 (defun usage ()
-  '"show usage here ... ")
+  (lfetool-help:display-usage))
 
 (defun version ()
   (lfetool-util:get-version))
