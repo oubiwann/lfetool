@@ -62,26 +62,17 @@
 (defun get-commands-help (command)
   (proplists:get_value command (get-commands-help)))
 
-(defun get-command-lengths ()
+(defun get-user-commands-help ()
+  '(#(noop "noop")))
+
+(defun get-command-lengths (help-commands)
   (lists:map
     (match-lambda (((tuple cmd _))
       (length (atom_to_list cmd))))
-    (get-commands-help)))
+    help-commands))
 
-(defun get-longest-command-length ()
-  (lists:max (get-command-lengths)))
-
-(defun format-help ()
-  (let* ((help (get-commands-help))
-         (max-len (get-longest-command-length))
-         (sep (lfetool-const:command-help-sep))
-         (max-pad (+ max-len (length sep)))
-         (wrap-width (- (lfetool-const:command-help-wid) max-pad)))
-    (lists:map
-      (lambda (x)
-        (format-help x sep max-len max-pad wrap-width))
-      help))
-  'ok)
+(defun get-longest-command-length (help-commands)
+  (lists:max (get-command-lengths help-commands)))
 
 (defun wrap-help (pad-len wrap-width help)
   (let* ((text (lfe-utils:wrap-text help wrap-width))
@@ -97,8 +88,31 @@
     (io:format (++ "~-" (integer_to_list max-len) "s" "~s~s~n")
                (list cmd sep (wrap-help max-pad wrap-width help)))))
 
-(defun format-builtin-commands ()
-  )
+(defun format-help (help)
+  (let* ((max-len (get-longest-command-length help))
+         (sep (lfetool-const:command-help-sep))
+         (max-pad (+ max-len (length sep)))
+         (wrap-width (- (lfetool-const:command-help-wid) max-pad)))
+    (lists:map
+      (lambda (x)
+        (format-help x sep max-len max-pad wrap-width))
+      help))
+  'ok)
 
-(defun format-user-commands ()
-  )
+(defun format-builtin-help ()
+  (io:format "~nHelp for lfetool built-in top-level commands:~n~n")
+  (format-help (get-commands-help)))
+
+(defun format-user-help ()
+  (let ((help (get-user-commands-help)))
+    (cond
+      ((> (length help) 0)
+        (io:format "~n~nHelp for lfetool user-provided top-level commands:~n~n")
+        (format-help help)
+        (io:format "~n"))
+      ('true
+        (io:format "~n")))))
+
+(defun display-help ()
+  (format-builtin-help)
+  (format-user-help))
