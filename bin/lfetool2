@@ -38,22 +38,33 @@ lfetooleval () {
 run () {
     command=$1
     shift 1
+    rest="$@"
     case $command in
         # offer backwards compatibility for flags
-        -h)
-            command=help
-            ;;
-        -v)
-            command=version
-            ;;
-        -x)
-            command=extract
+        -c)
+            command=commands
+            rest=""
             ;;
         -d)
             command=debug
             ;;
+        -h)
+            command=help
+            ;;
+        -u)
+            command=usage
+            rest=""
+            ;;
+        -v)
+            command=version
+            rest=""
+            ;;
+        -x)
+            command=extract
+            rest=""
+            ;;
     esac
-    lfetooleval $command "$@"
+    lfetooleval $command $rest
 }
 
 run "$@"
