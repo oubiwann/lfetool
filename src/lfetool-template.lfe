@@ -4,9 +4,13 @@
 (defun get-template-file (plugin-name file-name)
   "Given a plugin name and a template file name, deduce and return the path
   to the file."
-  (++ (lfetool-util:get-cwd)
-      "/plugins/" (atom_to_list plugin-name)
-      "/templates/" file-name))
+  (filename:join
+    (list
+      (lfetool-util:get-cwd)
+      "plugins"
+      (atom_to_list plugin-name)
+      "templates"
+      file-name)))
 
 (defun load-template (plugin-name file-name)
   "Given a plugin name and a template file name, deduce the path and return
