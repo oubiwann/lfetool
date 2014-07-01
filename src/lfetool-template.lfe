@@ -8,7 +8,7 @@
     (list
       (lfetool-util:get-cwd)
       "plugins"
-      (atom_to_list plugin-name)
+      plugin-name
       "templates"
       file-name)))
 
