@@ -28,7 +28,7 @@ lfetooleval () {
         $DEBUG \
         -eval "case lfetool:eval(\"$*\") of
                  {ok, Result} ->
-                   io:format(\"~p~n\", [Result]),
+                   io:format(\"~s\", [Result]),
                    halt(0);
                  _ -> halt(127)
                end" \

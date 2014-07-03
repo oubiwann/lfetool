@@ -48,6 +48,8 @@
    (non-plugin-dispatch 'usage))
   (((list command))
     (non-plugin-dispatch command))
+  (((list 'info sub-command))
+    (non-plugin-dispatch 'info sub-command))
   (((= (cons command _) args))
     (plugin-dispatch args)))
 
@@ -57,6 +59,14 @@
     (catch
       ((= (tuple 'error _ _) error-data)
         (handle-bad-non-plugin-command command error-data)))))
+
+(defun non-plugin-dispatch
+  (('info sub-command)
+    (try
+      (call-cmd 'info sub-command)
+      (catch
+        ((= (tuple 'error _ _) error-data)
+          (handle-bad-non-plugin-command 'info sub-command error-data))))))
 
 (defun plugin-dispatch
   (((list 'new plugin project-name))
@@ -75,7 +85,10 @@
         (handle-bad-arg-count command plugin args)))))
 
 (defun call-cmd (command)
-  (lfetool-util:display (call 'lfetool-cmd command)))
+  (call 'lfetool-cmd command))
+
+(defun call-cmd (command sub-command)
+  (call (lfe-utils:atom-cat 'lfetool-cmd- command) sub-command))
 
 (defun call-new (plugin project-name)
   (let ((module (lfetool-plugin:get-plugin-module plugin)))
@@ -87,6 +100,15 @@
           "Command call" "unknown command" error-data)
       (lfetool-util:display-str
         (++ "\nUnknown command: '" (atom_to_list command) "'\n\n"
+            (lfetool-cmd:usage)))))
+
+(defun handle-bad-non-plugin-command (command sub-command error-data)
+  (if (lfetool-util:debug?)
+        (lfetool-err:display
+          "Command call" "unknown sub-command" error-data)
+      (lfetool-util:display-str
+        (++ "\nUnknown sub-command for '" (atom_to_list command)  "': '"
+            (atom_to_list command) "'\n\n"
             (lfetool-cmd:usage)))))
 
 (defun handle-bad-plugin-or-func (plugin project-name error-data)

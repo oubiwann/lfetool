@@ -85,7 +85,7 @@
 
 (defun format-help
   (((tuple cmd help) sep max-len max-pad wrap-width)
-    (io:format (++ "~-" (integer_to_list max-len) "s" "~s~s~n")
+    (io_lib:format (++ "~-" (integer_to_list max-len) "s" "~s~s~n")
                (list cmd sep (wrap-help max-pad wrap-width help)))))
 
 (defun format-help (help)
@@ -96,8 +96,7 @@
     (lists:map
       (lambda (x)
         (format-help x sep max-len max-pad wrap-width))
-      help))
-  'ok)
+      help)))
 
 (defun format-builtin-help ()
   (io:format "~nHelp for lfetool built-in top-level commands:~n~n")
@@ -107,12 +106,12 @@
   (let ((help (get-user-commands-help)))
     (cond
       ((> (length help) 0)
-        (io:format "~n~nHelp for lfetool user-provided top-level commands:~n~n")
-        (format-help help)
-        (io:format "~n"))
+        (++ "\n\nUser-provided top-level commands:\n\n"
+            (format-help help)
+            "\n"))
       ('true
-        (io:format "~n")))))
+        (++ "\n")))))
 
 (defun display-help ()
-  (format-builtin-help)
-  (format-user-help))
+  (++ (format-builtin-help)
+      (format-user-help)))
