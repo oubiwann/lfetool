@@ -45,6 +45,16 @@
   passes it as a parameter to erl. See get-cwd for more details."
   (element 2 (file:get_cwd)))
 
+(defun files->beams (tuple-list)
+  "Given a list of 2-tuples #(module-name filename), with the filenames ending
+  in '.beam', return a list of tuples with no '.beam' extension, e.g.:
+  #(module-name rootname)."
+  (lists:map
+    (match-lambda
+      (((tuple mod filename))
+        `#(,mod ,(filename:rootname filename))))
+    tuple-list))
+
 (defun check-loaded-modules (substring)
   (lists:map
     (lambda (x)
@@ -53,13 +63,23 @@
         (_ 'false)))
     (code:all_loaded)))
 
+(defun check (x)
+  (=/= x 'false))
+
 (defun filtered-loaded-modules (substring)
   (lists:filter
-    (lambda (x) (=/= x 'false))
+    #'check/1
     (check-loaded-modules substring)))
 
 (defun get-loaded-lfetool-modules ()
   (filtered-loaded-modules "lfetool"))
+
+(defun get-loaded-beams (substring)
+  (files->beams
+    (filtered-loaded-modules substring)))
+
+(defun get-loaded-lfetool-beams ()
+  (get-loaded-beams "lfetool"))
 
 (defun display-str (arg)
   (lfe_io:format "~s~n" (list arg)))

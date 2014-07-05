@@ -17,10 +17,10 @@
 
 (deftest get-plugin-attributes
   (let (((tuple ok (tuple plugin-mod data))
-         (lfetool-plugin:get-plugin-attributes 'script)))
+         (lfetool-plugin:get-plugin-attributes 'name 'script)))
     (is-equal 'lfetool-plugin-script
               plugin-mod)))
 
 (deftest get-plugin-behaviour
-  (is-equal 'lfetool-plugin
-            (lfetool-plugin:get-plugin-behaviour 'script)))
+  (is-equal '(lfetool-plugin)
+            (lfetool-plugin:get-plugin-behaviour 'name 'script)))

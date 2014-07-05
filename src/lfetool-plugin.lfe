@@ -77,19 +77,43 @@
                 (lfetool-plugin:get-plugin-module plugin-name))
               "*"))))))
 
-(defun get-plugin-attributes (plugin-name)
-  "Given an atom representing a plugin's name, return its module attributes."
-  (beam_lib:chunks
-    (get-plugin-beam plugin-name)
-    '(attributes)))
+(defun get-plugin-attributes
+  ;; Given an atom representing a plugin's name, return its module
+  ;; attributes.
+  (('name plugin-name)
+    (beam_lib:chunks
+      (get-plugin-beam plugin-name)
+      '(attributes)))
+  (('beam plugin-beam)
+    (beam_lib:chunks plugin-beam '(attributes)))
+  ((type _)
+    #(error unsupported-type)))
 
-(defun get-plugin-behaviour (plugin-name)
+(defun get-plugin-behaviour
+  ;; This function handles three cases:
+  ;;  1) if passed a list (assumed to be a list of #(module beam) tuples),
+  ;;     iterate through the list, calling get-plugin-behaviour on each tuple;
+  ;;  2) if passed a tuple, destructure and check the behaviour of the beam;
+  ;;  3) if passed anything else, assume a plugin name, and check the behaviour
+  ;;     of the plugin.
+  ((beams) (when (is_list beams))
+   (lists:map
+     #'get-plugin-behaviour/1
+     beams))
+  (((tuple module plugin-beam))
+   (get-plugin-behaviour 'beam plugin-beam))
+  ((plugin-name)
+   (get-plugin-behaviour 'name plugin-name)))
+
+(defun get-plugin-behaviour (type plugin-name-or-beam)
+  "Get the behaviour of a plugin. The parameter 'type' may be given as either
+  the atom 'name or 'beam."
   (let (((tuple 'ok (tuple _ (list (tuple 'attributes attrs))))
-         (get-plugin-attributes plugin-name)))
-    (car (proplists:get_value
-           'behaviour
-           attrs
-           (proplists:get_value 'behavior attrs)))))
+         (get-plugin-attributes type plugin-name-or-beam)))
+    (proplists:get_value
+      'behaviour
+      attrs
+      (proplists:get_value 'behavior attrs))))
 
 (defun get-plugin-beams ()
   "Get the compiled .beam files, but without the .beam extension. The list of
@@ -114,13 +138,75 @@
     (lambda (x) (element 1 x))
     (get-loaded-plugins)))
 
-(defun get-loaded-plugin-names ()
-  (lists:map
-    (lambda (x)
-      (list_to_atom
-        (cadr
-          (re:split (atom_to_list x)
-                    (lfetool-const:plugin-module-prefix)
-                    '(#(return list))))))
-    (get-loaded-plugin-modules)))
+(defun plugin?
+  (((tuple module beam))
+    (lists:member
+      (lfetool-const:plugin-behaviour)
+      (get-plugin-behaviour 'beam beam))))
 
+(defun check-implements-plugin
+  ((beams) (when (is_list beams))
+   (lists:map
+     (match-lambda
+       (((= (tuple module beam) data))
+        (case (plugin? data)
+          ('false 'false)
+          (_ beam))))
+     beams)))
+
+(defun filtered-plugins (beams)
+  (lists:filter
+    #'lfetool-util:check/1
+    (check-implements-plugin beams)))
+
+(defun get-loaded-plugin-beams ()
+  (filtered-plugins
+    (lfetool-util:get-loaded-beams
+      (lfetool-const:plugin-module-prefix))))
+
+(defun get-loaded-plugin-names ()
+  (lists:sort
+    (lists:map
+      (lambda (x)
+        (car
+          (lists:reverse
+            (string:tokens x "-"))))
+      (get-loaded-plugin-beams))))
+
+;; Below is the first implementation I did; benchmarks for 1000 executions
+;; reveal no significant benefit to using the one above over it.
+;;
+;; > (lists:foldl
+;;     (lambda (_ acc)
+;;       (/ (+ acc (element 1 (timer:tc 'lfetool-plugin
+;;                                      'get-loaded-plugin-names-orig '())))
+;;          2.0))
+;;     0
+;;     (lists:seq 1 1000))
+;; 451.358493307737
+;; > (lists:foldl
+;;     (lambda (_ acc)
+;;       (/ (+ acc (element 1 (timer:tc 'lfetool-plugin
+;;                                      'get-loaded-plugin-names '())))
+;;          2.0))
+;;     0
+;;     (lists:seq 1 1000))
+;; 451.7978794544691
+;;
+;; However, at 10,000 executions, the one above does seem to minutely
+;; out-perform the original.
+;;
+;; More importantly, though, the one above has an execution time of about
+;; 600 milliseconds when first started in the LFE REPL (subsequent being
+;; around 450 ms). When executing the original in the REPL right after
+;; start-up, execution times are 3000 to 4000 ms.
+;;
+;; (defun get-loaded-plugin-names-orig ()
+;;   (lists:map
+;;     (lambda (x)
+;;       (list_to_atom
+;;         (cadr
+;;           (re:split (atom_to_list x)
+;;                     (lfetool-const:plugin-module-prefix)
+;;                     '(#(return list))))))
+;;     (get-loaded-plugin-modules)))

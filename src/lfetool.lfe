@@ -10,7 +10,8 @@
   (let* ((state (make-plugins))
          (pid (spawn_link 'lfetool-registry 'start (list state))))
     (register (lfetool-const:plugin-registry-name) pid))
-  (if (lfetool-util:debug?) (lfetool-util:display-stats)))
+  (if (lfetool-util:debug?) (lfetool-util:display-stats))
+  'ok)
 
 (defun start ()
   (init))
