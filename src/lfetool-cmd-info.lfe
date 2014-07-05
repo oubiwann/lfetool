@@ -25,6 +25,13 @@
         (car libs)
         (cdr libs)))))
 
+(defun plugins ()
+  (lfetool-util:display
+    (lists:map
+      (lambda (x)
+        `#(plugin ,x))
+      (lfetool-plugin:get-loaded-plugin-names))))
+
 (defun version ()
   (lfetool-util:display
     (lfetool-cmd:version)))
