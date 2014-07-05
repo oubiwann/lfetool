@@ -11,9 +11,11 @@ The ``info`` command supports the following sub-commands:
 
 * ``erllibs``
 
+* ``installdir``
+
 * ``path``
 
-* ``installdir``
+* ``plugins``
 
 * ``version``
 
@@ -41,6 +43,17 @@ directly, so this command is provided as a convenience:
     $ lfetool info erllibs
 
 
+``info installdir``
+,,,,,,,,,,,,,,,,,,,
+
+This command returns the ``lib`` directory for the installed/active version
+of Erlang:
+
+.. code:: shell
+
+    $ lfetool info installdir
+
+
 ``info path``
 ,,,,,,,,,,,,,
 
@@ -60,15 +73,16 @@ convenience:
     $ lfetool info path
 
 
-``info installdir``
-,,,,,,,,,,,,,,,,,,,
+``info plugins``
+,,,,,,,,,,,,,,,,
 
-This command returns the ``lib`` directory for the installed/active version
-of Erlang:
+This command returns a list of tuples representing the plugins that lfetool
+was able to find (both standard lfetool plugins, as well as user-supplied
+lfetool plugins):
 
 .. code:: shell
 
-    $ lfetool info installdir
+    $ lfetool info plugins
 
 
 ``info version``
