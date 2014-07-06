@@ -49,8 +49,12 @@
    (non-plugin-dispatch 'usage))
   (((list command))
     (non-plugin-dispatch command))
+  ;; Supported command + sub-command combinations
   (((list 'info sub-command))
     (non-plugin-dispatch 'info sub-command))
+  (((list 'repl sub-command))
+    (non-plugin-dispatch 'repl sub-command))
+  ;; Failing that, try the plugin dispatch
   (((= (cons command _) args))
     (plugin-dispatch args)))
 
@@ -67,7 +71,12 @@
       (call-cmd 'info sub-command)
       (catch
         ((= (tuple 'error _ _) error-data)
-          (handle-bad-non-plugin-command 'info sub-command error-data))))))
+          (handle-bad-non-plugin-command 'info sub-command error-data)))))
+  ((command sub-command)
+   (handle-bad-non-plugin-command
+     command
+     sub-command
+     `#(error #(bad-command-combination (,command ,sub-command)) '()))))
 
 (defun plugin-dispatch
   (((list 'new plugin project-name))
@@ -93,6 +102,8 @@
 
 (defun call-new (plugin project-name)
   (let ((module (lfetool-plugin:get-plugin-module plugin)))
+    ;; XXX update this to not use the display function; the plugin should
+    ;; call display functions directly
     (lfetool-util:display (call module 'new project-name))))
 
 (defun handle-bad-non-plugin-command (command error-data)
@@ -107,10 +118,11 @@
   (if (lfetool-util:debug?)
         (lfetool-err:display
           "Command call" "unknown sub-command" error-data)
-      (lfetool-util:display-str
-        (++ "\nUnknown sub-command for '" (atom_to_list command)  "': '"
-            (atom_to_list command) "'\n\n"
-            (lfetool-cmd:usage)))))
+      (progn
+        (lfetool-util:display-str
+          (++ "\nUnknown sub-command for '" (atom_to_list command)  "': '"
+              (atom_to_list sub-command) "'\n\n"))
+        (lfetool-cmd:usage))))
 
 (defun handle-bad-plugin-or-func (plugin project-name error-data)
   (if (lfetool-util:debug?)
