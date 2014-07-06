@@ -37,9 +37,16 @@
    'undefined))
 
 (defun get-plugin-module (name)
-  (lfe-utils:atom-cat
-    (list_to_atom (lfetool-const:plugin-module-prefix))
-    name))
+  (get-plugin-module 'name name))
+
+(defun get-plugin-module
+  (('name name)
+    (lfe-utils:atom-cat
+      (list_to_atom (lfetool-const:plugin-module-prefix))
+      name))
+  (('beam beam)
+   'noop
+   ))
 
 (defun get-plugins-src ()
   (lists:merge
@@ -133,36 +140,59 @@
   (lfetool-util:filtered-loaded-modules
     (lfetool-const:plugin-module-prefix)))
 
-(defun get-loaded-plugin-modules ()
-  (lists:map
-    (lambda (x) (element 1 x))
-    (get-loaded-plugins)))
-
 (defun plugin?
   (((tuple module beam))
     (lists:member
       (lfetool-const:plugin-behaviour)
       (get-plugin-behaviour 'beam beam))))
 
-(defun check-implements-plugin
-  ((beams) (when (is_list beams))
+(defun cmd-help?
+  (((tuple module beam))
+    (lists:member
+      (lfetool-const:cmd-help-behaviour)
+      (get-plugin-behaviour 'beam beam))))
+
+(defun check-implements
+  ((pred beams) (when (is_list beams))
    (lists:map
      (match-lambda
        (((= (tuple module beam) data))
-        (case (plugin? data)
+        (case (funcall pred data)
           ('false 'false)
           (_ beam))))
      beams)))
 
+(defun check-implements-plugin (beams)
+  (check-implements #'plugin?/1 beams))
+
+(defun check-implements-cmd-help (beams)
+  (check-implements #'cmd-help?/1 beams))
+
 (defun filtered-plugins (beams)
-  (lists:filter
-    #'lfetool-util:check/1
-    (check-implements-plugin beams)))
+  (lfetool-util:filtered #'check-implements-plugin/1 beams))
+
+(defun filtered-cmd-helps (beams)
+  (lfetool-util:filtered #'check-implements-cmd-help/1 beams))
 
 (defun get-loaded-plugin-beams ()
   (filtered-plugins
     (lfetool-util:get-loaded-beams
       (lfetool-const:plugin-module-prefix))))
+
+(defun get-loaded-cmd-help-beams ()
+  (filtered-cmd-helps
+    (lfetool-util:get-loaded-beams
+      (lfetool-const:plugin-module-prefix))))
+
+(defun get-loaded-plugin-modules ()
+  (lists:sort
+    (lfetool-util:beams->modules
+      (get-loaded-plugin-beams))))
+
+(defun get-loaded-cmd-help-modules ()
+  (lists:sort
+    (lfetool-util:beams->modules
+      (get-loaded-cmd-help-beams))))
 
 (defun get-loaded-plugin-names ()
   (lists:sort
@@ -209,4 +239,3 @@
 ;;           (re:split (atom_to_list x)
 ;;                     (lfetool-const:plugin-module-prefix)
 ;;                     '(#(return list))))))
-;;     (get-loaded-plugin-modules)))

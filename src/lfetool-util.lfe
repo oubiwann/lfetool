@@ -55,6 +55,15 @@
         `#(,mod ,(filename:rootname filename))))
     tuple-list))
 
+(defun beams->modules (beams-list)
+  (lists:map
+    (lambda (x)
+      (list_to_atom
+        (car
+          (lists:reverse
+            (string:tokens x "/")))))
+    beams-list))
+
 (defun check-loaded-modules (substring)
   (lists:map
     (lambda (x)
@@ -66,10 +75,13 @@
 (defun check (x)
   (=/= x 'false))
 
-(defun filtered-loaded-modules (substring)
+(defun filtered (func beams)
   (lists:filter
     #'check/1
-    (check-loaded-modules substring)))
+    (funcall func beams)))
+
+(defun filtered-loaded-modules (substring)
+  (filtered #'check-loaded-modules/1 substring))
 
 (defun get-loaded-lfetool-modules ()
   (filtered-loaded-modules "lfetool"))

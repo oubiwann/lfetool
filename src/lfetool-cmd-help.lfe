@@ -63,7 +63,11 @@
   (proplists:get_value command (get-commands-help)))
 
 (defun get-user-commands-help ()
-  '(#(noop "noop")))
+  (lists:merge
+    (lists:map
+      (lambda (x)
+        (call x 'get-commands-help))
+      (lfetool-plugin:get-loaded-cmd-help-modules))))
 
 (defun get-command-lengths (help-commands)
   (lists:map
