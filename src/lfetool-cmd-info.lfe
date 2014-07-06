@@ -33,5 +33,4 @@
       (lfetool-plugin:get-loaded-plugin-names))))
 
 (defun version ()
-  (lfetool-util:display
-    (lfetool-cmd:version)))
+  (lfetool-cmd:version))
