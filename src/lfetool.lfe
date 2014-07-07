@@ -65,13 +65,20 @@
       ((= (tuple 'error _ _) error-data)
         (handle-bad-non-plugin-command command error-data)))))
 
+(defmacro in (item list)
+  `(orelse
+     ,@(lists:map (lambda (x) `(== ',x ,item)) list)))
+
 (defun non-plugin-dispatch
-  (('info sub-command)
+  ((command sub-command) (when (in command (info repl)))
     (try
-      (call-cmd 'info sub-command)
+      (call-cmd command sub-command)
       (catch
         ((= (tuple 'error _ _) error-data)
-          (handle-bad-non-plugin-command 'info sub-command error-data)))))
+          (handle-bad-non-plugin-command
+            command
+            sub-command
+            error-data)))))
   ((command sub-command)
    (handle-bad-non-plugin-command
      command
