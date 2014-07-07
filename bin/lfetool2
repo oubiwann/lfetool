@@ -1,5 +1,40 @@
 #!/bin/sh
 
+# OS Type
+OS_TYPE=Unix
+case `uname -s` in
+    CYGWIN_NT*)
+        OS_TYPE=Cygwin
+        ;;
+    Windows_NT)
+        OS_TYPE=Windows
+        ;;
+    SunOS)
+        case `uname -r` in
+            4*) OS_TYPE=SunBSD ;;
+            5*) OS_TYPE=Solaris ;;
+        esac
+        ;;
+    Linux)
+        OS_TYPE=Linux
+        ;;
+    Darwin)
+        OS_TYPE=Darwin
+        ;;
+    AIX)
+        OS_TYPE=AIX
+        ;;
+    HP-UX)
+        OS_TYPE=HP-UX
+        ;;
+    OSF1)
+        OS_TYPE=OSF1
+        ;;
+
+    *)
+        ;;
+esac
+
 # readlink -f doesn't work on Mac OS X, so this hack is needed
 absfile () {
     abspath="$(cd "$(dirname "$0")"; pwd)"
@@ -13,6 +48,54 @@ if [ -z $SCRIPT_PATH ]; then
 fi
 BIN_DIR=$(dirname $SCRIPT_PATH)
 EXEC_DIR=$(dirname $BIN_DIR)
+LFETOOL=lfetool2
+case $OS_TYPE in
+    Cygwin|Windows)
+        ERL=werl
+        ;;
+    *)
+        ERL=erl
+        ;;
+esac
+
+error () {
+    message=$1
+    echo
+    echo $message
+    echo
+    print_usage $script
+    exit 1
+}
+
+unknown_subcommand_error () {
+    command=$1
+    subcommand=$2
+    error "Unknown subcommand for '$command': '$subcommand'";
+}
+
+getpath () {
+    echo $BIN_DIR:`$LFETOOL info path`:$PATH
+}
+
+geterllibs () {
+    $LFETOOL info erllibs
+}
+
+configrlwrap () {
+    echo "rlwrap --command=$1 --prompt-colour=YELLOW --histsize=100000 --remember"
+}
+
+checkerjang () {
+    if [ "$ERJANG_HOME" == "" ]; then
+        echo
+        echo "Error: undefined \$ERJANG_HOME variable."
+        echo
+        echo "In order to use Erjang/jlfe, you need to define the \$ERJANG_HOME"
+        echo "environment variable."
+        echo
+        exit 1
+    fi
+}
 
 lfetooleval () {
     if [ "$1" == "debug" ]; then
@@ -33,6 +116,39 @@ lfetooleval () {
                  _ -> halt(127)
                end" \
         -noshell
+}
+
+dorepl () {
+    subcommand=$1
+    shift 1
+    if [ x"$subcommand" = x ]; then
+        subcommand="lfe"
+    fi
+    case $subcommand in
+        lfe)
+            PATH=`getpath` ERL_LIBS=`geterllibs` lfe "$@"
+            exit $!
+            ;;
+        erlang|erl)
+            PATH=`getpath` ERL_LIBS=`geterllibs` erl "$@"
+            exit $!
+            ;;
+        erjang|jerl)
+            checkerjang
+            PATH=`getpath`:$ERJANG_HOME ERL_LIBS=`geterllibs` \
+                `configrlwrap jerl` \
+                jerl "$@"
+            ;;
+        jlfe)
+            checkerjang
+            PATH=`getpath`:$ERJANG_HOME ERL_LIBS=`geterllibs` \
+                `configrlwrap jerl` \
+                jerl -noshell -s lfe_shell "$@"
+            ;;
+        *)
+            unknown_subcommand_error repl $subcommand
+            ;;
+    esac
 }
 
 run () {
@@ -62,6 +178,9 @@ run () {
         -x)
             command=extract
             rest=""
+            ;;
+        repl)
+            dorepl $rest
             ;;
     esac
     lfetooleval $command $rest
