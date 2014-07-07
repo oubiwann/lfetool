@@ -6,11 +6,19 @@
     (filename:join
       (list (filename:dirname (code:lib_dir)) "bin"))))
 
+(defun get-erllibs ()
+  (gb_sets:to_list
+    (gb_sets:from_list
+      (code:get_path))))
+
 (defun erllibs ()
-  (lfetool-util:display
-    (gb_sets:to_list
-      (gb_sets:from_list
-        (code:get_path)))))
+  (lfetool-util:display-str
+    (let ((libs (get-erllibs)))
+      (lists:foldl
+        (lambda (x acc)
+          (++ acc ":" (filename:dirname x)))
+        (car libs)
+        (cdr libs)))))
 
 (defun installdir ()
   (lfetool-util:display-str
@@ -21,7 +29,8 @@
     (let ((libs (code:get_path)))
       (lists:foldl
         (lambda (x acc)
-          (++ acc ":" x))
+          (++ acc ":" (filename:join
+                        (filename:dirname x) "bin")))
         (car libs)
         (cdr libs)))))
 
