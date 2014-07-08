@@ -117,9 +117,10 @@
   (if (lfetool-util:debug?)
         (lfetool-err:display
           "Command call" "unknown command" error-data)
-      (lfetool-util:display-str
-        (++ "\nUnknown command: '" (atom_to_list command) "'\n\n"
-            (lfetool-cmd:usage)))))
+      (progn
+        (lfetool-util:display-str
+          (++ "\nUnknown command: '" (atom_to_list command) "'\n\n"))
+        (lfetool-cmd:usage))))
 
 (defun handle-bad-non-plugin-command (command sub-command error-data)
   (if (lfetool-util:debug?)
@@ -135,10 +136,12 @@
   (if (lfetool-util:debug?)
         (lfetool-err:display
           "Plugin call" "unknown plugin or plugin function" error-data)
-      (lfetool-util:display-str
-        (++ "\nUnknown plugin (or plugin function): '"
-            (atom_to_list plugin) ":" (atom_to_list project-name)
-            "'\n\n" (lfetool-cmd:commands)))))
+      (progn
+        (lfetool-util:display-str
+          (++ "\nUnknown plugin (or plugin function): '"
+              (atom_to_list plugin) ":" (atom_to_list project-name)
+              "'\n\n"))
+          (lfetool-cmd:commands))))
 
 (defun handle-bad-plugin-command (command plugin)
   (let ((module (lfetool-plugin:get-plugin-module plugin))
@@ -146,10 +149,11 @@
     (if (lfetool-util:debug?)
           (lfetool-err:display
             "unknown plugin command: " (list command))
-        (lfetool-util:display-str
-          (++ "\nPlugin '" plugin "' doesn't support command '"
-              (atom_to_list command) "'.\n\nHelp for '" plugin "' plugin:\n\n"
-              (call module 'get-help))))))
+        (progn
+          (lfetool-util:display-str
+            (++ "\nPlugin '" plugin "' doesn't support command '"
+                (atom_to_list command) "'.\n\nHelp for '" plugin "' plugin:\n\n"
+                (call module 'get-help)))))))
 
 (defun handle-bad-plugin (plugin)
   (if (lfetool-util:debug?)
