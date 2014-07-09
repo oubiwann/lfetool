@@ -29,9 +29,15 @@
 
 (defun terminate
   (((tuple 'ok data) state)
-    'noop)
+    (lfetool-tests-formatter:display-failures state)
+    (lfetool-tests-formatter:display-pending state)
+    (lfetool-tests-formatter:display-profile state)
+    (lfetool-tests-formatter:display-timing state)
+    (lfetool-tests-formatter:display-results data state))
   (((tuple 'error reason) state)
-    'noop))
+    (io:nl)
+    (io:nl)
+    (sync_end 'error)))
 
 (defun sync_end (result)
   'noop)
