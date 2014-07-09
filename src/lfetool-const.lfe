@@ -12,6 +12,8 @@
 (defun plugin-ebin () (++ (lfetool-home) "/ebin"))
 (defun plugin-beams () (++ (plugin-ebin) "/*.beam"))
 
+(defun eunit-ebin () '".eunit")
+
 (defun plugin-behaviour () 'lfetool-plugin)
 (defun cmd-help-behaviour () 'lfetool-cmd-help)
 (defun plugin-module-prefix () (++ (atom_to_list (plugin-behaviour)) "-"))
