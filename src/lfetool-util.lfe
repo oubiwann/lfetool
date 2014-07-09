@@ -10,13 +10,21 @@
 
 (defun setup-dirs ()
   (list
+    ;; Make sure the user plugin directory exists.
     (filelib:ensure_dir
       (++ (lfe-utils:expand-home-dir
             (lfetool-const:plugin-usr))
           "/ignore"))
+    ;; Make sure the user plugin ebin directory exists.
     (filelib:ensure_dir
       (++ (lfe-utils:expand-home-dir
             (lfetool-const:plugin-ebin))
+          "/ignore"))
+    ;; Make sure the eunit directory exists.
+    (filelib:ensure_dir
+      (++ (get-cwd)
+          "/"
+          (lfetool-const:eunit-ebin)
           "/ignore"))))
 
 (defun get-cwd-arg ()
