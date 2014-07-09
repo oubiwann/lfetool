@@ -1,8 +1,10 @@
 (defmodule lfetool-cmd-tests
   (export all))
 
-(defun allstuff ()
-  (io:format "This is the ~s color~n" (list (color:red "red"))))
+(defun all ()
+  (unit)
+  (integration)
+  (system))
 
 (defun integration ()
   'noop)
@@ -11,4 +13,6 @@
   'noop)
 
 (defun unit ()
-  'noop)
+  (io:format "This is the colour ~s.~nThis is the colour ~s.~n"
+             (list (color:red "red") (color:blue "blue"))))
+
