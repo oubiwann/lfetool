@@ -54,6 +54,8 @@
     (non-plugin-dispatch 'info sub-command))
   (((list 'repl sub-command))
     (non-plugin-dispatch 'repl sub-command))
+  (((list 'tests sub-command))
+    (non-plugin-dispatch 'tests sub-command))
   ;; Failing that, try the plugin dispatch
   (((= (cons command _) args))
     (plugin-dispatch args)))
@@ -70,7 +72,7 @@
      ,@(lists:map (lambda (x) `(== ',x ,item)) list)))
 
 (defun non-plugin-dispatch
-  ((command sub-command) (when (in command (info repl)))
+  ((command sub-command) (when (in command (info repl tests)))
     (try
       (call-cmd command sub-command)
       (catch
