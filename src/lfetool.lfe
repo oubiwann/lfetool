@@ -73,14 +73,15 @@
 
 (defun non-plugin-dispatch
   ((command sub-command) (when (in command (info repl tests)))
-    (try
-      (call-cmd command sub-command)
-      (catch
-        ((= (tuple 'error _ _) error-data)
-          (handle-bad-non-plugin-command
-            command
-            sub-command
-            error-data)))))
+    (call-cmd command sub-command))
+    ; (try
+    ;   (call-cmd command sub-command)
+    ;   (catch
+    ;     ((= (tuple 'error _ _) error-data)
+    ;       (handle-bad-non-plugin-command
+    ;         command
+    ;         sub-command
+    ;         error-data)))))
   ((command sub-command)
    (handle-bad-non-plugin-command
      command
