@@ -2,9 +2,12 @@
   (export all))
 
 (defun run (module)
-  (run module 'lfetool-tests-listener))
+  ;(run module 'lfetool-tests-listener))
+  (run module 'eunit_progress))
+  ;(run module 'eunit_surefire))
 
 (defun run (module listener)
-  ;(eunit:test module `(#(report ,listener))))
   (io:format "Running tests for ~s using listener '~s'~n"
-             (list module listener)))
+             (list module listener))
+  (eunit:test `(,module)
+              `(#(report #(,listener '())))))
