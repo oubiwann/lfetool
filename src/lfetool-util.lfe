@@ -25,7 +25,10 @@
       (++ (get-cwd)
           "/"
           (lfetool-const:eunit-ebin)
-          "/ignore"))))
+          "/ignore"))
+    ;; Add the eunit ebin dir to ERL_LIBS
+    (code:add_patha
+      (lfetool-const:eunit-ebin))))
 
 (defun get-cwd-arg ()
   "Return a default, if 'cwd' wasn't set as a flag when calling 'erl'."
