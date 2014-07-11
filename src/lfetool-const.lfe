@@ -1,6 +1,7 @@
 (defmodule lfetool-const
   (export all))
 
+; XXX this should go in the app.src config
 (defun cmd-sep ()
   "CLI command separator"
   " ")
