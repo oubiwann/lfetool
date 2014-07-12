@@ -21,14 +21,26 @@
 
 (defun handle_begin
   (('group data state)
+    (io:format "starting group ...~n")
+    (io:format "\tdata: ~p~n" (list data))
+    (io:format "\tstate: ~p~n" (list state))
     state)
   (('test data state)
+    (io:format "\tstarting test ...~n")
+    (io:format "\t\tdata: ~p~n" (list data))
+    (io:format "\t\tstate: ~p~n" (list state))
     state))
 
 (defun handle_end
   (('group data state)
+    (io:format "ending group ...~n")
+    (io:format "\tdata: ~p~n" (list data))
+    (io:format "\tstate: ~p~n" (list state))
     state)
   (('test data state)
+    (io:format "\tending test ...~n")
+    (io:format "\t\tdata: ~p~n" (list data))
+    (io:format "\t\tstate: ~p~n" (list state))
     state))
 
 (defun handle_cancel
@@ -48,4 +60,8 @@
     (sync_end 'error)))
 
 (defun sync_end (result)
-  'noop)
+  (receive
+    ((tuple 'stop reference reply-to)
+      (! reply-to `#(result ,reference ,result))
+      'ok)))
+

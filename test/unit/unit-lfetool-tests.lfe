@@ -14,3 +14,9 @@
 (deftest parse
   (is-equal #(ok (this is my command))
             (lfetool:parse "this is my command")))
+
+(deftestskip something ()
+  'noop)
+
+(deftest failing ()
+  (is 'false))

@@ -33,3 +33,8 @@
 (defun command-help-wid () 72) ; XXX this should go in the app.src config
 
 (defun plugin-registry-name () 'plugin-registry) ; XXX this should go in the app.src config
+
+(defun test-suite-header () '"=")
+(defun test-suite-subheader () '"-")
+(defun test-suite-title () '"lunit")
+(defun test-suite-width () 72)
