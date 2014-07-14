@@ -689,8 +689,7 @@ create_dirs () {
     project=$1
     mkdir -p $project/resources/make
     mkdir -p $project/src
-    mkdir -p $project/test/unit
-    mkdir $project/test/integration $project/test/system
+    mkdir -p $project/test
 }
 
 create_yaws_dirs () {
@@ -737,7 +736,7 @@ create_library_files () {
     create_file "$libmakefile" $project/Makefile {{PROJECT}} $project
     create_file "$libappsrc" $project/src/$project.app.src {{PROJECT}} $project
     create_file "$libtestmodule" \
-        $project/test/unit/unit-${project}-tests.lfe {{PROJECT}} $project
+        $project/test/unit-${project}-tests.lfe {{PROJECT}} $project
     create_file "$libmodule" $project/src/$project.lfe {{PROJECT}} $project
     create_file "$libutilmodule" \
         $project/src/$project-util.lfe {{PROJECT}} $project
@@ -749,7 +748,7 @@ create_service_files () {
     create_file "$svcmakefile" $project/Makefile {{PROJECT}} $project
     create_file "$svcappsrc" $project/src/$project.app.src {{PROJECT}} $project
     create_file "$svctestmodule" \
-        $project/test/unit/unit-${project}-tests.lfe {{PROJECT}} $project
+        $project/test/unit-${project}-tests.lfe {{PROJECT}} $project
     create_file "$svcapp" \
         $project/src/${project}-app.lfe {{PROJECT}} $project
     create_file "$svcserver" \
@@ -775,7 +774,7 @@ create_yaws_files () {
     create_file "$yawsutilmodule" \
         $project/src/${project}-util.lfe    {{PROJECT}} $project
     create_file "$libtestmodule" \
-        $project/test/unit/unit-${project}-tests.lfe {{PROJECT}} $project
+        $project/test/unit-${project}-tests.lfe {{PROJECT}} $project
     create_file "$libutilmodule" \
         $project/src/$project-util.lfe {{PROJECT}} $project
 }
