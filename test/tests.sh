@@ -68,7 +68,7 @@ testNewLibrary () {
     if [ "$TRAVIS" = "true" ]; then
         expected="10"
     else
-        expected="12"
+        expected="14"
     fi
     assertEquals $expected \
         "`find $libname -type f|egrep -v 'deps|.git'|wc -l|tr -d ' '`"
@@ -98,7 +98,7 @@ testNewService () {
     if [ "$TRAVIS" = "true" ]; then
         expected="13"
     else
-        expected="17"
+        expected="19"
     fi
     assertEquals $expected \
         "`find $svcname -type f|egrep -v 'deps|.git'|wc -l|tr -d ' '`"
@@ -127,7 +127,7 @@ testNewYAWS () {
     if [ "$TRAVIS" = "true" ]; then
         expected="14"
     else
-        expected="20"
+        expected="14"
     fi
     assertEquals $expected \
         "`find $yawsname -type f|egrep -v 'deps|.git'|wc -l|tr -d ' '`"
@@ -164,7 +164,7 @@ testNewYAWSBootstrap () {
     if [ "$TRAVIS" = "true" ]; then
         expected="25"
     else
-        expected="32"
+        expected="25"
     fi
     assertEquals $expected \
         "`find $yawsbootstrapname -type f|egrep -v 'deps|.git'|wc -l|tr -d ' '`"
