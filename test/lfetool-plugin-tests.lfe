@@ -1,11 +1,11 @@
-(defmodule unit-lfetool-plugin-tests
+(defmodule lfetool-plugin-tests
   (export all)
   (import
-    (from lfeunit-util
+    (from lunit
       (check-failed-assert 2)
       (check-wrong-assert-exception 2))))
 
-(include-lib "deps/lfeunit/include/lfeunit-macros.lfe")
+(include-lib "deps/lunit/include/lunit-macros.lfe")
 
 (deftest get-plugin-module
   (is-equal 'lfetool-plugin-neat
