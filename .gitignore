@@ -1,1 +1,6 @@
 *.sublime-*
+.eunit
+.rebar
+deps
+ebin
+erl_crash.dump
