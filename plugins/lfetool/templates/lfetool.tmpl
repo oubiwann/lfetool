@@ -154,7 +154,7 @@ echon () {
 
 echoe () {
     case $OS_TYPE in
-        LINUX|Cygwin)
+        LINUX|Cygwin|Darwin)
             echo -e "$*"
             ;;
         *)
@@ -497,22 +497,20 @@ all_but_last_line () {
 }
 
 get_unit_tests () {
-    ls .eunit/unit* | clean_test_name | quote_test | strip_newlines
+    ERL_LIBS=`lfetool info erllibs` erl -eval "io:format(\"~p\", [lunit:'get-unit-beams'()])" -noshell -s erlang halt|tr -d "\n[] "|tr \" \'|sed -e 's/\.eunit\///g'
 }
 
 get_integration_tests () {
-    ls .eunit/integration* | clean_test_name | quote_test | strip_newlines
+    ERL_LIBS=`lfetool info erllibs` erl -eval "io:format(\"~p\", [lunit:'get-integration-beams'()])" -noshell -s erlang halt|tr -d "\n[] "|tr \" \'|sed -e 's/\.eunit\///g'
 }
 
 get_system_tests () {
-    ls .eunit/system* | clean_test_name | quote_test | strip_newlines
+    ERL_LIBS=`lfetool info erllibs` erl -eval "io:format(\"~p\", [lunit:'get-system-beams'()])" -noshell -s erlang halt|tr -d "\n[] "|tr \" \'|sed -e 's/\.eunit\///g'
 }
 
 clean_test_results () {
     # get rid of the redundant module prefixing for each line ...
-    sed "s/  unit-.*-tests:/ /" | \
-    sed "s/  integration-.*-tests:/ /" | \
-    sed "s/  system-.*-tests:/ /" | \
+    sed "s/  .*-tests:/ /" | \
     sed "s/ (module '.*')/ /" | \
     # get rid of the eunit/erlang-only '_test' and '_test_' suffixes
     sed "s/_test\.\.\./ ... /" | \
@@ -595,17 +593,10 @@ build_tests () {
     echo "mkdir: created directory $TEST_OUT_DIR"
 
     echoe "${YELLOW}Compiling tests ...${END_COLOR}"
-    # compile any custom testing-centric modules needed only for running tests
-    #PATH=`get_path` ERL_LIBS=`get_erl_libs` \
-    PATH="`get_path`" \
-        lfec `construct_pa_ebin_option` -o $TEST_OUT_DIR $TEST_DIR/testing[-_]*.lfe && \
-        echoe "${GREEN}Successfully compiled testing support modules." || \
-        echoe "${RED}Could not compile one or more testing support modules."
-        echoe "$END_COLOR"
     # compile actual test modules (unit, integration, system, etc.)
     #PATH=`get_path` ERL_LIBS=`get_erl_libs` \
     PATH="`get_path`" \
-        lfec `construct_pa_ebin_option` -o $TEST_OUT_DIR $TEST_DIR/*/*[_-]tests.lfe && \
+        lfec `construct_pa_ebin_option` -o $TEST_OUT_DIR $TEST_DIR/*.lfe && \
         echoe "${GREEN}Successfully compiled test modules." || \
         echoe "${RED}Could not compile one or more test modules."
         echoe "$END_COLOR"
@@ -698,8 +689,7 @@ create_dirs () {
     project=$1
     mkdir -p $project/resources/make
     mkdir -p $project/src
-    mkdir -p $project/test/unit
-    mkdir $project/test/integration $project/test/system
+    mkdir -p $project/test
 }
 
 create_yaws_dirs () {
@@ -746,7 +736,7 @@ create_library_files () {
     create_file "$libmakefile" $project/Makefile {{PROJECT}} $project
     create_file "$libappsrc" $project/src/$project.app.src {{PROJECT}} $project
     create_file "$libtestmodule" \
-        $project/test/unit/unit-${project}-tests.lfe {{PROJECT}} $project
+        $project/test/unit-${project}-tests.lfe {{PROJECT}} $project
     create_file "$libmodule" $project/src/$project.lfe {{PROJECT}} $project
     create_file "$libutilmodule" \
         $project/src/$project-util.lfe {{PROJECT}} $project
@@ -758,7 +748,7 @@ create_service_files () {
     create_file "$svcmakefile" $project/Makefile {{PROJECT}} $project
     create_file "$svcappsrc" $project/src/$project.app.src {{PROJECT}} $project
     create_file "$svctestmodule" \
-        $project/test/unit/unit-${project}-tests.lfe {{PROJECT}} $project
+        $project/test/unit-${project}-tests.lfe {{PROJECT}} $project
     create_file "$svcapp" \
         $project/src/${project}-app.lfe {{PROJECT}} $project
     create_file "$svcserver" \
@@ -784,7 +774,7 @@ create_yaws_files () {
     create_file "$yawsutilmodule" \
         $project/src/${project}-util.lfe    {{PROJECT}} $project
     create_file "$libtestmodule" \
-        $project/test/unit/unit-${project}-tests.lfe {{PROJECT}} $project
+        $project/test/unit-${project}-tests.lfe {{PROJECT}} $project
     create_file "$libutilmodule" \
         $project/src/$project-util.lfe {{PROJECT}} $project
 }

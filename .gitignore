@@ -1,7 +1,8 @@
-*.sublime-*
-deps/*
-.eunit/
-.rebar/
-*_test_dir/
-ebin/
 *.dump
+*.sublime-*
+*_test_dir/*
+.eunit/*
+.rebar/*
+deps/*
+ebin/*
+erl_crash.dump
