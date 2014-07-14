@@ -497,22 +497,20 @@ all_but_last_line () {
 }
 
 get_unit_tests () {
-    ls .eunit/unit* | clean_test_name | quote_test | strip_newlines
+    ERL_LIBS=`lfetool info erllibs` erl -eval "io:format(\"~p\", [lunit:'get-unit-beams'()])" -noshell -s erlang halt|tr -d "\n[] "|tr \" \'|sed -e 's/\.eunit\///g'
 }
 
 get_integration_tests () {
-    ls .eunit/integration* | clean_test_name | quote_test | strip_newlines
+    ERL_LIBS=`lfetool info erllibs` erl -eval "io:format(\"~p\", [lunit:'get-integration-beams'()])" -noshell -s erlang halt|tr -d "\n[] "|tr \" \'|sed -e 's/\.eunit\///g'
 }
 
 get_system_tests () {
-    ls .eunit/system* | clean_test_name | quote_test | strip_newlines
+    ERL_LIBS=`lfetool info erllibs` erl -eval "io:format(\"~p\", [lunit:'get-system-beams'()])" -noshell -s erlang halt|tr -d "\n[] "|tr \" \'|sed -e 's/\.eunit\///g'
 }
 
 clean_test_results () {
     # get rid of the redundant module prefixing for each line ...
-    sed "s/  unit-.*-tests:/ /" | \
-    sed "s/  integration-.*-tests:/ /" | \
-    sed "s/  system-.*-tests:/ /" | \
+    sed "s/  .*-tests:/ /" | \
     sed "s/ (module '.*')/ /" | \
     # get rid of the eunit/erlang-only '_test' and '_test_' suffixes
     sed "s/_test\.\.\./ ... /" | \
