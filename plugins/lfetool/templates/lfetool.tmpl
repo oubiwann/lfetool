@@ -154,7 +154,7 @@ echon () {
 
 echoe () {
     case $OS_TYPE in
-        LINUX|Cygwin)
+        LINUX|Cygwin|Darwin)
             echo -e "$*"
             ;;
         *)
@@ -595,17 +595,10 @@ build_tests () {
     echo "mkdir: created directory $TEST_OUT_DIR"
 
     echoe "${YELLOW}Compiling tests ...${END_COLOR}"
-    # compile any custom testing-centric modules needed only for running tests
-    #PATH=`get_path` ERL_LIBS=`get_erl_libs` \
-    PATH="`get_path`" \
-        lfec `construct_pa_ebin_option` -o $TEST_OUT_DIR $TEST_DIR/testing[-_]*.lfe && \
-        echoe "${GREEN}Successfully compiled testing support modules." || \
-        echoe "${RED}Could not compile one or more testing support modules."
-        echoe "$END_COLOR"
     # compile actual test modules (unit, integration, system, etc.)
     #PATH=`get_path` ERL_LIBS=`get_erl_libs` \
     PATH="`get_path`" \
-        lfec `construct_pa_ebin_option` -o $TEST_OUT_DIR $TEST_DIR/*/*[_-]tests.lfe && \
+        lfec `construct_pa_ebin_option` -o $TEST_OUT_DIR $TEST_DIR/*.lfe && \
         echoe "${GREEN}Successfully compiled test modules." || \
         echoe "${RED}Could not compile one or more test modules."
         echoe "$END_COLOR"
