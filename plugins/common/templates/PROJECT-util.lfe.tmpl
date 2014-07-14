@@ -2,8 +2,8 @@
   (export all))
 
 (defun get-{{PROJECT}}-version ()
-  (lfe-utils:get-app-src-version "src/{{PROJECT}}.app.src"))
+  (lutil:get-app-src-version "src/{{PROJECT}}.app.src"))
 
 (defun get-version ()
-  (++ (lfe-utils:get-version)
+  (++ (lutil:get-version)
       `(#({{PROJECT}} ,(get-{{PROJECT}}-version)))))
