@@ -82,7 +82,7 @@ testNewLibrary () {
         "`head -2 $libname/README.rst|tail -1`"
     assertEquals 'name:"my-lib",' \
         "`head -2 $libname/package.exs|tail -1|tr -d ' '`"
-    assertEquals '{erl_opts, [debug_info, {src_dirs, ["test/unit",' \
+    assertEquals '{erl_opts, [debug_info, {src_dirs, ["test"]}]}.' \
         "`head -1 $libname/rebar.config`"
 }
 
@@ -116,7 +116,7 @@ testNewService () {
         "`head -2 $svcname/README.rst|tail -1`"
     assertEquals 'name:"my-service",' \
         "`head -2 $svcname/package.exs|tail -1|tr -d ' '`"
-    assertEquals '{erl_opts, [debug_info, {src_dirs, ["test",' \
+    assertEquals '{erl_opts, [debug_info, {src_dirs, ["test"]}]}.' \
         "`head -1 $svcname/rebar.config`"
 }
 
@@ -151,7 +151,7 @@ testNewYAWS () {
         "`head -2 $yawsname/README.rst|tail -1`"
     assertEquals 'name:"my-yaws",' \
         "`head -2 $yawsname/package.exs|tail -1|tr -d ' '`"
-    assertEquals '{erl_opts, [debug_info, {src_dirs, ["test",' \
+    assertEquals '{erl_opts, [debug_info, {src_dirs, ["test"]}]}.' \
         "`head -1 $yawsname/rebar.config`"
     assertEquals 'logdir = logs' \
         "`head -1 $yawsname/etc/yaws.conf`"
