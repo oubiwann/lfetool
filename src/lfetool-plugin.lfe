@@ -41,7 +41,7 @@
 
 (defun get-plugin-module
   (('name name)
-    (lfe-utils:atom-cat
+    (lutil:atom-cat
       (list_to_atom (lfetool-const:plugin-module-prefix))
       name))
   (('beam beam)
@@ -53,21 +53,21 @@
     (filelib:wildcard
       (lfetool-const:plugin-src))
     (filelib:wildcard
-      (lfe-utils:expand-home-dir
+      (lutil:expand-home-dir
         (lfetool-const:plugin-usr-src)))))
 
 (defun compile-plugins ()
   (compile-plugins
-    (lfe-utils:expand-home-dir
+    (lutil:expand-home-dir
       (lfetool-const:plugin-ebin))))
 
 (defun compile-plugins
   (('show-output)
     (lfe_io:format "~p~n" (list (compile-plugins))))
   ((out-dir)
-    (lfe-utils:compile
+    (lutil:compile
       (get-plugins-src)
-      (lfe-utils:get-deps)
+      (lutil:get-deps)
       out-dir)))
 
 (defun get-plugin-beam (plugin-name)
@@ -77,7 +77,7 @@
   (filename:rootname
     (car
       (filelib:wildcard
-        (lfe-utils:expand-home-dir
+        (lutil:expand-home-dir
           (++ (lfetool-const:plugin-ebin)
               "/"
               (atom_to_list
@@ -128,7 +128,7 @@
   (lists:map
     #'filename:rootname/1
     (filelib:wildcard
-      (lfe-utils:expand-home-dir
+      (lutil:expand-home-dir
         (lfetool-const:plugin-beams)))))
 
 (defun load-plugins ()

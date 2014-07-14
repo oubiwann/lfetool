@@ -2,22 +2,22 @@
   (export all))
 
 (defun get-lfetool-version ()
-  (lfe-utils:get-app-src-version "src/lfetool.app.src"))
+  (lutil:get-app-src-version "src/lfetool.app.src"))
 
 (defun get-version ()
-  (++ (lfe-utils:get-version)
+  (++ (lutil:get-version)
       `(#(lfetool ,(get-lfetool-version)))))
 
 (defun setup-dirs ()
   (list
     ;; Make sure the user plugin directory exists.
     (filelib:ensure_dir
-      (++ (lfe-utils:expand-home-dir
+      (++ (lutil:expand-home-dir
             (lfetool-const:plugin-usr))
           "/ignore"))
     ;; Make sure the user plugin ebin directory exists.
     (filelib:ensure_dir
-      (++ (lfe-utils:expand-home-dir
+      (++ (lutil:expand-home-dir
             (lfetool-const:plugin-ebin))
           "/ignore"))
     ;; Make sure the eunit directory exists.
@@ -79,7 +79,7 @@
   (filtered-loaded-modules "lfetool"))
 
 (defun get-loaded-beams (substring)
-  (lfe-utils:files->beams
+  (lutil:files->beams
     (filtered-loaded-modules substring)))
 
 (defun get-loaded-lfetool-beams ()
