@@ -10,4 +10,4 @@
   (io:format "Running tests for ~s using listener '~s'~n"
              (list module listener))
   (eunit:test `(,module)
-              `(#(report #(,listener (colored))))))
+              `(no_tty #(report #(,listener (colored))))))
