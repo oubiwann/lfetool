@@ -39,9 +39,13 @@
 (defun get-plugin-module (name)
   (get-plugin-module 'name name))
 
+;; XXX this isn't such a good implementation; it's based on a file naming
+;; scheme... if that ever changes, this will no longer work as expected.
+;; better to perform some sort of lookup on existing/loaded plugins, searching
+;; by name and then returning the module for that plugin
 (defun get-plugin-module
   (('name name)
-    (lutil:atom-cat
+    (lutil-type:atom-cat
       (list_to_atom (lfetool-const:plugin-module-prefix))
       name))
   (('beam beam)
@@ -53,21 +57,21 @@
     (filelib:wildcard
       (lfetool-const:plugin-src))
     (filelib:wildcard
-      (lutil:expand-home-dir
+      (lutil-file:expand-home-dir
         (lfetool-const:plugin-usr-src)))))
 
 (defun compile-plugins ()
   (compile-plugins
-    (lutil:expand-home-dir
+    (lutil-file:expand-home-dir
       (lfetool-const:plugin-ebin))))
 
 (defun compile-plugins
   (('show-output)
     (lfe_io:format "~p~n" (list (compile-plugins))))
   ((out-dir)
-    (lutil:compile
+    (lutil-file:compile
       (get-plugins-src)
-      (lutil:get-deps)
+      (lutil-file:get-deps)
       out-dir)))
 
 (defun get-plugin-beam (plugin-name)
@@ -77,7 +81,7 @@
   (filename:rootname
     (car
       (filelib:wildcard
-        (lutil:expand-home-dir
+        (lutil-file:expand-home-dir
           (++ (lfetool-const:plugin-ebin)
               "/"
               (atom_to_list
@@ -128,16 +132,15 @@
   (lists:map
     #'filename:rootname/1
     (filelib:wildcard
-      (lutil:expand-home-dir
+      (lutil-file:expand-home-dir
         (lfetool-const:plugin-beams)))))
 
 (defun load-plugins ()
-  (lists:map
-    #'code:load_abs/1
+  (lutil-file:load-beams
     (get-plugin-beams)))
 
 (defun get-loaded-plugins ()
-  (lfetool-util:filtered-loaded-modules
+  (lutil-file:filtered-loaded-modules
     (lfetool-const:plugin-module-prefix)))
 
 (defun plugin?
@@ -169,29 +172,29 @@
   (check-implements #'cmd-help?/1 beams))
 
 (defun filtered-plugins (beams)
-  (lfetool-util:filtered #'check-implements-plugin/1 beams))
+  (lutil-file:filtered #'check-implements-plugin/1 beams))
 
 (defun filtered-cmd-helps (beams)
-  (lfetool-util:filtered #'check-implements-cmd-help/1 beams))
+  (lutil-file:filtered #'check-implements-cmd-help/1 beams))
 
 (defun get-loaded-plugin-beams ()
   (filtered-plugins
-    (lfetool-util:get-loaded-beams
+    (lutil-file:get-loaded-beams
       (lfetool-const:plugin-module-prefix))))
 
 (defun get-loaded-cmd-help-beams ()
   (filtered-cmd-helps
-    (lfetool-util:get-loaded-beams
+    (lutil-file:get-loaded-beams
       (lfetool-const:plugin-module-prefix))))
 
 (defun get-loaded-plugin-modules ()
   (lists:sort
-    (lfetool-util:beams->modules
+    (lutil-file:beams->modules
       (get-loaded-plugin-beams))))
 
 (defun get-loaded-cmd-help-modules ()
   (lists:sort
-    (lfetool-util:beams->modules
+    (lutil-file:beams->modules
       (get-loaded-cmd-help-beams))))
 
 (defun get-loaded-plugin-names ()

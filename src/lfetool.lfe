@@ -108,7 +108,7 @@
   (call 'lfetool-cmd command))
 
 (defun call-cmd (command sub-command)
-  (call (lutil:atom-cat 'lfetool-cmd- command) sub-command))
+  (call (lutil-type:atom-cat 'lfetool-cmd- command) sub-command))
 
 (defun call-new (plugin project-name)
   (let ((module (lfetool-plugin:get-plugin-module plugin)))

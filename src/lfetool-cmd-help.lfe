@@ -79,7 +79,7 @@
   (lists:max (get-command-lengths help-commands)))
 
 (defun wrap-help (pad-len wrap-width help)
-  (let* ((text (lutil:wrap-text help wrap-width))
+  (let* ((text (lutil-text:wrap-text help wrap-width))
          ((cons first-line rest) (string:tokens text "\n")))
     (lists:foldl
       (lambda (x acc)
