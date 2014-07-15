@@ -12,12 +12,12 @@
   (list
     ;; Make sure the user plugin directory exists.
     (filelib:ensure_dir
-      (++ (lutil:expand-home-dir
+      (++ (lutil-file:expand-home-dir
             (lfetool-const:plugin-usr))
           "/ignore"))
     ;; Make sure the user plugin ebin directory exists.
     (filelib:ensure_dir
-      (++ (lutil:expand-home-dir
+      (++ (lutil-file:expand-home-dir
             (lfetool-const:plugin-ebin))
           "/ignore"))
     ;; Make sure the eunit directory exists.
@@ -56,34 +56,11 @@
   passes it as a parameter to erl. See get-cwd for more details."
   (element 2 (file:get_cwd)))
 
-(defun check-loaded-modules (substring)
-  (lists:map
-    (lambda (x)
-      (case (re:run (atom_to_list (element 1 x)) (++ ".*" substring ".*"))
-        ((tuple 'match _) x)
-        (_ 'false)))
-    (code:all_loaded)))
-
-(defun check (x)
-  (=/= x 'false))
-
-(defun filtered (func beams)
-  (lists:filter
-    #'check/1
-    (funcall func beams)))
-
-(defun filtered-loaded-modules (substring)
-  (filtered #'check-loaded-modules/1 substring))
-
 (defun get-loaded-lfetool-modules ()
-  (filtered-loaded-modules "lfetool"))
-
-(defun get-loaded-beams (substring)
-  (lutil:files->beams
-    (filtered-loaded-modules substring)))
+  (lutil-file:filtered-loaded-modules "lfetool"))
 
 (defun get-loaded-lfetool-beams ()
-  (get-loaded-beams "lfetool"))
+  (lutil-file:get-loaded-beams "lfetool"))
 
 (defun display-str (arg)
   (lfe_io:format "~s~n" (list arg)))
