@@ -135,36 +135,6 @@
       (lutil-file:expand-home-dir
         (lfetool-const:plugin-beams)))))
 
-(defun check-skip-funcs (funcs)
-  (lists:map
-    (match-lambda
-      (((tuple func arity))
-        (case (re:run (atom_to_list func) (lfetool-const:skip-test-patt))
-          ((tuple 'match _) `#(,func ,arity))
-          (_ 'false))))
-    funcs))
-
-(defun check-skipped-tests (funcs)
-  (lists:map
-    (match-lambda
-      (((tuple func arity))
-        (case (re:split (atom_to_list func)
-                        (++ (lfetool-const:skip-test-group-patt))
-                        '(#(return list)))
-          ((list '() test-name _ '()) test-name)
-          (_ 'false))))
-    funcs))
-
-(defun get-skip-funcs (module)
-  (lutil-file:filtered
-    #'check-skip-funcs/1
-    (lutil-file:get-module-exports module)))
-
-(defun get-skipped-tests (module)
-  (lutil-file:filtered
-    #'check-skipped-tests/1
-    (lutil-file:get-module-exports module)))
-
 (defun load-plugins ()
   (lutil-file:load-beams
     (get-plugin-beams)))
