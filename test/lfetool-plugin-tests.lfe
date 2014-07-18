@@ -1,9 +1,6 @@
 (defmodule lfetool-plugin-tests
-  (export all)
-  (import
-    (from lunit
-      (check-failed-assert 2)
-      (check-wrong-assert-exception 2))))
+  (behaviour lunit-unit)
+  (export all))
 
 (include-lib "deps/lunit/include/lunit-macros.lfe")
 
