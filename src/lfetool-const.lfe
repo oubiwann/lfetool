@@ -26,7 +26,8 @@
 
 (defun proj-patt () (binary "{{PROJECT}}"))
 (defun null-patt () (binary ""))
-
+(defun skip-test-patt () '".*_skip")
+(defun skip-test-group-patt () '"(.*)(_skip)")
 (defun non-plugin-commands () '(commands extract help usage version))
 (defun plugin-commands () '(new))
 (defun command-help-sep () '" - ") ; XXX this should go in the app.src config
@@ -38,3 +39,4 @@
 (defun test-suite-subheader () '"-")
 (defun test-suite-title () '"lunit")
 (defun test-suite-width () 72)
+
