@@ -135,6 +135,48 @@
       (lutil-file:expand-home-dir
         (lfetool-const:plugin-beams)))))
 
+;; XXX move into lutil
+(defun get-beam-exports (beam)
+  "Given an atom representing a plugin's name, return its module
+  attributes."
+  (let (((tuple 'ok (tuple _ (list (tuple 'exports exports))))
+         (beam_lib:chunks beam '(exports))))
+    exports))
+
+;; XXX move into lutil
+(defun get-module-exports (module)
+  (get-beam-exports (code:which module)))
+
+(defun check-skip-funcs (funcs)
+  (lists:map
+    (match-lambda
+      (((tuple func arity))
+        (case (re:run (atom_to_list func) (lfetool-const:skip-test-patt))
+          ((tuple 'match _) `#(,func ,arity))
+          (_ 'false))))
+    funcs))
+
+(defun check-skipped-tests (funcs)
+  (lists:map
+    (match-lambda
+      (((tuple func arity))
+        (case (re:split (atom_to_list func)
+                        (++ (lfetool-const:skip-test-group-patt))
+                        '(#(return list)))
+          ((list '() test-name _ '()) test-name)
+          (_ 'false))))
+    funcs))
+
+(defun get-skip-funcs (module)
+  (lutil-file:filtered
+    #'check-skip-funcs/1
+    (get-module-exports module)))
+
+(defun get-skipped-tests (module)
+  (lutil-file:filtered
+    #'check-skipped-tests/1
+    (get-module-exports module)))
+
 (defun load-plugins ()
   (lutil-file:load-beams
     (get-plugin-beams)))
