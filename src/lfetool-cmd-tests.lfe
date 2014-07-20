@@ -34,7 +34,8 @@
   (test-suite-footer))
 
 (defun integration (_)
-  (test-type-header "Integration Tests"))
+  (test-type-header "Integration Tests")
+  (lfetool-tests-runner:run 'integration))
 
 (defun integration ()
   (test-suite-header)
@@ -42,7 +43,8 @@
   (test-suite-footer))
 
 (defun system (_)
-  (test-type-header "System Tests"))
+  (test-type-header "System Tests")
+  (lfetool-tests-runner:run 'system))
 
 (defun system ()
   (test-suite-header)
@@ -51,7 +53,7 @@
 
 (defun unit (_)
   (test-type-header "Unit Tests")
-  (lfetool-tests-runner:run 'unit-lfetool-tests))
+  (lfetool-tests-runner:run 'unit))
 
 (defun unit ()
   (test-suite-header)
