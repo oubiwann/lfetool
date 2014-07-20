@@ -98,18 +98,26 @@ checkerjang () {
 }
 
 lfetooleval () {
+    ARGS="$*"
     if [ "$1" == "debug" ]; then
         DEBUG="-debug true"
-        shift 1
+        ARGS="${@:2}"
     else
         DEBUG=""
+    fi
+    if [ "$1" == "tests" ] && [ "$3" != "" ]; then
+        LISTENER="-listener $3"
+        ARGS="${@:0:$#}"
+    else
+        LISTENER=""
     fi
     cd $EXEC_DIR && ERL_LIBS=$(lfetool info erllibs):~/.lfetool:. \
     erl \
         -cwd "$CWD" \
         -s lfetool \
         $DEBUG \
-        -eval "case lfetool:eval(\"$*\") of
+        $LISTENER \
+        -eval "case lfetool:eval(\"$ARGS\") of
                  {ok, Result} ->
                    halt(0);
                  _ -> halt(127)
