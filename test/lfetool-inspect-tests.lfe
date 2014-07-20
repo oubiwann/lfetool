@@ -1,8 +1,8 @@
 (defmodule lfetool-inspect-tests
-  (behaviour lunit-unit)
+  (behaviour ltest-unit)
   (export all))
 
-(include-lib "deps/lunit/include/lunit-macros.lfe")
+(include-lib "deps/ltest/include/ltest-macros.lfe")
 
 (deftest command?
   (lfetool:start)
