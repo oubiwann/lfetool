@@ -36,6 +36,6 @@
 
 (defun test-suite-header () '"=")
 (defun test-suite-subheader () '"-")
-(defun test-suite-title () '"lunit")
+(defun test-suite-title () '"ltest")
 (defun test-suite-width () 72)
 
