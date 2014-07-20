@@ -30,13 +30,12 @@
     (code:add_patha
       (lfetool-const:eunit-ebin))))
 
-(defun get-cwd-arg ()
-  "Return a default, if 'cwd' wasn't set as a flag when calling 'erl'."
-  (let ((arg (init:get_argument 'cwd)))
-    (case arg
+(defun get-arg (arg-name default)
+  (let ((arg-value (init:get_argument arg-name)))
+    (case arg-value
       ('error
-        #(default (("."))))
-      (_ arg))))
+        `#(default ((,default))))
+      (_ arg-value))))
 
 (defun get-cwd ()
   "The current workding directory in this case is the directory that the user
@@ -45,7 +44,7 @@
   lives. To preserve the original cwd, it is passed as a parameter to erl
   during start up. That value is accessed with this function."
   (caar
-    (element 2 (get-cwd-arg))))
+    (element 2 (get-arg 'cwd "."))))
 
 (defun get-execdir ()
   "The base directory is the lfetool source dir that was cloned during the
@@ -74,16 +73,9 @@
 (defun display (msg arg1 arg2)
   (lfe_io:format msg (list arg1 arg2)))
 
-(defun get-debug-arg ()
-  (let ((arg (init:get_argument 'debug)))
-    (case arg
-      ('error
-        #(default ((false))))
-      (_ arg))))
-
 (defun get-debug ()
   (caar
-    (element 2 (get-debug-arg))))
+    (element 2 (get-arg 'debug 'false))))
 
 (defun debug? ()
   (if (== (get-debug) "true") 'true
