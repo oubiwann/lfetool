@@ -22,29 +22,13 @@
           "/ignore"))
     ;; Make sure the eunit directory exists.
     (filelib:ensure_dir
-      (++ (get-cwd)
+      (++ (lutil-file:get-cwd)
           "/"
           (lfetool-const:eunit-ebin)
           "/ignore"))
     ;; Add the eunit ebin dir to ERL_LIBS
     (code:add_patha
       (lfetool-const:eunit-ebin))))
-
-(defun get-arg (arg-name default)
-  (let ((arg-value (init:get_argument arg-name)))
-    (case arg-value
-      ('error
-        `#(default ((,default))))
-      (_ arg-value))))
-
-(defun get-cwd ()
-  "The current workding directory in this case is the directory that the user
-  executed lfetool *from*. Shortly after it starts up, the lfetool script
-  switches from this dir to the actual directory where the lfetool code/library
-  lives. To preserve the original cwd, it is passed as a parameter to erl
-  during start up. That value is accessed with this function."
-  (caar
-    (element 2 (get-arg 'cwd "."))))
 
 (defun get-execdir ()
   "The base directory is the lfetool source dir that was cloned during the
@@ -75,7 +59,7 @@
 
 (defun get-debug ()
   (caar
-    (element 2 (get-arg 'debug 'false))))
+    (element 2 (lutil-file:get-arg 'debug 'false))))
 
 (defun debug? ()
   (if (== (get-debug) "true") 'true

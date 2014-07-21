@@ -6,7 +6,7 @@
   to the file."
   (filename:join
     (list
-      (lfetool-util:get-cwd)
+      (lutil-file:get-cwd)
       "plugins"
       plugin-name
       "templates"
@@ -45,7 +45,7 @@
     file-name
     ""
     out-file
-    (++ (lfetool-util:get-cwd) "/src")))
+    (++ (lutil-file:get-cwd) "/src")))
 
 (defun write-template (plugin-name file-name pattern out-file)
   "Given a plugin name, a template file name, a substitution pattern, and an
@@ -60,7 +60,7 @@
     file-name
     pattern
     out-file
-    (++ (lfetool-util:get-cwd) "/src")))
+    (++ (lutil-file:get-cwd) "/src")))
 
 (defun write-template (plugin-name file-name pattern out-file dest-dir)
   "Given a plugin name, a template file name, a substitution pattern, an
