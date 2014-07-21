@@ -133,11 +133,11 @@ dorepl () {
     fi
     case $subcommand in
         lfe)
-            PATH=`getpath` ERL_LIBS=`geterllibs` lfe "$@"
+            PATH=`getpath` ERL_LIBS=`geterllibs` lfe "$@" -cwd "$CWD" -s lfetool
             exit $!
             ;;
         erlang|erl)
-            PATH=`getpath` ERL_LIBS=`geterllibs` erl "$@"
+            PATH=`getpath` ERL_LIBS=`geterllibs` erl "$@" -cwd "$CWD" -s lfetool
             exit $!
             ;;
         erjang|jerl)
