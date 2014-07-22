@@ -58,32 +58,26 @@ clean-eunit:
 
 compile: get-deps clean-ebin
 	@echo "Compiling project code and dependencies ..."
-	@which rebar.cmd >/dev/null 2>&1 && rebar.cmd compile || rebar compile
+	@lfetool2 bootstrap build && lfetool2 build all
 
-compile-no-deps: clean-ebin
+compile-no-deps:
 	@echo "Compiling only project code ..."
-	@which rebar.cmd >/dev/null 2>&1 && rebar.cmd compile skip_deps=true || rebar compile skip_deps=true
+	@lfetool2 build src
 
 compile-tests:
-	@PATH=$(SCRIPT_PATH) lfetool tests build
+	@lfetool2 build test
 
 shell: compile
 	@which clear >/dev/null 2>&1 && clear || printf "\033c"
 	@echo "Starting shell ..."
 	@PATH=$(SCRIPT_PATH) ERL_LIBS=$(ERL_LIBS) \
-	lfetool repl -s lfetool
+	lfetool2 repl lfe
 
 shell-no-deps: compile-no-deps
 	@which clear >/dev/null 2>&1 && clear || printf "\033c"
 	@echo "Starting shell ..."
 	@PATH=$(SCRIPT_PATH) ERL_LIBS=$(ERL_LIBS) \
-	lfetool repl lfe -pa ~/.lfetool/ebin -s lfetool
-
-shell-debug: compile-no-deps
-	@which clear >/dev/null 2>&1 && clear || printf "\033c"
-	@echo "Starting shell ..."
-	@PATH=$(SCRIPT_PATH) ERL_LIBS=$(ERL_LIBS) \
-	lfetool repl lfe -pa ~/.lfetool/ebin -s lfetool -debug true
+	lfetool repl lfe
 
 clean: clean-ebin clean-eunit
 	@which rebar.cmd >/dev/null 2>&1 && rebar.cmd clean || rebar clean
