@@ -21,10 +21,12 @@
 
 (defun handle_begin
   (('group (= (list _ (tuple 'desc 'undefined) _ _) data) state)
-    'skipping)
-  (('group (= (list _ (tuple 'desc mod) _ _) data) state)
-    (io:format "~ts~n" (list mod))
-    ; (io:format "\tdata: ~p~n" (list data))
+    'skipping-undefined-desc)
+  (('group (= (list _ (tuple 'desc desc) _ _) data) state)
+    (case (binary:match desc (binary "module"))
+      ('nomatch 'skipping)
+      (_ (io:format "~ts:~n" (list desc))))
+    ;(io:format "\tdata: ~p~n" (list data))
     ; (io:format "\tstate: ~p~n" (list state))
     state)
   (('test (= (list _ _ (tuple 'source (tuple mod func arity)) _) data) state)
@@ -40,9 +42,17 @@
   )
 
 (defun handle_end
-  (('group (= (list _ _ _ _ _ (tuple 'time time) _) data) state)
+  (('group (list _ _ (tuple 'desc 'undefined) _ _ (tuple 'time time) _) state)
+    ; skipping undefined description
+    state)
+  (('group (= (list _ _ (tuple 'desc desc) _ _ (tuple 'time time) _) data) state)
+    (case (binary:match desc (binary "module"))
+      ('nomatch 'skipping)
+      (_ (io:format "\t~s ~s~s~n" (list (color:blackb "time:")
+                                        (color:blackb (integer_to_list time))
+                                        (color:blackb "ms")))))
     ;(io:format "ending group ...~n")
-    (io:format "\ttime: ~pms~n" (list time))
+    ;(io:format "\tdata: ~p~n" (list data))
     ;(io:format "\tstate: ~p~n" (list state))
     state)
   (('group data state)
