@@ -48,7 +48,7 @@
   (('group (= (list _ _ (tuple 'desc desc) _ _ (tuple 'time time) _) data) state)
     (case (binary:match desc (binary "module"))
       ('nomatch 'skipping)
-      (_ (io:format "\t~s ~s~s~n" (list (color:blackb "time:")
+      (_ (io:format "\t~s ~s~s~n~n" (list (color:blackb "time:")
                                         (color:blackb (integer_to_list time))
                                         (color:blackb "ms")))))
     ;(io:format "ending group ...~n")
