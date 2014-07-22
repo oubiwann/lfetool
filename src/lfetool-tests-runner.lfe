@@ -36,14 +36,12 @@
   (run-modules modules (get-listener)))
 
 (defun run-modules (modules listener)
-  (io:format "Got modules '~p' ...~n" (list modules))
   (eunit:test modules (get-default-options listener)))
 
 (defun run-beams (beams)
   (run-beams beams (get-listener)))
 
 (defun run-beams (beams listener)
-  (io:format "Got beams '~p' ...~n" (list beams))
   (eunit:test (lutil-file:beams->files beams)
               (get-default-options listener)))
 
@@ -51,5 +49,4 @@
   (run-beam beam (get-listener)))
 
 (defun run-beam (beam listener)
-  (io:format "Got beam '~p' ...~n" (list beam))
   (run-module (lutil-file:beam->module beam) listener))
