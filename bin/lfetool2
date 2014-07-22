@@ -111,14 +111,14 @@ lfetooleval () {
     else
         LISTENER=""
     fi
-    cd $EXEC_DIR && ERL_LIBS=$(lfetool info erllibs):~/.lfetool:. \
+    cd $EXEC_DIR && ERL_LIBS=.:$(lfetool info erllibs):~/.lfetool:. \
     erl \
         -cwd "$CWD" \
         -s lfetool \
         $DEBUG \
         $LISTENER \
         -eval "case lfetool:eval(\"$ARGS\") of
-                 {ok, Result} ->
+                 ok ->
                    halt(0);
                  _ -> halt(127)
                end" \
@@ -145,15 +145,59 @@ dorepl () {
             PATH=`getpath`:$ERJANG_HOME ERL_LIBS=`geterllibs` \
                 `configrlwrap jerl` \
                 jerl "$@"
+            exit $!
             ;;
         jlfe)
             checkerjang
             PATH=`getpath`:$ERJANG_HOME ERL_LIBS=`geterllibs` \
                 `configrlwrap jerl` \
                 jerl -noshell -s lfe_shell "$@"
+            exit $!
             ;;
         *)
             unknown_subcommand_error repl $subcommand
+            exit $!
+            ;;
+    esac
+}
+
+buildlfe () {
+    cd deps/lfe && make erlc_compile
+    cd - >/dev/null
+}
+
+buildlutil () {
+    cd deps/lutil && ERL_LIBS=../lfe PATH=../lfe/bin:$PATH \
+    lfec -o ./ebin ./src/*.lfe && \
+    cp ./src/lutil.app.src ./ebin/lutil.app
+    cd - >/dev/null
+}
+
+buildlfetool () {
+    ERL_LIBS=../lfe PATH=../lfe/bin:$PATH \
+    lfec -o ./ebin ./src/*.lfe && \
+    cp ./src/lfetool.app.src ./ebin/lfetool.app
+}
+
+dobootstrap () {
+    subcommand=$1
+    shift 1
+    if [ x"$subcommand" = x ]; then
+        subcommand="build"
+    fi
+    case $subcommand in
+        build)
+            echo "Bootstrapping LFE ..."
+            buildlfe
+            echo "Bootstrapping lutil ..."
+            buildlutil
+            echo "Bootstrapping lfetool ..."
+            buildlfetool
+            exit 0
+            ;;
+        *)
+            unknown_subcommand_error bootstrap $subcommand
+            exit $!
             ;;
     esac
 }
@@ -188,6 +232,9 @@ run () {
             ;;
         repl)
             dorepl $rest
+            ;;
+        bootstrap)
+            dobootstrap $rest
             ;;
     esac
     lfetooleval $command $rest
