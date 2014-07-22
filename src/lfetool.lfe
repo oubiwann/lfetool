@@ -50,6 +50,8 @@
   (((list command))
     (non-plugin-dispatch command))
   ;; Supported command + sub-command combinations
+  (((list 'build sub-command))
+    (non-plugin-dispatch 'build sub-command))
   (((list 'info sub-command))
     (non-plugin-dispatch 'info sub-command))
   (((list 'repl sub-command))
@@ -72,7 +74,7 @@
      ,@(lists:map (lambda (x) `(== ',x ,item)) list)))
 
 (defun non-plugin-dispatch
-  ((command sub-command) (when (in command (info repl tests)))
+  ((command sub-command) (when (in command (build info repl tests)))
     (call-cmd command sub-command))
     ; (try
     ;   (call-cmd command sub-command)
