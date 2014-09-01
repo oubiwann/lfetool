@@ -3,14 +3,14 @@
 #############
 
 expectedversion="1.2.0"
-scriptname="my-fibo"
+scriptname="my-fac"
 libname="my-lib"
 svcname="my-service"
 yawsname="my-yaws"
 yawsbootstrapname="my-yaws-bootstrap"
 projecttestdirs="$libname $svcname $yawsname $yawsbootstrapname"
 tmpdir=`date "+%Y%d%m%H%M%S_test_dir"`
-lferepo="$tmpdir/lfe"
+lferepo="$tmpdir/deps/lfe"
 lfepath="$lferepo/bin"
 
 ###################
@@ -47,11 +47,7 @@ testVersion () {
 testNewScript () {
     local expected=""
     ../lfetool new script $scriptname
-    if [ "$TRAVIS" = "true" ]; then
-        result="`PATH=$PATH:$lfepath ERL_LIBS=$lferepo ./$scriptname 42`"
-    else
-        result="`./$scriptname 42`"
-    fi
+    result="`PATH=$PATH:$lfepath: ERL_LIBS=$ERL_LIBS:.$lferepo ./$scriptname 42`"
     expected="factorial 42 = 1405006117752879898543142606244511569936384000000000"
     assertEquals "$expected" "$result"
 }
@@ -64,11 +60,12 @@ testNewLibrary () {
     assertEquals "include resources/make/common.mk" \
         "`head -1 $libname/Makefile`"
     assertEquals "PROJECT = my-lib" \
-        "`head -1 $libname/resources/make/common.mk`"
+        "`head -5 $libname/resources/make/common.mk|tail -1`"
     if [ "$TRAVIS" = "true" ]; then
         expected="10"
     else
-        expected="14"
+        #expected="14"
+        expected="10"
     fi
     assertEquals $expected \
         "`find $libname -type f|egrep -v 'deps|.git'|wc -l|tr -d ' '`"
@@ -78,8 +75,8 @@ testNewLibrary () {
         "`head -2 $libname/src/my-lib.app.src|tail -1`"
     assertEquals '(defmodule unit-my-lib-tests' \
         "`head -1 $libname/test/unit-my-lib-tests.lfe`"
-    assertEquals 'my-lib' \
-        "`head -2 $libname/README.md|tail -1`"
+    assertEquals '# my-lib' \
+        "`head -1 $libname/README.md`"
     assertEquals 'name:"my-lib",' \
         "`head -2 $libname/package.exs|tail -1|tr -d ' '`"
     assertEquals '{erl_opts, [debug_info, {src_dirs, ["test"]}]}.' \
@@ -94,11 +91,12 @@ testNewService () {
     assertEquals "include resources/make/otp.mk" \
         "`head -2 $svcname/Makefile|tail -1`"
     assertEquals "PROJECT = my-service" \
-        "`head -1 $svcname/resources/make/common.mk`"
+        "`head -5 $svcname/resources/make/common.mk|tail -1`"
     if [ "$TRAVIS" = "true" ]; then
         expected="13"
     else
-        expected="19"
+        #expected="19"
+        expected="13"
     fi
     assertEquals $expected \
         "`find $svcname -type f|egrep -v 'deps|.git'|wc -l|tr -d ' '`"
@@ -112,8 +110,8 @@ testNewService () {
         "`head -2 $svcname/src/my-service.app.src|tail -1`"
     assertEquals '(defmodule unit-my-service-tests' \
         "`head -1 $svcname/test/unit-my-service-tests.lfe`"
-    assertEquals 'my-service' \
-        "`head -2 $svcname/README.md|tail -1`"
+    assertEquals '# my-service' \
+        "`head -1 $svcname/README.md`"
     assertEquals 'name:"my-service",' \
         "`head -2 $svcname/package.exs|tail -1|tr -d ' '`"
     assertEquals '{erl_opts, [debug_info, {src_dirs, ["test"]}]}.' \
@@ -134,7 +132,7 @@ testNewYAWS () {
     assertEquals "include resources/make/yaws.mk" \
         "`head -2 $yawsname/Makefile|tail -1`"
     assertEquals "PROJECT = my-yaws" \
-        "`head -1 $yawsname/resources/make/common.mk`"
+        "`head -5 $yawsname/resources/make/common.mk|tail -1`"
     assertEquals '(defmodule my-yaws' \
         "`head -1 $yawsname/src/my-yaws.lfe`"
     assertEquals '(defmodule my-yaws-routes' \
@@ -147,8 +145,8 @@ testNewYAWS () {
         "`head -2 $yawsname/src/my-yaws.app.src|tail -1`"
     assertEquals '(defmodule unit-my-yaws-tests' \
         "`head -1 $yawsname/test/unit-my-yaws-tests.lfe`"
-    assertEquals 'my-yaws' \
-        "`head -2 $yawsname/README.md|tail -1`"
+    assertEquals '# my-yaws' \
+        "`head -1 $yawsname/README.md`"
     assertEquals 'name:"my-yaws",' \
         "`head -2 $yawsname/package.exs|tail -1|tr -d ' '`"
     assertEquals '{erl_opts, [debug_info, {src_dirs, ["test"]}]}.' \
@@ -188,12 +186,10 @@ oneTimeSetUp () {
       cp ../test/shunit2 ../test/tests.sh ./test
     # the next line seems to be causing errors
     #make build
-    if [ "$TRAVIS" = "true" ]; then
-        git clone https://github.com/rvirding/lfe $lferepo &> /dev/null && \
-        cd $lferepo && \
-        make compile &> /dev/null && \
-        cd - &> /dev/null
-    fi
+    git clone https://github.com/rvirding/lfe $lferepo &> /dev/null && \
+    cd $lferepo && \
+    make compile &> /dev/null && \
+    cd - &> /dev/null
     # set up a download cache
     for DIR in $projecttestdirs; do
         mkdir -p $DIR && cd $DIR && ln -s ../deps deps
