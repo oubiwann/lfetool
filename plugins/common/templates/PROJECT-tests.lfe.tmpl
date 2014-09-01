@@ -1,12 +1,12 @@
 (defmodule unit-{{PROJECT}}-tests
-  (behaviour lunit-unit)
+  (behaviour ltest-unit)
   (export all)
   (import
-    (from lunit
+    (from ltest
       (check-failed-assert 2)
       (check-wrong-assert-exception 2))))
 
-(include-lib "deps/lunit/include/lunit-macros.lfe")
+(include-lib "ltest/include/ltest-macros.lfe")
 
 (deftest my-adder
   (is-equal 4 (: {{PROJECT}} my-adder 2 2)))
