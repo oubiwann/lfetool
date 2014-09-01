@@ -497,15 +497,15 @@ all_but_last_line () {
 }
 
 get_unit_tests () {
-    ERL_LIBS=`lfetool info erllibs` erl -eval "io:format(\"~p\", [ltest:'get-unit-beams'()])" -noshell -s erlang halt|tr -d "\n[] "|tr \" \'|sed -e 's/\.eunit\///g'
+    ERL_LIBS=`lfetool info erllibs` erl -eval "io:format(\"~p\", [ltest:'get-unit-beams'()])" -noshell -s erlang halt|tr -d "\n[] "|tr \" \'|sed -e 's|./.eunit/||g'
 }
 
 get_integration_tests () {
-    ERL_LIBS=`lfetool info erllibs` erl -eval "io:format(\"~p\", [ltest:'get-integration-beams'()])" -noshell -s erlang halt|tr -d "\n[] "|tr \" \'|sed -e 's/\.eunit\///g'
+    ERL_LIBS=`lfetool info erllibs` erl -eval "io:format(\"~p\", [ltest:'get-integration-beams'()])" -noshell -s erlang halt|tr -d "\n[] "|tr \" \'|sed -e 's|./.eunit/||g'
 }
 
 get_system_tests () {
-    ERL_LIBS=`lfetool info erllibs` erl -eval "io:format(\"~p\", [ltest:'get-system-beams'()])" -noshell -s erlang halt|tr -d "\n[] "|tr \" \'|sed -e 's/\.eunit\///g'
+    ERL_LIBS=`lfetool info erllibs` erl -eval "io:format(\"~p\", [ltest:'get-system-beams'()])" -noshell -s erlang halt|tr -d "\n[] "|tr \" \'|sed -e 's|./.eunit/||g'
 }
 
 clean_test_results () {
@@ -609,11 +609,12 @@ only_run_unit_tests () {
     echo "Running unit tests ..."
     echo "------------------"
     echoe "$END_COLOR"
-    #result=`PATH=\`get_path\` ERL_LIBS=\`get_erl_libs\` \
-    result=`PATH="\`get_path\`" \
-        erl \`construct_pa_ebin_option\` -noshell \
-        -eval "$CASE_OPEN \`get_unit_tests\` $CASE_CLOSE"; \
-        echo $?`
+    path=`get_path`
+    erllibs=`get_erl_libs`
+    unittests=`get_unit_tests`
+    result=`PATH=$path ERL_LIBS=$erllibs \
+        erl -pa ./.eunit -noshell \
+        -eval "$CASE_OPEN $unittests $CASE_CLOSE"; echo $?`
     status=`echo "$result" | tail -1`
     parsed=`get_parsed "$result"`
     echoe "$parsed"
@@ -632,11 +633,12 @@ only_run_integration_tests () {
     echo "Running integration tests ..."
     echo "-------------------------"
     echoe "$END_COLOR"
-    #result=`PATH=\`get_path\` ERL_LIBS=\`get_erl_libs\` \
-    result=`PATH="\`get_path\`" \
-        erl \`construct_pa_ebin_option\` -noshell \
-        -eval "$CASE_OPEN \`get_integration_tests\` $CASE_CLOSE"; \
-        echo $?`
+    path=`get_path`
+    erllibs=`get_erl_libs`
+    integrationtests=`get_integration_tests`
+    result=`PATH=$path ERL_LIBS=$erllibs \
+        erl -pa ./.eunit -noshell \
+        -eval "$CASE_OPEN $integrationtests $CASE_CLOSE"; echo $?`
     status=`echo "$result" | tail -1`
     parsed=`get_parsed "$result"`
     echoe "$parsed"
@@ -655,11 +657,12 @@ only_run_system_tests () {
     echo "Running system tests ..."
     echo "--------------------"
     echoe "$END_COLOR"
-    #result=`PATH="\`get_path\`" ERL_LIBS=\`get_erl_libs\` \
-    result=`PATH="\`get_path\`" \
-        erl \`construct_pa_ebin_option\` -noshell \
-        -eval "$CASE_OPEN \`get_system_tests\` $CASE_CLOSE"; \
-        echo $?`
+    path=`get_path`
+    erllibs=`get_erl_libs`
+    systemtests=`get_integration_tests`
+    result=`PATH=$path ERL_LIBS=$erllibs \
+        erl -pa ./.eunit -noshell \
+        -eval "$CASE_OPEN $systemtests $CASE_CLOSE"; echo $?`
     status=`echo "$result" | tail -1`
     parsed=`get_parsed "$result"`
     echoe "$parsed"
