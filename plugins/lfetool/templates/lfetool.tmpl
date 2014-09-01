@@ -659,7 +659,7 @@ only_run_system_tests () {
     echoe "$END_COLOR"
     path=`get_path`
     erllibs=`get_erl_libs`
-    systemtests=`get_integration_tests`
+    systemtests=`get_system_tests`
     result=`PATH=$path ERL_LIBS=$erllibs \
         erl -pa ./.eunit -noshell \
         -eval "$CASE_OPEN $systemtests $CASE_CLOSE"; echo $?`
