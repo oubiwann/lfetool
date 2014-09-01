@@ -727,7 +727,7 @@ create_project_files () {
     create_file "$rebarconfig" $project/rebar.config
     create_file "$commonmk" $project/resources/make/common.mk {{PROJECT}} $project
     create_file "$travisci" $project/.travis.yml {{PROJECT}} $project
-    create_file "$readme" $project/README.rst {{PROJECT}} $project
+    create_file "$readme" $project/README.md {{PROJECT}} $project
     create_file "$package" $project/package.exs {{PROJECT}} $project
 }
 

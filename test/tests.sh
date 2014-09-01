@@ -79,7 +79,7 @@ testNewLibrary () {
     assertEquals '(defmodule unit-my-lib-tests' \
         "`head -1 $libname/test/unit-my-lib-tests.lfe`"
     assertEquals 'my-lib' \
-        "`head -2 $libname/README.rst|tail -1`"
+        "`head -2 $libname/README.md|tail -1`"
     assertEquals 'name:"my-lib",' \
         "`head -2 $libname/package.exs|tail -1|tr -d ' '`"
     assertEquals '{erl_opts, [debug_info, {src_dirs, ["test"]}]}.' \
@@ -113,7 +113,7 @@ testNewService () {
     assertEquals '(defmodule unit-my-service-tests' \
         "`head -1 $svcname/test/unit-my-service-tests.lfe`"
     assertEquals 'my-service' \
-        "`head -2 $svcname/README.rst|tail -1`"
+        "`head -2 $svcname/README.md|tail -1`"
     assertEquals 'name:"my-service",' \
         "`head -2 $svcname/package.exs|tail -1|tr -d ' '`"
     assertEquals '{erl_opts, [debug_info, {src_dirs, ["test"]}]}.' \
@@ -148,7 +148,7 @@ testNewYAWS () {
     assertEquals '(defmodule unit-my-yaws-tests' \
         "`head -1 $yawsname/test/unit-my-yaws-tests.lfe`"
     assertEquals 'my-yaws' \
-        "`head -2 $yawsname/README.rst|tail -1`"
+        "`head -2 $yawsname/README.md|tail -1`"
     assertEquals 'name:"my-yaws",' \
         "`head -2 $yawsname/package.exs|tail -1|tr -d ' '`"
     assertEquals '{erl_opts, [debug_info, {src_dirs, ["test"]}]}.' \

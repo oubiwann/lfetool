@@ -20,7 +20,7 @@ fill_common_files () {
     pattern="{{TRAVISCI}}"
     fill_tool_var $template $pattern
     # README file
-    template="plugins/common/templates/README.rst.tmpl"
+    template="plugins/common/templates/README.md.tmpl"
     pattern="{{README}}"
     fill_tool_var $template $pattern
 }
