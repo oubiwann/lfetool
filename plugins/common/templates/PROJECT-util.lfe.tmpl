@@ -4,6 +4,6 @@
 (defun get-{{PROJECT}}-version ()
   (lutil:get-app-src-version "src/{{PROJECT}}.app.src"))
 
-(defun get-version ()
+(defun get-versions ()
   (++ (lutil:get-version)
       `(#({{PROJECT}} ,(get-{{PROJECT}}-version)))))
